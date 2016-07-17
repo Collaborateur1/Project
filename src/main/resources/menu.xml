@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<globalmenu>
+    <section>
+        <title>General</title>
+        <menu>
+            <class>fa fa-home</class>
+            <title>Home</title>
+            <sousmenu>
+                <template>Dashboard</template>
+                <title>Dashboard</title>
+            </sousmenu>
+            <sousmenu>
+                <template>Dashboard2</template>
+                <title>Dashboard2</title>
+            </sousmenu>
+            <sousmenu>
+                <template>Dashboard3</template>
+                <title>Dashboard3</title>
+            </sousmenu>
+        </menu>
+        <menu>
+            <class>fa fa-edit</class>
+            <title>Forms</title>
+            <sousmenu>
+                <template>General Form</template>
+                <title>General Form</title>
+            </sousmenu>
+            <sousmenu>
+                <template>Advanced Components</template>
+                <title>Advanced Components</title>
+            </sousmenu>
+            <sousmenu>
+                <template>Form Validation</template>
+                <title>Form Validation</title>
+            </sousmenu>
+            <sousmenu>
+                <template>Form Wizard</template>
+                <title>Form Wizard</title>
+            </sousmenu>
+            <sousmenu>
+                <template>Form Upload</template>
+                <title>Form Upload</title>
+            </sousmenu>
+            <sousmenu>
+                <template>Form Buttons</template>
+                <title>Form Buttons</title>
+            </sousmenu>
+        </menu>
+    </section>
+    <section>
+        <title>Live On</title>
+        <menu>
+            <class>fa fa-bug</class>
+            <title>test</title>
+            <sousmenu>
+                <template>main</template>
+                <title>sous menu 1</title>
+            </sousmenu>
+        </menu>
+    </section>
+</globalmenu>

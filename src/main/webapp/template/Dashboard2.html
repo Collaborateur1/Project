@@ -1,0 +1,259 @@
+ <!--STYLESHEET-->
+    <!--=================================================-->
+
+ 
+    <!--Bootstrap Stylesheet [ REQUIRED ]-->
+
+
+
+  
+<link rel="stylesheet" type="text/css" 
+href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
+
+
+
+    <!--Bootstrap Select [ OPTIONAL ]-->
+    <link href="/puls/inc/jasmine/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
+
+
+    <!--Demo [ DEMONSTRATION ]-->
+    <link href="/puls/inc/jasmine/css/demo/jasmine.css" rel="stylesheet">
+
+
+    <!--SCRIPT-->
+    <!--=================================================-->
+
+        <div class="boxed">
+
+            <!--CONTENT CONTAINER-->
+            <!--===================================================-->
+            <section id="content-container">
+
+                <header class="pageheader">
+                    <h3><i class="fa fa-home"></i> Drag & Drop </h3>
+                    <div class="breadcrumb-wrapper"> <span class="label">You are here:</span>
+                        <ol class="breadcrumb">
+                            <li> <a href="#"> Home </a> </li>
+                            <li class="active"> Drag & Drop </li>
+                        </ol>
+                    </div>
+                </header>
+
+                <!--Page content-->
+                <!--===================================================-->
+                <div id="page-content">
+
+                    <div class="container">
+                        <div class="col-md-6 eq-box-md grid">
+
+                            <!--Panel with Header-->
+                            <!--===================================================-->
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Panel with header</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Lorem ipsum dolor sit amet.</p>
+                                </div>
+                            </div>
+                            <!--===================================================-->
+                            <!--End Panel with Header-->
+
+                            <!--Panel with Header-->
+                            <!--===================================================-->
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Panel with header</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Lorem ipsum dolor sit amet.</p>
+                                </div>
+                            </div>
+                            <!--===================================================-->
+                            <!--End Panel with Header-->
+
+                            <!--Panel with Header-->
+                            <!--===================================================-->
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Panel with header</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Lorem ipsum dolor sit amet.</p>
+                                </div>
+                            </div>
+                            <!--===================================================-->
+                            <!--End Panel with Header-->
+
+                        </div>
+     
+
+                        <div class="col-md-6 eq-box-md grid">
+
+                            <!--Panel with Header-->
+                            <!--===================================================-->
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Panel with header</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Lorem ipsum dolor sit amet.</p>
+                                </div>
+                            </div>
+                            <!--===================================================-->
+                            <!--End Panel with Header-->
+
+                            <!--Panel with Header-->
+                            <!--===================================================-->
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Panel with header</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Lorem ipsum dolor sit amet.</p>
+                                </div>
+                            </div>
+                            <!--===================================================-->
+                            <!--End Panel with Header-->
+
+                            <!--Panel with Header-->
+                            <!--===================================================-->
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Panel with header</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Lorem ipsum dolor sit amet.</p>
+                                </div>
+                            </div>
+                            <!--===================================================-->
+                            <!--End Panel with Header-->
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--===================================================-->
+                <!--End page content-->
+
+
+            </section>
+            <!--===================================================-->
+            <!--END CONTENT CONTAINER-->
+
+
+
+
+
+            
+
+        </div>
+
+       
+
+
+    <!--===================================================-->
+    <!-- END OF CONTAINER -->
+
+
+    <!--JAVASCRIPT-->
+    <!--=================================================-->
+
+    <!--jQuery [ REQUIRED ]-->
+  
+
+    <!--jQuery Ui [ REQUIRED ]-->
+  
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+
+
+
+    <!--Fast Click [ OPTIONAL ]-->
+
+
+
+    <!--Jasmine Admin [ RECOMMENDED ]-->
+   
+
+
+    <!--Switchery [ OPTIONAL ]-->
+    
+
+
+    <!--Bootstrap Select [ OPTIONAL ]-->
+   
+
+
+    <!--Demo script [ DEMONSTRATION ]-->
+  
+
+    <!--Demo script [ DEMONSTRATION ]-->
+  
+    
+
+    <script  type="text/javascript">
+ 
+  require([
+             'jquery',
+             'jqueryui',
+             'bootstrap',
+             'fastclick',
+             'scripts',
+             'bootstrapselect'
+            
+             ],
+             function(
+            		 jquery,
+                     jqueryui,
+                     bootstrap,
+                     fastclick,
+                     scripts,
+                     bootstrapselect
+                   
+             		
+            ) {
+	  
+	
+	  $(document).ready(function(){
+
+
+			// UI DRAG & DROP PANEL
+			// =================================================================
+			// Require Bootstrap Button
+			// -----------------------------------------------------------------
+			// http://getbootstrap.com/javascript/#buttons
+			// =================================================================
+		 
+				
+				$(".grid").draggable({
+					containment : 'parent',
+					revert : 'valid',
+					scroll: true
+					
+					
+					
+		    });
+			
+				$(".grid").droppable({
+					accept : '.grid',
+					tolerance:'touch',
+					drop : function(){
+				        alert('Action terminée !'); // cette alerte s'exécutera une fois le bloc déposé
+				    }
+		    });
+		   
+		   
+				$( ".grid" ).resizable();
+
+		});
+	 
+	  
+    });
+ 
+
+  </script>   
+
+
+    

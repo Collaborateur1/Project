@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+ 
+  <display-name>puls97</display-name>
+  
+  <!-- *********************************************Listener**************************************************** -->
+  
+    
+    
+    <!-- Bootstraps the root web application context before servlet initialization +++spring+++ -->
+    	<listener>
+
+    <listener-class>other.DefaultProperties</listener-class>
+
+   </listener>
+    
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/jvspring-data.xml
+		</param-value>
+		
+	</context-param>
+	
+
+	
+	
+	
+	
+	
+ <!-- *********************************************End Listener**************************************************** -->
+  <!-- *********************************************Servlet**************************************************** -->    
+
+
+  <!-- The front controller of this Spring Web application, responsible for handling all application requests -->
+  
+  <!-- +++Spring+++ -->
+	<servlet>
+		<servlet-name>jvspring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>
+			com.sun.jersey.spi.spring.container.servlet.SpringServlet
+		</servlet-class>
+		<init-param>
+			<param-name>
+             com.sun.jersey.config.property.packages
+            </param-name>
+			<param-value>controller</param-value>
+		</init-param>
+		
+		<init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name>
+            <param-value>filter.ResourceFilterFactory</param-value>
+        </init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	
+<!-- Map all requests to the DispatcherServlet for handling +++spring+++-->
+	<servlet-mapping>
+		<servlet-name>jvspring</servlet-name>
+		<url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	
+    <servlet-name>default</servlet-name>
+    <url-pattern>/inc/*</url-pattern>
+    <url-pattern>/template/*</url-pattern>
+</servlet-mapping>
+
+  
+
+	<servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/web/*</url-pattern>
+	</servlet-mapping>
+
+<!-- *********************************************End Servlet MApping**************************************************** -->
+</web-app>
