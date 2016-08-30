@@ -12,6 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.0.0.RELEASE</spring.version>
 		  <jdk.version>1.7</jdk.version>
+		  <quartz.version>2.2.1</quartz.version>
 	</properties>
  
  
@@ -35,6 +36,18 @@
         <artifactId>spring-webmvc</artifactId>
         <version>${spring.version}</version>
     </dependency>
+     <!--required with Quartz-->
+     <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- Transaction dependency is required with Quartz integration -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 	
 	<dependency>
         <groupId>org.apache.geronimo.specs</groupId>
@@ -102,6 +115,13 @@
 	<groupId>mysql</groupId>
 	<artifactId>mysql-connector-java</artifactId>
 	<version>5.1.35</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.javaetmoi.core/javaetmoi-hibernate5-hydrate -->
+<dependency>
+    <groupId>com.javaetmoi.core</groupId>
+    <artifactId>javaetmoi-hibernate5-hydrate</artifactId>
+    <version>2.3</version>
 </dependency>
 
     	<dependency>
@@ -222,9 +242,14 @@
 <!-- 		*************End_ Ajax non utile*************** -->
 
 
-<!-- 		************* TemplatingJava*************** -->
-
-<!-- 		*************End TemplatingJava*************** -->
+<!-- 		************* Quartz framework Scheduler *************** -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+        </dependency>
+    
+<!-- 		*************End Quartz framework Scheduler*************** -->
 
 
 <!-- 		************* DateJava*************** -->
@@ -272,6 +297,13 @@
 </dependency>
 
 <!-- *************End Token*************** -->
+
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.4</version>
+</dependency>
 
 
 <!-- *************templating java*************** -->

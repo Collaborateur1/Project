@@ -9,18 +9,10 @@
   http://www.springframework.org/schema/tx 
   http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-    <!--  Déclaration du PropertyPlaceholderConfigurer -->
-    	<!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:/main/java/dao/db.properties</value>
-			</list>
-		</property>
-	</bean> -->
 
 
 <context:annotation-config />
-	<context:component-scan base-package="controller,model,filter,other" />
+	<context:component-scan base-package="controller,model,filter,other,scheduler" />
 
 
 	
@@ -73,38 +65,45 @@
 </bean>
  
 <!--  Déclaration des DAO JDBC-->
-
-	<!-- <bean id="hibernateTemplate"
-		class="org.springframework.orm.hibernate3.HibernateTemplate">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean> -->
 	
 	<bean id="userDao" class="model.dao.UserDao" name="userDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<!--<bean id="userJob" class="model.job.UserJob" name="userJob">
-	</bean>
-	 <bean id="usersProvider" class="rest.UsersProvider" name="usersProvider">
-		
+	<bean id="daoCenter" class="model.dao.DaoCenter" name="daoCenter">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="securityContextFilter" class="rest.SecurityContextFilter" name="securityContextFilter">
-		
-	</bean>
-	
-	<bean id="resourceFilterFactory" class="rest.ResourceFilterFactory" name="resourceFilterFactory"> 
-		
-	</bean>
-	
-	-->
+	<bean name="jobscheduler"    class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+    <property name="jobClass" value="scheduler.ScheduleTask" />
+    <property name="durability" value="true" />
+</bean>
 
+<!-- Run the job every 2 seconds with initial delay of 1 second -->
+<!--Simple Trigger , using SimpleTriggerFactoryBean-->
+<bean id="simpleTrigger"  class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+    <property name="jobDetail" ref="jobscheduler" /><!--"jobscheduler" from the jobDetailFactoryBean  -->
+    <property name="startDelay" value="1000" />
+    <property name="repeatInterval" value="2000" />
+</bean>
 
+<!--Configure SchedulerFactoryBean that creates and configures Quartz Scheduler-->
 	
+<!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->
+<bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="jobDetails">
+        <list>
+            <ref bean="jobscheduler" />
+           
+        </list>
+    </property>
+ 
+    <property name="triggers">
+        <list>
+            <ref bean="simpleTrigger" />
+        </list>
+    </property>
+</bean>
 
-	<!-- <bean id="transactionManager"
-    class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-      <property name="sessionFactory" ref="sessionFactory" />
-   </bean> -->
    
 </beans>
