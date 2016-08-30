@@ -18,23 +18,9 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
 
     
     public boolean UpdateUser(UserCustom user)
-    { return super.update( user, null);
-        /*Session s=null;
-        try{
-            s= GetSession();
-            Transaction tx = s.beginTransaction();
-        
-        s.saveOrUpdate(user);
-        tx.commit();
-        s.close();
-        } catch(Exception e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        
-        return true;
-        */
+    { 
+        return super.update( user, null);
+      
     }
     
    
@@ -60,7 +46,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
             Criteria criteria=s.createCriteria( UserCustom.class );
             criteria.add( Restrictions.eq( "email", login ) );
             UserCustom user=(UserCustom)criteria.uniqueResult();
-            CloseConnexion(s);
+         
             
             if(user!=null)
             {
@@ -254,7 +240,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
         try{
             
              s=GetSession();
-            
+            //a modif
             Criteria criteria=s.createCriteria( UserCustom.class );
             criteria.add(Restrictions.eq( "email", email ));
             UserCustom user=(UserCustom)criteria.uniqueResult();
@@ -271,7 +257,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
            
         } catch(Exception e)
         {
-            e.printStackTrace();
+           logger.debug( "User already exist (email" );
         }finally{
             try {
                 CloseConnexion(s);

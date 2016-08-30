@@ -47,7 +47,7 @@ public class UserJobImpl implements UserJob{
        
         try {
             CheckEmail( email );
-            user.setEmail( email );
+            user.setDusEmail( email );
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
           //  erreurs.put( CHAMP_EMAIL, e.getMessage() );
@@ -57,7 +57,7 @@ public class UserJobImpl implements UserJob{
 
         try {
             CheckName( lastName );
-            user.setNom( lastName );
+            user.setDusName( lastName );
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( CHAMP_NOM, e.getMessage() );
@@ -74,7 +74,7 @@ public class UserJobImpl implements UserJob{
 
         try {
             CheckPrenom(firstName);
-            user.setPrenom( firstName );
+            user.setDusSurname( firstName );
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( CHAMP_PRENOM, e.getMessage() );
@@ -84,7 +84,7 @@ public class UserJobImpl implements UserJob{
 
         try {
             CheckMdp(mdp);
-            user.setMdp( mdp.getBytes() );
+            user.setDusMdp( mdp.getBytes().toString() );
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( CHAMP_PRENOM, e.getMessage() );
@@ -99,12 +99,12 @@ public class UserJobImpl implements UserJob{
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( "IsNew", e.getMessage() );
-            logger.info(  e.getMessage() );
+            logger.info( "this user already exist in database (email) please use a valide mail"+ e.getMessage() );
             return false;
         }
         
 
- user.setUrlPict("/puls/inc/pictures/default.png");
+ user.setDusPict("/puls/inc/pictures/default.png");
  
         logger.info("New user informations is conform");
         return userDao.create( user);
@@ -116,7 +116,7 @@ public class UserJobImpl implements UserJob{
         
         if(file!=null)
         {
-            user.setUrlPict( file.toString().replace( "\\", "/" ).substring(2));
+            user.setDusPict( file.toString().replace( "\\", "/" ).substring(2));
             
             userDao.UpdateUser( user );
             return true;
@@ -249,11 +249,11 @@ public class UserJobImpl implements UserJob{
         File file = new File( prefixDir + UserEnvironement );
 
         if ( file.exists() ) {
-            file = new File( prefixDir + UserEnvironement + "\\" + user.getEmail() );
+            file = new File( prefixDir + UserEnvironement + "\\" + user.getDusEmail() );
             file.mkdirs();
         } else {
             file.mkdirs();
-            file = new File( prefixDir + UserEnvironement + "\\" + user.getEmail() );
+            file = new File( prefixDir + UserEnvironement + "\\" + user.getDusEmail() );
             file.mkdirs();
 
         }

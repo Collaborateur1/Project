@@ -2,6 +2,7 @@ package other;
 
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
+import model.job.GenericJob;
 import model.job.UserJob;
 import model.provider.UsersProvider;
 
@@ -17,5 +18,8 @@ public class SpringFactory {
         return (UsersProvider) SpringContext.getContext().getBean("usersProvider");
     }
     
+    public static GenericJob getGenericJob() {
+        return (GenericJob) SpringContext.getContext().getBean("genericJob");
+    }
     
 }

@@ -1,5 +1,6 @@
 package model.dao;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,460 +11,766 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.springframework.transaction.annotation.Transactional;
 
-public class DaoCenter<T extends Executable > implements InterfaceCenter<T> {
-    private static Logger logger = Logger.getLogger(DaoCenter.class);
+import com.javaetmoi.core.persistence.hibernate.LazyLoadingUtil;
+
+import json.Alia;
+import json.Jsonmap;
+import json.Param;
+import model.custom.UserCustom;
+@Transactional
+public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
+    private static Logger  logger = Logger.getLogger( DaoCenter.class );
     private SessionFactory sessionFactory;
-    
-    public boolean exist(T object)
-    {
-        boolean transaction =false;
-        Session session =null;
-        try{
-            session=GetSession();
+
+    public boolean exist( T object ) {
+        boolean transaction = false;
+        Session session = null;
+        try {
+            session = GetSession();
             Transaction tx = session.beginTransaction();
-            
-      
-              Object obj= session.get( object.getClass(),object.getID());
-             tx.commit();
-             if(obj!=null)
-             { 
-                 logger.info( "object from class: "+object.getClass()+" and id: " +object.getID()+ " exist" );
-                 return true;
-             }
-            
-             logger.info( "object from class: "+object.getClass()+" and id: " +object.getID()+ " don't exist" );
-         
-        } catch(Exception e)
-        { 
-            logger.error( "fail to check if  object exist " +e.getMessage() );
-           
-        }finally{
+
+            Object obj = session.get( object.getClass(), object.getID() );
+            tx.commit();
+            if ( obj != null ) {
+                logger.info( "object from class: " + object.getClass() + " and id: " + object.getID() + " exist" );
+                return true;
+            }
+
+            logger.info( "object from class: " + object.getClass() + " and id: " + object.getID() + " don't exist" );
+
+        } catch ( Exception e ) {
+            logger.error( "fail to check if  object exist " + e.getMessage() );
+
+        } finally {
             try {
-                CloseConnexion(session);
+                CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }   
+            }
         }
 
-    
-       
         return false;
-        
+
     }
-    public boolean create(T object ,ConcurrentHashMap<String, Object> item)
-    {
-        boolean transaction =false;
-        Session session =null;
-      //try catch a prévoir
-        object.presave(item);
-        try{
-            session=GetSession();
+
+    public boolean create( T object, ConcurrentHashMap<String, Object> item ) {
+        boolean transaction = false;
+        Session session = null;
+        // try catch a prévoir
+        object.presave( item );
+        try {
+            session = GetSession();
             Transaction tx = session.beginTransaction();
-          
-                session.persist(object);
-             tx.commit();
-             transaction=tx.wasCommitted();
-             logger.info( "New "+object.getClass()+" is create and the transaction is commited ? :" +transaction );
-            
-         
-        } catch(Exception e)
-        { 
-            logger.error( "fail to create new "+object.getClass()+" " +e.getMessage() );
-           
-        }finally{
+
+            session.persist( object );
+            tx.commit();
+            transaction = tx.wasCommitted();
+            logger.info( "New " + object.getClass() + " is create and the transaction is commited ? :" + transaction );
+
+        } catch ( Exception e ) {
+            logger.error( "fail to create new " + object.getClass() + " " + e.getMessage() );
+
+        } finally {
             try {
-                CloseConnexion(session);
+                CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }   
+            }
         }
-        
-        if(item==null)
-            item=new ConcurrentHashMap<String, Object>();
+
+        if ( item == null )
+            item = new ConcurrentHashMap<String, Object>();
         item.put( "Transaction", transaction );
-        //try catch a prévoir
+        // try catch a prévoir
         object.postsave( item );
         return transaction;
-        
+
     }
-    public boolean update(T object ,ConcurrentHashMap<String, Object> item){
-       
-        boolean transaction =false;
-        
-        Session session =null;
-        
-        //try catch a prévoir
-        object.presave(item);
-        
-        try{
-            //open session
-            session=GetSession();
-            
-            //open transaction
+
+    public boolean update( T object, ConcurrentHashMap<String, Object> item ) {
+
+        boolean transaction = false;
+
+        Session session = null;
+
+        // try catch a prévoir
+        object.presave( item );
+
+        try {
+            // open session
+            session = GetSession();
+
+            // open transaction
             Transaction tx = session.beginTransaction();
-          
-             session.saveOrUpdate(object);
-             
-             //commit transaction
-             tx.commit();
-             
-             transaction=tx.wasCommitted();
-             logger.info(object.getClass()+" is updated and the transaction is commited ? :" +transaction );
-            
-         
-        } catch(Exception e)
-        { 
-            logger.error( "fail to  update "+object.getClass()+" " +e.getMessage() );
-           
-        }finally{
+
+            session.saveOrUpdate( object );
+
+            // commit transaction
+            tx.commit();
+
+            transaction = tx.wasCommitted();
+            logger.info( object.getClass() + " is updated and the transaction is commited ? :" + transaction );
+
+        } catch ( Exception e ) {
+            logger.error( "fail to  update " + object.getClass() + " " + e.getMessage() );
+
+        } finally {
             try {
-                CloseConnexion(session);
+                CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }   
+            }
         }
-        if(item==null)
-            item=new ConcurrentHashMap<String, Object>();
+        if ( item == null )
+            item = new ConcurrentHashMap<String, Object>();
         item.put( "Transaction", transaction );
-        //try catch a prévoir
+        // try catch a prévoir
         object.postsave( item );
         return transaction;
     }
-    
-    public boolean delete(T object ){
-       
-        
-        
-        boolean transaction =false;
-        Session session =null;
-        try{
-         // Ouverture Session
-            session=GetSession();
-            
+
+    public boolean delete( T object, ConcurrentHashMap<String, Object> item ) {
+
+        object.presave( item );
+
+        boolean transaction = false;
+        Session session = null;
+        try {
+            // Ouverture Session
+            session = GetSession();
+
             // Ouverture Transaction
             Transaction tx = session.beginTransaction();
-            
-      
-            session.delete(object);
-             tx.commit();
-             transaction=tx.wasCommitted();
-             
-             
- logger.info( "object from class: "+object.getClass()+" and id: " +object.getID()+ " is now delete" );
-         
-        } catch(Exception e)
-        { 
-            logger.error( "fail to delete  object :" +e.getMessage() );
-           
-        }finally{
+
+            session.delete( object );
+            tx.commit();
+            transaction = tx.wasCommitted();
+
+            logger.info( "object from class: " + object.getClass() + " and id: " + object.getID() + " is now delete" );
+
+        } catch ( Exception e ) {
+            logger.error( "fail to delete  object :" + e.getMessage() );
+
+        } finally {
             try {
-                CloseConnexion(session);
+                CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }   
-        }
-
-       return true;
-    }
-    
-    
-    public void CloseConnexion(Session s) throws Exception
-    {
-        try{
-            s.close();
-        }
-        catch(HibernateException e)
-        {
-            e.printStackTrace();
-        }
-   
-    }
-
-public Session GetSession()
-{
-    Session s;
-    
-        
-        try{
-            s=getSessionFactory().getCurrentSession();
-             }
-            catch(Exception e){
-              s= getSessionFactory().openSession();
-                
             }
+        }
+
+        if ( item == null )
+            item = new ConcurrentHashMap<String, Object>();
+        item.put( "Transaction", transaction );
+        // try catch a prévoir
+        object.postsave( item );
+        return transaction;
+    }
+
+    public void CloseConnexion( Session s ) throws Exception {
+        try {
+            s.close();
+        } catch ( HibernateException e ) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public Session GetSession() {
+        Session s;
+
+        try {
+            s = getSessionFactory().getCurrentSession();
+        } catch ( Exception e ) {
+            s = getSessionFactory().openSession();
+
+        }
         return s;
-}
+    }
 
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
 
-public SessionFactory getSessionFactory() {
-    return sessionFactory;
-}
-public void setSessionFactory( SessionFactory sessionFactory ) {
-    this.sessionFactory = sessionFactory;
-}
-public static Logger getLogger() {
-    return logger;
-}
-public static void setLogger( Logger logger ) {
-    DaoCenter.logger = logger;
-}
+    public void setSessionFactory( SessionFactory sessionFactory ) {
+        this.sessionFactory = sessionFactory;
+    }
 
-@Override
-public Object read( Class<?> object, String[][] restriction) {
-    // TODO Auto-generated method stub
-    boolean transaction =false;
-    Session session =null;
-    
-    //ici on doit vérifier si les restriction et autre truck que tu ajoutera plus tard, si il sont tous null retourné directement null
-    try{
-     // Ouverture Session
-        session=GetSession();
-        Criteria criter=session.createCriteria( object );
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger( Logger logger ) {
+        DaoCenter.logger = logger;
+    }
+
+    @Override
+    public Object read( Class<T> object, String[][] restriction ) {
+        // TODO Auto-generated method stub
+        boolean transaction = false;
+        Session session = null;
+
+        // ici on doit vérifier si les restriction et autre truck que tu
+        // ajoutera plus tard, si il sont tous null retourné directement null
+        try {
+            // Ouverture Session
+            session = GetSession();
+            Criteria criter = session.createCriteria( object );
+
+            if ( restriction != null )
+                addRestrinction( criter, restriction );
+
+            return criter.uniqueResult();
+
+        } catch ( Exception e ) {
+            logger.error( "fail to fetch  object :" + e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Object> list( Class<T> object, String[][] restriction, String[][] order ) {
+        boolean transaction = false;
+        Session session = null;
+
+        // ici on doit vérifier si les restriction et autre truck que tu
+        // ajoutera plus tard, si il sont tous null retourné directement null
+        try {
+            // Ouverture Session
+            session = GetSession();
+            Criteria criter = session.createCriteria( object );
+
+            if ( restriction != null )
+                addRestrinction( criter, restriction );
+
+            List<Object> lst = criter.list();
+
+            return lst;
+
+        } catch ( Exception e ) {
+            logger.error( "fail to fetch  object List :" + e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List complexList( Class<?> object, String[][] alias, String[][] restriction, String[][] order,
+            String[][] projection, int maxResult, int firstResult) {
+        // TODO Auto-generated method stub
+        boolean transaction = false;
+        Session session = null;
+
+        // ici on doit vérifier si les restriction et autre truck que tu
+        // ajoutera plus tard, si il sont tous null retourné directement null
+        try {
+            // Ouverture Session
+            session = GetSession();
+            Criteria criter = session.createCriteria( object );
+
+            if ( alias != null )
+                addAlias( criter, alias );
+
+            if ( order != null )
+                addOrder( criter, order );
+
+            if ( restriction != null )
+                addRestrinction( criter, restriction );
+
+            if ( projection != null )
+                addProjection( criter, projection );
+// List list=criter.setFirstResult( 10 ).list();
+            if(maxResult!=-1)
+                criter.setMaxResults( maxResult);
+            if(firstResult!=-1)
+                criter.setFirstResult(firstResult);
+            List list=criter.setResultTransformer( Criteria.ALIAS_TO_ENTITY_MAP ).list();
+            return list;
+           
+
+        } catch ( Exception e ) {
+            logger.error( "fail to fetch  object List :" + e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public void addRestrinction( Criteria criter, String[][] restriction ) {
+        for ( int i = 0; i < restriction.length; i++ ) {
+            switch ( restriction[i][1].toUpperCase() ) {
+
+            case "=":
+            case "EQ":
+                criter.add( Restrictions.eq( restriction[i][0], restriction[i][2] ) );
+                break;
+
+            case "<=":
+            case "LE":
+               
+                criter.add( Restrictions.le( restriction[i][0], Long.parseLong(restriction[i][2]) ) );
+                break;
+
+            case "<":
+            case "LT":
+             
+                criter.add( Restrictions.lt( restriction[i][0], Long.parseLong(restriction[i][2])) );
+                break;
+
+            case ">=":
+            case "GE":
+                criter.add( Restrictions.ge( restriction[i][0], Long.parseLong(restriction[i][2]) ) );
+                break;
+
+            case ">":
+            case "GT":
+                criter.add( Restrictions.gt( restriction[i][0], Long.parseLong(restriction[i][2]) ) );
+                break;
+
+            case "LIKE":
+                criter.add( Restrictions.like( restriction[i][0], restriction[i][2] + "%" ) );
+                break;
+
+            default:
+                criter.add( Restrictions.eq( restriction[i][0], restriction[i][2] ) );
+                break;
+
+            }
+        }
+    }
+
+    public void addOrder( Criteria criter, String[][] order ) {
+        for ( int i = 0; i < order.length; i++ ) {
+            switch ( order[i][1].toUpperCase() ) {
+
+            case "DESC":
+                criter.addOrder( Order.desc( order[i][0] ) );
+                break;
+
+            case "ASC":
+                criter.addOrder( Order.desc( order[i][0] ) );
+                break;
+            }
+
+        }
+
+    }
+
+    public void addAlias( Criteria criter, String[][] alias ) {
+        for ( int i = 0; i < alias.length; i++ ) {
+            criter.createAlias( alias[i][0], alias[i][1] );
+        }
+    }
+
+    public void addProjection( Criteria criter, String[][] projection ) {
+        boolean haveProperty = false;
+       ProjectionList projList=Projections.projectionList();
+       
+        for ( int i = 0; i < projection.length; i++ ) {
+
+            switch ( projection[i][0].toUpperCase() ) {
+
+            case "PROPERTY":
+                projList.add(Projections.property( projection[i][1] ).as( projection[i][1] ) );
+                if ( !haveProperty )
+                    haveProperty = true;
+                break;
+
+            case "ROWCOUNT":
+                projList.add( Projections.rowCount() );
+                if ( haveProperty )
+                    logger.debug( "Warning : ROWCOUNT must be use without PROPERTY check your projection" );
+                break;
+
+            case "COUNT":
+                projList.add(Projections.count( projection[i][1] ) );
+                break;
+
+            case "GROUPBY":
+                projList.add(Projections.groupProperty( projection[i][1] ) );
+                break;
+
+            }
+        }
+        if(projList.getLength()!=0)
+          criter.setProjection( projList );  
+    }
+
+    @Override
+    public boolean delete( Class<T> object, String id, ConcurrentHashMap<String, Object> item ) {
+        // TODO Auto-generated method stub
+        Session session = null;
+        boolean transaction = false;
+        T obj = null;
+        try {
+            // Ouverture Session
+            session = GetSession();
+
+            // Ouverture Transaction
+            Transaction tx = session.beginTransaction();
+
+            obj = object.cast( session.load( object, id ) );
+            tx.commit();
+            transaction = tx.wasCommitted();
+
+        } catch ( Exception e ) {
+            logger.error( "fail to delete  object with id :" + id + "from class: " + object.getName() + " "
+                    + e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        if ( transaction && obj != null )
+            return delete( obj, null );
+
+        return false;
+    }
+
+    @Override
+    public Object read( T object ,boolean lazyLoad) {
+        long lg=-1;
+        try{
+           lg= object.getID();
+        }catch(Exception e){
+            return null;
+        }
+      return read((Class<T>) object.getClass(),String.valueOf(lg),lazyLoad);
+    }
+
+    @Override
+    public Object read( Class<T> object, Jsonmap param ) {
+        // TODO Auto-generated method stub
+        boolean transaction = false;
+        Session session = null;
+
+        // ici on doit vérifier si les restriction et autre truck que tu
+        // ajoutera plus tard, si il sont tous null retourné directement null
+        try {
+            // Ouverture Session
+            session = GetSession();
+            Criteria criter = session.createCriteria( object );
+
+            addJsonParam(criter,param);
+
+            return criter.uniqueResult();
+
+        } catch ( Exception e ) {
+            logger.error( "fail to fetch  object :" + e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         
-        if(restriction!=null)
-        for (int i=0;i<restriction.length;i++)
+        
+        return null;
+    }
+
+    @Override
+    public List complexList( Class<?> object, Jsonmap param ) {
+        // TODO Auto-generated method stub
+        
+        boolean transaction = false;
+        Session session = null;
+
+        // ici on doit vérifier si les restriction et autre truck que tu
+        // ajoutera plus tard, si il sont tous null retourné directement null
+        try {
+            // Ouverture Session
+            session = GetSession();
+            Criteria criter = session.createCriteria( object );
+            if(param!=null)
+            addJsonParam(criter,param);
+
+            return criter.setResultTransformer( Transformers.ALIAS_TO_ENTITY_MAP ).list();
+
+        } catch ( Exception e ) {
+            logger.error( "fail to fetch  object List :" + e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public void addJsonParam( Criteria criter, Jsonmap param ) {
+
+        if ( param.getAlias() != null ) {
+            List<Alia> listAlias = param.getAlias();
+            Alia alias;
+            for ( int i = 0; i < listAlias.size(); i++ ) {
+                alias = listAlias.get( i );
+                criter.createAlias( alias.getField(), alias.getAlias() );
+
+            }
+
+        }
+
+        if ( param.getOrder() != null ) {
+            List<json.Order> listOrder = param.getOrder();
+
+            json.Order order;
+            Iterator<String> values;
+            for ( int i = 0; i < listOrder.size(); i++ ) {
+                order = listOrder.get( i );
+
+                switch ( order.getOpe().trim().toUpperCase() ) {
+
+                case "DESC":
+
+                    values = order.getValue().iterator();
+
+                    while ( values.hasNext() )
+                        criter.addOrder( Order.desc( values.next() ) );
+
+                    break;
+
+                case "ASC":
+
+                    values = order.getValue().iterator();
+                    while ( values.hasNext() )
+                        criter.addOrder( Order.asc( values.next() ) );
+
+                    break;
+                }
+
+            }
+
+        }
+        if ( param.getProjection() != null )
+
         {
-            switch(restriction[i][2]){
-        
-        case "=":
-        case "eq":
-            criter.add(Restrictions.eq( restriction[i][0],restriction[i][1] ));   
-        break;
-        
-        case "<=":
-        case "le":
-            criter.add(Restrictions.le( restriction[i][0],restriction[i][1] ));     
-            break;
-            
-        case "<":
-        case "lt":
-            criter.add(Restrictions.lt( restriction[i][0],restriction[i][1] ));     
-            break;    
-        
-        case ">=":
-        case "ge":
-            criter.add(Restrictions.ge( restriction[i][0],restriction[i][1] ));  
-            break;
-            
-        case ">":
-        case "gt":
-            criter.add(Restrictions.gt( restriction[i][0],restriction[i][1] ));  
-            break;
-        case "like":
-        case "LIKE":
-            criter.add(Restrictions.like( restriction[i][0],restriction[i][1]+"%" ));  
-            break;     
-            
-            
-            
-            
-        }
-        }
-        
-         
-        
-        return criter.uniqueResult();
-       
-     
-    } catch(Exception e)
-    { 
-        logger.error( "fail to fetch  object :" +e.getMessage() );
-       
-    }finally{
-        try {
-            CloseConnexion(session);
-        } catch ( Exception e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }   
-    }
-    return null;
-}
-@Override
-public List<Object> list( Class<?> object, String[][] restriction, String[][] order ) {
-    boolean transaction =false;
-    Session session =null;
-    
-    //ici on doit vérifier si les restriction et autre truck que tu ajoutera plus tard, si il sont tous null retourné directement null
-    try{
-     // Ouverture Session
-        session=GetSession();
-        Criteria criter=session.createCriteria( object );
-        
-        if(restriction!=null)
-            addRestrinction( criter, restriction );
-         
-        
-        List<Object> lst =criter.list();
-       
-     return lst;
-     
-    } catch(Exception e)
-    { 
-        logger.error( "fail to fetch  object List :" +e.getMessage() );
-       
-    }finally{
-        try {
-            CloseConnexion(session);
-        } catch ( Exception e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }   
-    }
-    return null;
-}
-@Override
-public List complexList( Class<?> object, String[][] alias, String[][] restriction, String[][] order,
-        String[][] projection ) {
-    // TODO Auto-generated method stub
-    boolean transaction =false;
-    Session session =null;
-    
-    //ici on doit vérifier si les restriction et autre truck que tu ajoutera plus tard, si il sont tous null retourné directement null
-    try{
-     // Ouverture Session
-        session=GetSession();
-        Criteria criter=session.createCriteria( object );
-        
-        if(alias!=null) 
-         addAlias( criter, alias );   
-   
-        
-        if(order!=null)
-        addOrder( criter, order );
-        
-        if(restriction!=null)
-        addRestrinction( criter, restriction );
-        
-        if(projection!=null)
-            addProjection(criter,projection);
-        
-        return criter.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
-       
-     
-    } catch(Exception e)
-    { 
-        logger.error( "fail to fetch  object List :" +e.getMessage() );
-       
-    }finally{
-        try {
-            CloseConnexion(session);
-        } catch ( Exception e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }   
-    }
-    return null;
-}
+            List<json.Projection> listProj = param.getProjection();
+            json.Projection proj;
+            Iterator<String> values;
+            boolean haveProperty = false;
+            boolean rowCount = false;
 
-public void addRestrinction(Criteria criter, String[][] restriction)
-{
-    for (int i=0;i<restriction.length;i++)
-    {
-        switch(restriction[i][2].toUpperCase()){
-    
-    case "=":
-    case "EQ":
-        criter.add(Restrictions.eq( restriction[i][0],restriction[i][1] ));   
-    break;
-    
-    case "<=":
-    case "LE":
-        criter.add(Restrictions.le( restriction[i][0],restriction[i][1] ));     
-        break;
-        
-    case "<":
-    case "LT":
-        criter.add(Restrictions.lt( restriction[i][0],restriction[i][1] ));     
-        break;    
-    
-    case ">=":
-    case "GE":
-        criter.add(Restrictions.ge( restriction[i][0],restriction[i][1] ));  
-        break;
-        
-    case ">":
-    case "GT":
-        criter.add(Restrictions.gt( restriction[i][0],restriction[i][1] ));  
-        break;
-    
-    case "LIKE":
-        criter.add(Restrictions.like( restriction[i][0],restriction[i][1]+"%" ));  
-        break;     
-      
-        
-    }
-    }   
-}
+            for ( int i = 0; i < listProj.size(); i++ ) {
+                proj = listProj.get( i );
+                switch ( proj.getName().trim().toUpperCase() ) {
 
-public void addOrder(Criteria criter, String[][] order){
-    for (int i=0;i<order.length;i++)
-    {
-        switch(order[i][0].toUpperCase()){
-        
-        
-        case "DESC":
-        criter.addOrder( Order.desc(order[i][1] ));
-           break;
-           
-        case "ASC":
-        criter.addOrder( Order.desc(order[i][1] ));
-           break;
+                case "PROPERTY":
+                    values = proj.getValue().iterator();
+                    while ( values.hasNext() ){
+                        String tmpValue=values.next().trim();
+                        criter.setProjection( Projections.property(  tmpValue).as( tmpValue ) );
+                    }
+                    if ( rowCount )
+                        logger.debug(
+                                "Warning : PROPERTY must be use without ROWCOUNT check your projection configuration" );
+
+                    if ( !haveProperty )
+                        haveProperty = true;
+                    break;
+
+                case "ROWCOUNT":
+                    if ( !rowCount )
+                        rowCount = true;
+
+                    criter.setProjection( Projections.rowCount() );
+                    if ( haveProperty )
+                        logger.debug(
+                                "Warning : ROWCOUNT must be use without PROPERTY check your projection configuration" );
+                    break;
+
+                case "COUNT":
+                    values = proj.getValue().iterator();
+                    while ( values.hasNext() )
+                        criter.setProjection( Projections.count( values.next().trim() ) );
+                    break;
+
+                case "GROUPBY":
+                    values = proj.getValue().iterator();
+                    while ( values.hasNext() )
+                        criter.setProjection( Projections.groupProperty( values.next().trim() ) );
+                    break;
+
+                }
+            }
         }
-        
-        
-        
-    }  
-    
-   
-}
 
-public void addAlias(Criteria criter, String[][] alias){
-    for (int i=0;i<alias.length;i++)
-    {
-        criter.createAlias( alias[i][0], alias[i][1] );
-    }    
-}
-public void addProjection(Criteria criter, String[][] projection){
-   boolean haveProperty=false;
-   
-    for (int i=0;i<projection.length;i++)
-    {
-        
-switch(projection[i][0].toUpperCase()){
-        
-        
-        case "PROPERTY":
-        criter.setProjection( Projections.property( projection[i][1] ));
-        if(!haveProperty)
-        haveProperty=true;
-           break;
-           
-        case "ROWCOUNT":
-        criter.setProjection( Projections.rowCount());
-        if(haveProperty)
-        logger.debug( "Warning : ROWCOUNT must be use without PROPERTY check your projection" );
-           break;
-           
-        case "COUNT":
-            criter.setProjection( Projections.count( projection[i][1]));
-            break;
-            
-        case "GROUPBY":
-            criter.setProjection( Projections.groupProperty( projection[i][1]));
-            break;
-           
-           
-           
-        }  
+        if ( param.getParam() != null ) {
+            List<Param> listParam = param.getParam();
+            Param para;
+            for ( int i = 0; i < listParam.size(); i++ ) {
+                para = listParam.get( i );
+
+                switch ( para.getOperation().trim().toUpperCase() ) {
+
+                case "=":
+                case "EQ":
+                    criter.add( Restrictions.eq( para.getField().trim(), para.getValue() ) );
+                    break;
+
+                case "<=":
+                case "LE":
+                    criter.add( Restrictions.le( para.getField().trim(), para.getValue() ) );
+                    break;
+
+                case "<":
+                case "LT":
+                    criter.add( Restrictions.lt( para.getField().trim(), para.getValue() ) );
+                    break;
+
+                case ">=":
+                case "GE":
+                    criter.add( Restrictions.ge( para.getField().trim(), para.getValue() ) );
+                    break;
+
+                case ">":
+                case "GT":
+                    criter.add( Restrictions.gt( para.getField().trim(), para.getValue() ) );
+                    break;
+
+                case "LIKE":
+                    criter.add( Restrictions.like( para.getField().trim(), para.getValue() ) );
+                    break;
+
+                default:
+                    criter.add( Restrictions.eq( para.getField().trim(), para.getValue() ) );
+                    break;
+
+                }
+
+            }
+        }
+
     }
-}
+
+    @Override
+    public List<String> complexList( String sql ) {
+        // TODO Auto-generated method stub
+        boolean transaction = false;
+        Session session = null;
+
+        // ici on doit vérifier si les restriction et autre truck que tu
+        // ajoutera plus tard, si il sont tous null retourné directement null
+        try {
+            // Ouverture Session
+            session = GetSession();
+            org.hibernate.Query query = session.createQuery(sql);
+            List<String> result = query.list();
+
+            return result;
+
+        } catch ( Exception e ) {
+            logger.error( "fail to fetch  object List :" + e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Object read( Class<T> object, String id,boolean lazyLoad ) {
+        boolean transaction = false;
+        Session session = null;
+
+        // ici on doit vérifier si les restriction et autre truck que tu
+        // ajoutera plus tard, si il sont tous null retourné directement null
+        try {
+            // Ouverture Session
+            session = GetSession();
+           Object tmp= session.get(object, Long.parseLong(id));
+           if(lazyLoad)
+           loadLazyCollection((T) tmp);
+          return tmp;
+
+        } catch ( Exception e ) {
+            logger.error( "fail to fetch  object :"+object.getName() +", "+ e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void loadLazyCollection( T object ) {
+        boolean transaction = false;
+        Session session = null;
+
+        // ici on doit vérifier si les restriction et autre truck que tu
+        // ajoutera plus tard, si il sont tous null retourné directement null
+        try {
+            // Ouverture Session
+            session = GetSession();
+            UserCustom user=(UserCustom) object;
+            LazyLoadingUtil.deepHydrate(session, object);
+          
+          
+
+        } catch ( Exception e ) {
+            logger.error( "fail to loadLazyCollection  object :"+object.getClass() +", "+ e.getMessage() );
+
+        } finally {
+            try {
+                CloseConnexion( session );
+            } catch ( Exception e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+       
+    }
+    
+    
 }

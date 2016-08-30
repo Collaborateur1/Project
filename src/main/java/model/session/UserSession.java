@@ -74,7 +74,7 @@ public class UserSession implements Serializable {
     //return the current user if the imail corespond
     public UserCustom getUser(String email)
     {
-        if(getUser().getEmail().equals( email))
+        if(getUser().getDusEmail().equals( email))
             return getUser();
         return null;
     }
