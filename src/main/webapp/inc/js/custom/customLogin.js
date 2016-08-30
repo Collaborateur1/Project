@@ -58,7 +58,7 @@
 			  var password=this.$("#signPasswordInput");
 			  //var donnees = $(this).$el.serialize();
 			 
-				     
+				 //vraiment à améliorer    
 				    $.ajax({
 				       url : 'checkSignup', // La ressource ciblée
 				       type : 'GET', // Le type de la requête HTTP.
@@ -133,9 +133,24 @@
 				        dataType: "json",
 				      // data: donnees,
 				   contentType: "application/x-www-form-urlencoded",
-				      success : function(code_html, statut){ // code_html contient le HTML renvoyé
-				    	  
-				    	  alert("ok"+" "+statut);
+				      success : function(resultat, statut, erreur){ 
+				    	  if(resultat.inscription=="ok"){
+				    	  new PNotify({
+			                    title: 'Signup succed',
+			                    text: 'Welcom '+firstName.val()+" you can now conect",
+			                    type: 'success',
+			                    styling: 'bootstrap3'
+			                });
+				    	  }
+				    	  else
+				    		  {
+				    		  new PNotify({
+				                    title: 'Signup failed',
+				                    text: 'sorry '+firstName.val()+" please verify your informations",
+				                    type: 'error',
+				                    styling: 'bootstrap3'
+				                });
+				    		  }
 				    
 				        },
 				    error : function(resultat, statut, erreur){
