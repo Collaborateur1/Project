@@ -24,6 +24,11 @@ public class UserCustom extends DefaultUser {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return  "to update";
+    }
+
     
     
 }

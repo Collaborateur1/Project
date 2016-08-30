@@ -16,101 +16,110 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import model.custom.CustomerCustom;
 import model.custom.UserCustom;
 import model.dao.Executable;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+
 public class DefaultDossier implements Executable {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
-    private long              dossierId;
+    private long              dosID;
     
-    @Column(name="enterpriseName") 
-    private String              dossierName;
+    @Column(name="dosName") 
+    private String              dosName;
     
-    @Column(name="dossierCreation") 
-    private Date                dossierCreation;
-    
-    @Column(name="dossierUpdate") 
-    private Date                dossierUpdate;
+    @Column(name="dosCreation") 
+    private Date                dosCreation;
    
-    @Column(name="dossierCreator") 
-    private UserCustom            dossierCreator;
     
-    @Column(name="dossierHistory") 
-    private String              dossierHistory;
+    @Column(name="dosUpdate") 
+    private Date                dosUpdate;
+   
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JsonBackReference
+    private UserCustom            dosCreator;
     
-    @ManyToOne(cascade = CascadeType.ALL) 
-    private CustomerCustom dossierCustomer;
+    @Column(name="dosHistory") 
+    private String              dosHistory;
+    
+    @ManyToOne(cascade = CascadeType.MERGE) 
+    private CustomerCustom dosCustomer;
     
    
+   
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dusDossier" )
+    @JsonBackReference
+    private List<UserCustom> dosResponsible;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userDossier" )
-    private List<UserCustom> dossierResponsible;
+    
 
-    public long getDossierId() {
-        return dossierId;
+    public long getDosID() {
+        return dosID;
     }
 
-    public void setDossierId( long dossierId ) {
-        this.dossierId = dossierId;
+    public void setDosID( long dosID ) {
+        this.dosID = dosID;
     }
 
-    public String getDossierName() {
-        return dossierName;
+    public String getDosName() {
+        return dosName;
     }
 
-    public void setDossierName( String dossierName ) {
-        this.dossierName = dossierName;
+    public void setDosName( String dosName ) {
+        this.dosName = dosName;
     }
 
-    public Date getDossierCreation() {
-        return dossierCreation;
+    public Date getDosCreation() {
+        return dosCreation;
     }
 
-    public void setDossierCreation( Date dossierCreation ) {
-        this.dossierCreation = dossierCreation;
+    public void setDosCreation( Date dosCreation ) {
+        this.dosCreation = dosCreation;
     }
 
-    public Date getDossierUpdate() {
-        return dossierUpdate;
+    public Date getDosUpdate() {
+        return dosUpdate;
     }
 
-    public void setDossierUpdate( Date dossierUpdate ) {
-        this.dossierUpdate = dossierUpdate;
+    public void setDosUpdate( Date dosUpdate ) {
+        this.dosUpdate = dosUpdate;
     }
 
-    public UserCustom getDossierCreator() {
-        return dossierCreator;
+    public UserCustom getDosCreator() {
+        return dosCreator;
     }
 
-    public void setDossierCreator( UserCustom dossierCreator ) {
-        this.dossierCreator = dossierCreator;
+    public void setDosCreator( UserCustom dosCreator ) {
+        this.dosCreator = dosCreator;
     }
 
-    public String getDossierHistory() {
-        return dossierHistory;
+    public String getDosHistory() {
+        return dosHistory;
     }
 
-    public void setDossierHistory( String dossierHistory ) {
-        this.dossierHistory = dossierHistory;
+    public void setDosHistory( String dosHistory ) {
+        this.dosHistory = dosHistory;
     }
 
-    public List<UserCustom> getDossierResponsible() {
-        return dossierResponsible;
+    public CustomerCustom getDosCustomer() {
+        return dosCustomer;
     }
 
-    public void setDossierResponsible( List<UserCustom> dossierResponsible ) {
-        this.dossierResponsible = dossierResponsible;
-    }
-    public CustomerCustom getDossierCustomer() {
-        return dossierCustomer;
+    public void setDosCustomer( CustomerCustom dosCustomer ) {
+        this.dosCustomer = dosCustomer;
     }
 
-    public void setDossierCustomer( CustomerCustom dossierCustomer ) {
-        this.dossierCustomer = dossierCustomer;
+    public List<UserCustom> getDosResponsible() {
+        return dosResponsible;
+    }
+
+    public void setDosResponsible( List<UserCustom> dosResponsible ) {
+        this.dosResponsible = dosResponsible;
     }
 
     @Override
@@ -128,7 +137,7 @@ public class DefaultDossier implements Executable {
     @Override
     public long getID() throws Exception {
         // TODO Auto-generated method stub
-        return dossierId;
+        return getDosID();
     }
 
 }

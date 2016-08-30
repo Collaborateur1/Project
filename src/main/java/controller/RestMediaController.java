@@ -76,7 +76,7 @@ public class RestMediaController {
             }
 
             try {
-                picture=((UserCustom)sc.getUserPrincipal()).getEmail()+"/"+picture;
+                picture=((UserCustom)sc.getUserPrincipal()).getDusEmail()+"/"+picture;
                 picture = URLDecoder.decode( picture, "UTF-8" );
             } catch ( UnsupportedEncodingException e ) {
                 // TODO Auto-generated catch block
@@ -119,7 +119,7 @@ public class RestMediaController {
         
         try {
             UserCustom user=((UserCustom)sc.getUserPrincipal());
-            MultipartMap map = new MultipartMap(httpRequest, prefixDir+UserEnvironement+"\\"+user.getEmail());
+            MultipartMap map = new MultipartMap(httpRequest, prefixDir+UserEnvironement+"\\"+user.getDusEmail());
         
            
           

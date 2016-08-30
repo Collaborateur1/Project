@@ -24,70 +24,71 @@ import model.dao.Executable;
 public class DefaultEnterprise implements Executable {
  @Id
  @GeneratedValue(strategy=GenerationType.AUTO)
-private Long enterpriseId;
+private Long entID;
  
- @Column(name="enterpriseName") 
-private String enterpriseName;
+ @Column(name="entName") 
+private String entName;
  
- @Column(name="enterpriseHistory") 
-private String enterpriseHistory;
+ @Column(name="entHistory") 
+private String entHistory;
  
- @Column(name="enterpriseCreation") 
-private Date enterpriseCreation;
+ @Column(name="entCreation") 
+private Date entCreation;
  
- @Column(name="enterpriseUpdate") 
-private Date enterpriseUpdate;
+ @Column(name="entUpdate") 
+private Date entUpdate;
  
- @Column(name="enterpriseBirth") 
-private Date enterpriseBirth;
+ @Column(name="entBirth") 
+private Date entBirth;
  
- @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+ @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.MERGE )
  @JoinTable( name = "Enterprise_Customer", joinColumns = {
-         @JoinColumn( name = "enterpriseId", nullable = false, updatable = false ) }, inverseJoinColumns = {
-                 @JoinColumn( name = "customerId", nullable = false, updatable = false ) })
- private List<CustomerCustom> enterpriseCustomers;
+         @JoinColumn( name = "entID", nullable = false, updatable = false ) }, inverseJoinColumns = {
+                 @JoinColumn( name = "cusID", nullable = false, updatable = false ) })
+ private List<CustomerCustom> entCustomers;
 
-public Long getEnterpriseId() {
-    return enterpriseId;
+
+public Long getEntID() {
+    return entID;
 }
-public void setEnterpriseId( Long enterpriseId ) {
-    this.enterpriseId = enterpriseId;
+public void setEntID( Long entID ) {
+    this.entID = entID;
 }
-public String getEnterpriseName() {
-    return enterpriseName;
+public String getEntName() {
+    return entName;
 }
-public void setEnterpriseName( String enterpriseName ) {
-    this.enterpriseName = enterpriseName;
+public void setEntName( String entName ) {
+    this.entName = entName;
 }
-public String getEnterpriseHistory() {
-    return enterpriseHistory;
+public String getEntHistory() {
+    return entHistory;
 }
-public void setEnterpriseHistory( String enterpriseHistory ) {
-    this.enterpriseHistory = enterpriseHistory;
+public void setEntHistory( String entHistory ) {
+    this.entHistory = entHistory;
 }
-public Date getEnterpriseCreation() {
-    return enterpriseCreation;
+public Date getEntCreation() {
+    return entCreation;
 }
-public void setEnterpriseCreation( Date enterpriseCreation ) {
-    this.enterpriseCreation = enterpriseCreation;
+public void setEntCreation( Date entCreation ) {
+    this.entCreation = entCreation;
 }
-public Date getEnterpriseUpdate() {
-    return enterpriseUpdate;
+public Date getEntUpdate() {
+    return entUpdate;
 }
-public void setEnterpriseUpdate( Date enterpriseUpdate ) {
-    this.enterpriseUpdate = enterpriseUpdate;
+public void setEntUpdate( Date entUpdate ) {
+    this.entUpdate = entUpdate;
 }
-public Date getEnterpriseBirth() {
-    return enterpriseBirth;
+public Date getEntBirth() {
+    return entBirth;
 }
-public void setEnterpriseBirth( Date enterpriseBirth ) {
-    this.enterpriseBirth = enterpriseBirth;
+public void setEntBirth( Date entBirth ) {
+    this.entBirth = entBirth;
 }
-public List<CustomerCustom> getCustomers() {
-    return enterpriseCustomers;
+public List<CustomerCustom> getEntCustomers() {
+    return entCustomers;
 }
-public void setCustomers( List<CustomerCustom> Customers ) {
-    this.enterpriseCustomers = Customers;
+public void setEntCustomers( List<CustomerCustom> entCustomers ) {
+    this.entCustomers = entCustomers;
 }
 @Override
 public boolean presave( ConcurrentHashMap<String, Object> item ) {
@@ -102,7 +103,7 @@ public boolean postsave( ConcurrentHashMap<String, Object> item ) {
 @Override
 public long getID() throws Exception {
     // TODO Auto-generated method stub
-    return enterpriseId;
+    return getEntID();
 }
 
 

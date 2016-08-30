@@ -166,7 +166,7 @@ public class RestLoginController {
 
                 user.addRole( Role.Connected );
                 //temporaire, pour charger le menu
-                user.getParameters();
+                user.getDusParameters();
                 UserSession userSess =new UserSession( sessionId, user, true, false, new DateTime(), new DateTime() );
                 SpringFactory.getUsersProvider().setUserSession( sessionId, userSess );
 //                RestMenuController restM= rc.getResource(RestMenuController.class);

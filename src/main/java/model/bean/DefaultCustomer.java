@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.apache.log4j.Logger;
+
 import model.custom.DossierCustom;
 import model.custom.EnterpriseCustom;
 import model.dao.Executable;
@@ -22,149 +24,164 @@ import model.dao.Executable;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class DefaultCustomer implements Executable{
+    private static Logger logger = Logger.getLogger( DefaultCustomer.class);
+    public enum civility  {
+        Mr, Mrs, Ms
+    };
+    
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
-    private long             customerId;
+    private long             cusID;
 
-    @Column( name = "customerCivility" )
-    private String             customerCivility;
+    @Column( name = "cusCivility" )
+    private String           cusCivility;
 
-    @Column( name = "customerName" )
-    private String             customerName;
+    @Column( name = "cusName" )
+    private String             cusName;
 
-    @Column( name = "customerFirstName" )
-    private String             customerFirstName;
+    @Column( name = "cusFirstName" )
+    private String             cusFirstName;
 
-    @Column( name = "customerNumber" )
-    private String             customerNumber;
+    @Column( name = "cusNumber" )
+    private String             cusNumber;
 
-    @Column( name = "customerMail" )
-    private String             customerMail;
+    @Column( name = "cusMail" )
+    private String             cusMail;
 
-    @Column( name = "customerAddresse" )
-    private String             customerAddresse;
+    @Column( name = "cusAddresse" )
+    private String             cusAddresse;
 
-    @Column( name = "customerBith" )
-    private Date               customerBith;
+    @Column( name = "cusBith" )
+    private Date               cusBith;
 
-    @Column( name = "customerCreation" )
-    private Date               customerCreation;
+    @Column( name = "cusCreation" )
+    private Date               cusCreation;
 
-    @Column( name = "customerUpdate" )
-    private Date               customerUpdate;
+    @Column( name = "cusUpdate" )
+    private Date               cusUpdate;
 
-    @Column( name = "customerHistory" )
-    private String             customerHistory;
+    @Column( name = "cusHistory" )
+    private String             cusHistory;
     
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "enterpriseCustomers")
-    private List<EnterpriseCustom> customerEnterprise;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "entCustomers")
+    private List<EnterpriseCustom> cusEnterprise;
 
   
-    @OneToMany(mappedBy="dossierCustomer")
-    private List<DossierCustom> customerDossier;
+    @OneToMany(mappedBy="dosCustomer")
+    private List<DossierCustom> cusDossier;
 
-    public long getCustomerId() {
-        return customerId;
+   
+    public long getCusID() {
+        return cusID;
     }
 
-    public void setCustomerId( long customerId ) {
-        this.customerId = customerId;
+    public void setCusID( long cusID ) {
+        this.cusID = cusID;
     }
 
-    public String getCustomerCivility() {
-        return customerCivility;
+    public String getCusCivility() {
+        return cusCivility;
     }
 
-    public void setCustomerCivility( String customerCivility ) {
-        this.customerCivility = customerCivility;
+    public void setCusCivility( String cusCivility ) {
+        try{
+            civility.valueOf( cusCivility );
+            this.cusCivility = cusCivility;
+        }catch(IllegalArgumentException ilarge){
+            logger.error( "Civility argument: "+cusCivility+ " don't match with autorized values  Mr, Mrs or Ms "+ilarge );
+        }catch(NullPointerException nulpte){
+            logger.error(nulpte);
+        }
+       
+        
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCusName() {
+        return cusName;
     }
 
-    public void setCustomerName( String customerName ) {
-        this.customerName = customerName;
+    public void setCusName( String cusName ) {
+        this.cusName = cusName;
     }
 
-    public String getCustomerFirstName() {
-        return customerFirstName;
+    public String getCusFirstName() {
+        return cusFirstName;
     }
 
-    public void setCustomerFirstName( String customerFirstName ) {
-        this.customerFirstName = customerFirstName;
+    public void setCusFirstName( String cusFirstName ) {
+        this.cusFirstName = cusFirstName;
     }
 
-    public String getCustomerNumber() {
-        return customerNumber;
+    public String getCusNumber() {
+        return cusNumber;
     }
 
-    public void setCustomerNumber( String customerNumber ) {
-        this.customerNumber = customerNumber;
+    public void setCusNumber( String cusNumber ) {
+        this.cusNumber = cusNumber;
     }
 
-    public String getCustomerMail() {
-        return customerMail;
+    public String getCusMail() {
+        return cusMail;
     }
 
-    public void setCustomerMail( String customerMail ) {
-        this.customerMail = customerMail;
+    public void setCusMail( String cusMail ) {
+        this.cusMail = cusMail;
     }
 
-    public String getCustomerAddresse() {
-        return customerAddresse;
+    public String getCusAddresse() {
+        return cusAddresse;
     }
 
-    public void setCustomerAddresse( String customerAddresse ) {
-        this.customerAddresse = customerAddresse;
+    public void setCusAddresse( String cusAddresse ) {
+        this.cusAddresse = cusAddresse;
     }
 
-    public Date getCustomerBith() {
-        return customerBith;
+    public Date getCusBith() {
+        return cusBith;
     }
 
-    public void setCustomerBith( Date customerBith ) {
-        this.customerBith = customerBith;
+    public void setCusBith( Date cusBith ) {
+        this.cusBith = cusBith;
     }
 
-    public Date getCustomerCreation() {
-        return customerCreation;
+    public Date getCusCreation() {
+        return cusCreation;
     }
 
-    public void setCustomerCreation( Date customerCreation ) {
-        this.customerCreation = customerCreation;
+    public void setCusCreation( Date cusCreation ) {
+        this.cusCreation = cusCreation;
     }
 
-    public Date getCustomerUpdate() {
-        return customerUpdate;
+    public Date getCusUpdate() {
+        return cusUpdate;
     }
 
-    public void setCustomerUpdate( Date customerUpdate ) {
-        this.customerUpdate = customerUpdate;
+    public void setCusUpdate( Date cusUpdate ) {
+        this.cusUpdate = cusUpdate;
     }
 
-    public String getCustomerHistory() {
-        return customerHistory;
+    public String getCusHistory() {
+        return cusHistory;
     }
 
-    public void setCustomerHistory( String customerHistory ) {
-        this.customerHistory = customerHistory;
+    public void setCusHistory( String cusHistory ) {
+        this.cusHistory = cusHistory;
     }
 
-    public List<DossierCustom> getCustomerDossier() {
-        return customerDossier;
+    public List<EnterpriseCustom> getCusEnterprise() {
+        return cusEnterprise;
     }
 
-    public void setCustomerDossier( List<DossierCustom> customerDossier ) {
-        this.customerDossier = customerDossier;
+    public void setCusEnterprise( List<EnterpriseCustom> cusEnterprise ) {
+        this.cusEnterprise = cusEnterprise;
     }
 
-    public List<EnterpriseCustom> getCustomerEnterprise() {
-        return customerEnterprise;
+    public List<DossierCustom> getCusDossier() {
+        return cusDossier;
     }
 
-    public void setCustomerEnterprise( List<EnterpriseCustom> customerEnterprise ) {
-        this.customerEnterprise = customerEnterprise;
+    public void setCusDossier( List<DossierCustom> cusDossier ) {
+        this.cusDossier = cusDossier;
     }
 
     @Override
@@ -182,7 +199,7 @@ public class DefaultCustomer implements Executable{
     @Override
     public long getID() throws Exception {
         // TODO Auto-generated method stub
-        return customerId;
+        return getCusID();
     }
 
 }

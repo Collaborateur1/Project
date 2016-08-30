@@ -58,7 +58,7 @@ public class AuthentificationRestEndPointSecure implements javax.ws.rs.core.Secu
  
         try {
             // this user has this role?
-            return session.getUser().getRoles().contains(UserCustom.Role.valueOf(role));
+            return session.getUser().getDusRoles().contains(UserCustom.Role.valueOf(role));
         } catch (Exception e) {
         }
          

@@ -26,6 +26,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.transform.stream.StreamSource;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import model.custom.DossierCustom;
 import model.dao.Executable;
 import model.menu.Globalmenu;
@@ -44,203 +46,228 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    private Long dusID;
    
-    @Column(name="User_Nom")
-    private String nom;
+    @Column(name="dusName")
+    private String dusName;
     
-    @Column(name="User_Prenom")
-    private String prenom;
+    @Column(name="dusSurname")
+    private String dusSurname;
     
-    @Column(name="User_Adress")
-    private String adress;
+    @Column(name="dusAddress")
+    private String dusAddress;
     
-    @Column(name="User_Tel")
-    private String tel;
+    @Column(name="dusNumber")
+    private String dusNumber;
     
-    @Column(name="User_Email")
-    private String email;
+    @Column(name="dusEmail")
+    private String dusEmail;
   
-    @Column(name="User_Pict")
-    private String urlPict;
+    @Column(name="dusPict")
+    private String dusPict;
     
-    @Column(name="User_IsAdmin")
-    private boolean isAdmin;
+    @Column(name="dusIsAdmin")
+    private boolean dusIsAdmin;
     
-    @Column(name="User_parameters")
-    StringBuffer parameters;
+    @Column(name="dusParameters")
+    StringBuffer dusParameters;
     
+    @Column(name="dusMdp")
+    private String dusMdp;
     
-    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    //@BatchSize(size=10)
+    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.MERGE )
     @JoinTable( name = "User_Dossier", joinColumns = {
             @JoinColumn( name = "id", nullable = false, updatable = false ) }, inverseJoinColumns = {
-                    @JoinColumn( name = "dossierId", nullable = false, updatable = false ) })
-    private List<DossierCustom> userDossier;
-    
-    
-   
-
+                    @JoinColumn( name = "dosID", nullable = false, updatable = false ) })
+    @JsonManagedReference
+    private List<DossierCustom> dusDossier;
 
     //@Transient
-    @Column(name="UserToken")
-    private String token;
+    @Column(name="dusToken")
+    private String dusToken;
    /* @Column(name = "Roles")
     @ElementCollection
     @Enumerated(EnumType.STRING)*/
     @Transient
-    private Set<Role> roles;
+    private Set<Role> dusRoles;
    
-    
-    public boolean isAdmin() {
-        return isAdmin;
+ 
+    public Long getDusID() {
+        return dusID;
     }
 
 
-    public void setAdmin( boolean isAdmin ) {
-        this.isAdmin = isAdmin;
+
+    public void setDusID( Long dusID ) {
+        this.dusID = dusID;
     }
 
 
-    private byte[] mdp;
-    
+
+
+    public String getDusName() {
+        return dusName;
+    }
+
+
+    public void setDusName( String dusName ) {
+        this.dusName = dusName;
+    }
+
+
+    public String getDusSurname() {
+        return dusSurname;
+    }
+
+
+
+    public void setDusSurname( String dusSurname ) {
+        this.dusSurname = dusSurname;
+    }
+
+
+
+    public String getDusAddress() {
+        return dusAddress;
+    }
+
+
+
+    public void setDusAddress( String dusAddress ) {
+        this.dusAddress = dusAddress;
+    }
+
+
+
+    public String getDusNumber() {
+        return dusNumber;
+    }
+
+
+    public void setDusNumber( String dusNumber ) {
+        this.dusNumber = dusNumber;
+    }
+
+
+    public String getDusEmail() {
+        return dusEmail;
+    }
+
+
+
+    public void setDusEmail( String dusEmail ) {
+        this.dusEmail = dusEmail;
+    }
+
+
+
+
+    public String getDusPict() {
+        if(dusPict==null)
+        {
+           this.setDusPict("/puls/inc/pictures/default.png");
+        }
+        return dusPict;
+    }
+
+
+
+
+    public void setDusPict( String dusPict ) {
+        this.dusPict = dusPict;
+    }
+
+
+    public boolean isDusIsAdmin() {
+        return dusIsAdmin;
+    }
+
+
+
+    public void setDusIsAdmin( boolean dusIsAdmin ) {
+        this.dusIsAdmin = dusIsAdmin;
+    }
+
+
+    public StringBuffer getDusParameters() {
+        if(dusParameters==null)
+            loadDefaultMenu();
+           
+           return dusParameters;
+    }
+
+
+
+    public void setDusParameters( StringBuffer dusParameters ) {
+        this.dusParameters = dusParameters;
+    }
+
+
+
+
+    public String getDusMdp() {
+        return dusMdp;
+    }
+
+
+
+    public void setDusMdp( String dusMdp ) {
+        this.dusMdp = dusMdp;
+    }
+
+
+
+    public List<DossierCustom> getDusDossier() {
+        return dusDossier;
+    }
+
+
+
+    public void setDusDossier( List<DossierCustom> dusDossier ) {
+        this.dusDossier = dusDossier;
+    }
+
+
+
+    public String getDusToken() {
+        return dusToken;
+    }
+
+
+
+    public void setDusToken( String dusToken ) {
+        this.dusToken = dusToken;
+    }
+
+
+
+    public Set<Role> getDusRoles() {
+        return dusRoles;
+    }
+
+
+
+    public void setDusRoles( Set<Role> dusRoles ) {
+        this.dusRoles = dusRoles;
+    } 
+    public void addRole(Role role){
+        if(this.dusRoles==null)
+            this.dusRoles= new HashSet<Role>(); 
+        this.dusRoles.add(role);
+    }
     
         public DefaultUser() {
             super();
-          
+               
         }
        
         
-        public Long getId() {
-            return id;
-        }
-
-        public void setId( Long id ) {
-            this.id = id;
-        }
-
-        public String getPrenom() {
-            return prenom;
-        }
-
-        public void setPrenom( String prenom ) {
-            //org.directwebremoting.WebContextFactory test; 
-            
-            this.prenom = prenom;
-        }
-
-        public String getAdress() {
-            return adress;
-        }
-
-        public void setAdress( String adress ) {
-            this.adress = adress;
-        }
-
-        public String getTel() {
-            return tel;
-        }
-
-        public void setTel( String tel ) {
-            this.tel = tel;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail( String email ) {
-            this.email = email;
-        }
-
-        public String getNom() {
-            return nom;
-        }
-
-        public void setNom( String nom ) {
-            this.nom = nom;
-        }
-
-        public String getUrlPict() {
-            
-            if(urlPict==null)
-            {
-               this.setUrlPict("/puls/inc/pictures/default.png");
-            }
-            return urlPict;
-        }
-
-        public void setUrlPict( String urlPict ) {
-            this.urlPict = urlPict;
-        }
-
-
-        public byte[] getMdp() {
-            return mdp;
-        }
-
-
-        public void setMdp( byte[] bs ) {
-            this.mdp = bs;
-        }
-
-
-        public Set<Role> getRoles() {
-            return roles;
-        }
+     
+        
+       
 
        
-        public void setRoles( Set<Role> roles ) {
-            this.roles = roles;
-        }
-        public void addRole( Role role ) {
-            if(this.roles==null)
-                this.roles= new HashSet<Role>(); 
-            this.roles.add(role);
-        }
-
-
-        @Override
-        public String getName() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-
-        public String getToken() {
-            return token;
-        }
-
-
-        public void setToken( String token ) {
-            this.token = token;
-        }
-
-
-        public StringBuffer getParameters() {
-            if(parameters==null)
-             loadDefaultMenu();
-            
-            return parameters;
-        }
-
-
-        public void setParameters( StringBuffer parameters ) {
-            this.parameters = parameters;
-            parseMenu();
-        }
-
-        public List<DossierCustom> getUserDossier() {
-            return userDossier;
-        }
-
-
-        public void setUserDossier( List<DossierCustom> userDossier ) {
-            this.userDossier = userDossier;
-        }
-   
-        public Globalmenu getMenu(){
-            return this;
-        }
         
         private void loadDefaultMenu()
         {
@@ -258,10 +285,10 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
                 File f=new File("C:\\fichiers\\menu.xml");
                 fr=new FileReader(f);
                 br=new BufferedReader(fr);
-                parameters=new StringBuffer();
+                dusParameters=new StringBuffer();
                 while(br.ready())
                 {
-                    parameters.append(br.readLine()+"\n");
+                    dusParameters.append(br.readLine()+"\n");
                 }
                 
                 parseMenu();
@@ -285,9 +312,9 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
         }
         
         private void parseMenu(){
-            if(parameters!=null)
+            if(dusParameters!=null)
             {
-                Globalmenu object =(Globalmenu) SpringFactory.getJab2Marshaller().unmarshal( new StreamSource(new StringReader(parameters.toString())));
+                Globalmenu object =(Globalmenu) SpringFactory.getJab2Marshaller().unmarshal( new StreamSource(new StringReader(dusParameters.toString())));
 
             this.getSection().addAll( object.getSection());
             this.setDefaultpage( object.getDefaultpage() );
@@ -314,9 +341,21 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
         }
 
 
+
+        @Override
+        public String getName() {
+            // TODO Auto-generated method stub
+            return getDusName();
+        }
+
+
+
         @Override
         public long getID() throws Exception {
             // TODO Auto-generated method stub
-            return id;
+            return getDusID();
         }
+
+
+        
 }
