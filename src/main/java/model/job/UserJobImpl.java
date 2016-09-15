@@ -34,7 +34,7 @@ public class UserJobImpl implements UserJob{
 
 
     
-    public  synchronized boolean ValidateAndCreateUser(String lastName, String firstName, String email, String tel, String mdp,String adresse)
+    public  synchronized boolean ValidateAndCreateUser(String lastName, String firstName, String email, String tel, String mdp,String adresse) throws Exception
     {
         
 
@@ -51,8 +51,9 @@ public class UserJobImpl implements UserJob{
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
           //  erreurs.put( CHAMP_EMAIL, e.getMessage() );
-            logger.info(  e.getMessage() );
-            return false;
+            
+            throw new Exception(e.getMessage());
+            
         }
 
         try {
@@ -61,8 +62,8 @@ public class UserJobImpl implements UserJob{
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( CHAMP_NOM, e.getMessage() );
-            logger.info(  e.getMessage() );
-            return false;
+            
+            throw new Exception(e.getMessage());
         }
 
         //    try {
@@ -78,18 +79,18 @@ public class UserJobImpl implements UserJob{
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( CHAMP_PRENOM, e.getMessage() );
-            logger.info(  e.getMessage() );
-            return false;
+            
+            throw new Exception(e.getMessage());
         }
 
         try {
             CheckMdp(mdp);
-            user.setDusMdp( mdp.getBytes().toString() );
+            user.setDusMdp( mdp );
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( CHAMP_PRENOM, e.getMessage() );
-            logger.info(  e.getMessage() );
-            return false;
+            throw new Exception(e.getMessage());
+          
         }
      
        
@@ -99,8 +100,9 @@ public class UserJobImpl implements UserJob{
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( "IsNew", e.getMessage() );
-            logger.info( "this user already exist in database (email) please use a valide mail"+ e.getMessage() );
-            return false;
+           
+            throw new Exception( "this user already exist in database (email) please use a valide mail"+ e.getMessage());
+           
         }
         
 

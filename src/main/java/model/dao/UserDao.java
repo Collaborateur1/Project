@@ -32,8 +32,8 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
 
     @Override
     public UserCustom getUserById( int id ) {
-        // TODO Auto-generated method stub
-        return null;
+        //to update!
+        return (UserCustom) super.read( UserCustom.class, String.valueOf(id), false );
     }
 
     @Override
@@ -148,8 +148,8 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
             s= GetSession();
             
              Criteria criteria=s.createCriteria( UserCustom.class );
-             criteria.add( Restrictions.eq( "email", email ) );
-             criteria.add( Restrictions.eq( "mdp", mdp.getBytes() ) );
+             criteria.add( Restrictions.eq( "dusEmail", email ) );
+             criteria.add( Restrictions.eq( "dusMdp", mdp ) );
              UserCustom user=(UserCustom)criteria.uniqueResult();
            
              
@@ -242,7 +242,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
              s=GetSession();
             //a modif
             Criteria criteria=s.createCriteria( UserCustom.class );
-            criteria.add(Restrictions.eq( "email", email ));
+            criteria.add(Restrictions.eq( "dusEmail", email ));
             UserCustom user=(UserCustom)criteria.uniqueResult();
             
             
@@ -257,7 +257,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
            
         } catch(Exception e)
         {
-           logger.debug( "User already exist (email" );
+           logger.debug( e );
         }finally{
             try {
                 CloseConnexion(s);

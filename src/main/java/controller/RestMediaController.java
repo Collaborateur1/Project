@@ -5,7 +5,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -14,7 +16,6 @@ import java.net.URLDecoder;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
@@ -27,8 +28,6 @@ import javax.ws.rs.core.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.sun.jersey.api.client.ClientResponse.Status;
-
 import model.custom.UserCustom;
 import model.job.MultipartMap;
 import model.job.UserJob;
@@ -40,7 +39,7 @@ public class RestMediaController {
     private static final int TAILLE_TAMPON_CACHE = 1024000;
     private MultipartMap     multipartmap;
     /*à automatiser car sa doit etre paramétrable depuis l'extérieur*/
-    private String              UserEnvironement="/fichiers/";
+    private String              UserEnvironement="\\fichiers\\";
     private String              prefixDir                 = "C:";
 
     @Resource
@@ -94,63 +93,61 @@ public class RestMediaController {
 
     @javax.annotation.security.RolesAllowed( { "Connected" } )
     @GET
-    @Path( "/media" )
-    Response getMedia( @Context HttpServletRequest httpRequest ,@Context SecurityContext sc) throws URISyntaxException {
+    @Path( "/media2" )
+    public Response getMedia( @Context HttpServletRequest httpRequest ,@Context SecurityContext sc) throws URISyntaxException {
        
         
-        return null;
+        return Response.ok().build();
 
     }
 
     @javax.annotation.security.RolesAllowed( { "Connected" } )
     @GET
-    @Path( "/media" )
-    Response getFiles( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
+    @Path( "/media3" )
+    public Response getFiles( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
 
-        return null;
+        return Response.ok().build();
 
     }
 
-    @javax.annotation.security.RolesAllowed( { "Connected" } )
-    @GET
+   /* @javax.annotation.security.RolesAllowed( { "Connected" } )
+    @POST
     @Path( "/pictures" )
-    Response setPictures( @Context HttpServletRequest httpRequest,@Context SecurityContext sc) throws URISyntaxException {
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response setPictures( @Context HttpServletRequest httpRequest,@Context SecurityContext sc,@FormDataParam("file") InputStream uploadedInputStream,
+            @FormDataParam("file") FormDataContentDisposition fileDetail) throws URISyntaxException {
        
         
-        try {
-            UserCustom user=((UserCustom)sc.getUserPrincipal());
-            MultipartMap map = new MultipartMap(httpRequest, prefixDir+UserEnvironement+"\\"+user.getDusEmail());
         
-           
-          
-            if(userjob.UpdatePicture(map.getFile("picture"), user))
-            {
-              return Response.ok().build();
-            }
-           
+            UserCustom user=((UserCustom)sc.getUserPrincipal());
+            String uploadedFileLocation = prefixDir+UserEnvironement+"\\"+user.getDusEmail() +"\\"+fileDetail.getFileName();
+
+            // save it
+            writeToFile(uploadedInputStream, uploadedFileLocation);
+
+            String output = "File uploaded to : " + uploadedFileLocation;
+            
+            return Response.status(200).entity(output).build();
          
-        } catch ( ServletException | IOException e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return Response.status(Status.NOT_MODIFIED).build();
+     
+    }
+    */
+
+    @javax.annotation.security.RolesAllowed( { "Connected" } )
+    @GET
+    @Path( "/media4" )
+    public Response setMedia( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
+
+        return Response.ok().build();
+
     }
 
     @javax.annotation.security.RolesAllowed( { "Connected" } )
     @GET
-    @Path( "/media" )
-    Response setMedia( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
+    @Path( "/media5" )
+    public Response setFiles( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
 
-        return null;
-
-    }
-
-    @javax.annotation.security.RolesAllowed( { "Connected" } )
-    @GET
-    @Path( "/media" )
-    Response setFiles( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
-
-        return null;
+        return Response.ok().build();
 
     }
 
@@ -315,5 +312,42 @@ public class RestMediaController {
             }
 
         }
+    }
+    
+  
+
+    // save uploaded file to new location
+    private void writeToFile(InputStream uploadedInputStream,
+        String uploadedFileLocation) {
+        OutputStream out=null;
+        try {
+             out = new FileOutputStream(new File(
+                    uploadedFileLocation));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            out = new FileOutputStream(new File(uploadedFileLocation));
+            while ((read = uploadedInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }finally{
+            try {
+                out.flush();
+                out.close();
+                out=null;
+                System.gc();
+                uploadedInputStream.close();
+                
+            } catch ( IOException e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+        }
+
     }
 }

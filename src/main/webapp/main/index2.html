@@ -36,11 +36,11 @@
             <!-- menu profile quick info -->
             <div class="profile">
               <div class="profile_pic">
-                <img src="{{user.urlPict}}" alt="..." class="img-circle profile_img">
+                <img src="{{dusPict}}" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>{{user.nom}} {{user.prenom}} </h2>
+                <h2>{{dusName}} <br/>{{dusSurname}} </h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -50,7 +50,7 @@
          <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
     
-{{#each user.section}}
+{{#each section}}
     <!-- Here the context is each individual person. So we can access its properties directly: -->
         <div class="menu_section">
                 <h3>{{title}}</h3>
@@ -102,7 +102,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="{{user.urlPict}}" alt="">
+                    <img src="{{dusPict}}" alt="">{{nom}} {{prenom}}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -126,7 +126,7 @@
                   <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                     <li>
                       <a>
-                        <span class="image"><img src="{{user.urlPict}}" alt="Profile Image" /></span>
+                        <span class="image"><img src="{{dusPict}}" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -138,7 +138,7 @@
                     </li>
                     <li>
                       <a>
-                        <span class="image"><img src="{{user.urlPict}}" alt="Profile Image" /></span>
+                        <span class="image"><img src="{{dusPict}}" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -150,7 +150,7 @@
                     </li>
                     <li>
                       <a>
-                        <span class="image"><img src="{{user.urlPict}}" alt="Profile Image" /></span>
+                        <span class="image"><img src="{{dusPict}}" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -162,7 +162,7 @@
                     </li>
                     <li>
                       <a>
-                        <span class="image"><img src="{{user.urlPict}}" alt="Profile Image" /></span>
+                        <span class="image"><img src="{{dusPict}}" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -201,281 +201,19 @@
           </div>
           <div class="clearfix"></div>
         </footer>
+        <input type="hidden" id="currentPage" value="{{currentpage}}">
         <!-- /footer content -->
       </div>
     </div>
-    
-<script  type="text/javascript" src="../../inc/js/standard/require.js"></script>
-    <script type="text/javascript">
- 
-    /**
-     * Main app initialization and initial auth check
-     */
-     require.config({
-
-    		baseUrl: 'puls',
-
-    		paths : {
-    			'jquery' : '../../../inc/vendors/jquery/dist/jquery.min',
-    			'jqueryui' : '../../../inc/jasmine/js/jquery-ui.min',
-    			'scripts' : '../../../inc/jasmine/js/scripts',
-    			'bootstrapselect' : '../../../inc/jasmine/plugins/bootstrap-select/bootstrap-select.min',
-    			'jasmine' : '../../../inc/jasmine/js/demo/jasmine',		
-    			'backbone' : '../../../inc/js/standard/backbone-min',
-    			'underscore' : '../../../inc/js/standard/underscore-min',
-    			'bootstrap' : '../../../inc/vendors/bootstrap/dist/js/bootstrap.min',
-    			'nprogress' : '../../../inc/vendors/nprogress/nprogress',
-    			'fastclick' : '../../../inc/vendors/fastclick/lib/fastclick',
-    			'custom' : '../../../inc/js/custom/custom',
-    			'pnotify' : '../../../inc/vendors/pnotify/dist/pnotify',
-    			'smartresize' : '../../../inc/js/custom/smartresize',
-    			'main': '../../../inc/js/custom/main',
-    			'eve' : '../../../inc/vendors/raphaelrequiremaster/eve',
-    			  'raphael-core' : '../../../inc/vendors/raphaelrequiremaster/raphael.core',
-    			  'raphael-svg' : '../../../inc/vendors/raphaelrequiremaster/raphael.svg',
-    			  'raphael-vml' : '../../../inc/vendors/raphaelrequiremaster/raphael.vml',
-    			  'raphael' : '../../../inc/vendors/raphaelrequiremaster/raphael.amd',
-    			'bootstrapprogressbar': '../../../inc/vendors/bootstrap-progressbar/bootstrap-progressbar.min',
-    			'jquerytagsinput': '../../../inc/vendors/jquery.tagsinput/src/jquery.tagsinput',
-    			'morris': '../../../inc/vendors/morris/morris.min',
-    			'select2': '../../../inc/vendors/select2/dist/js/select2.full.min',		
-    			'moment': '../../../inc/js/standard/moment/moment.min',
-    			'daterangepicker': '../../../inc/js/standard/datepicker/daterangepicker',
-    			'dropzone': '../../../inc/vendors/dropzone/dist/min/dropzone.min'//,
-    			//'switchery': '../../../inc/vendors/switchery/switchery'
-    		
-    		},
-
-    		shim : {
-    			
-    			'eve': {
-    			    exports: "eve"
-    			  },
-    			  'raphael': {
-    			    deps: ["eve"],
-    			    exports: "raphael"
-    			  },
-    			bootstrapprogressbar: {
-    				deps : ['bootstrap'],
-    				exports: 'bootstrapprogressbar'
-    			},
-    			jqueryui: {
-    				deps : ['jquery'],
-    				exports: 'jqueryui'
-    			},
-    			jquery: {
-    				deps : ['raphael'],
-    				exports: 'jquery'
-    			},
-    			
-    			smartresize: {
-    				deps : ['jquery'],
-    				exports: 'smartresize'
-    			},
-    			
-    			
-    			bootstrap: {
-    				deps: ['jquery'],
-    				exports: 'bootstrap'
-    			},
-    			
-    			backbone : {
-    				deps : [ 'underscore', 'jquery' ],
-    				exports : 'Backbone'
-    			},
-    			main:{
-    				deps : ['backbone'],
-    				exports :'main'
-    			},
-    			morris:{
-    				deps : ['raphael'],
-    				exports :'Morris'
-    			},
-    			/*switchery:{
-    				
-    				exports :'switchery'
-    			},*/
-    			custom:{
-    				deps : ['jquery','bootstrapprogressbar'/*,'switchery'*/],
-    				exports :'custom'
-    			}
-
-
-    		}
-
-    	});
-    
-    
-    require([
-             'main'
-             
-             ],
-             function(
-             		main
-             		
-            ) {
-
-    	   //default javascript include in main page
-    	 
-        //à externaliser
-
-    var app = app || {};
-
-
-    app.BodyNav = Backbone.View.extend({
-    id:'001BodyNav'
-    ,
-    	  //tagName:  'div',
-    	  el: '#sidebar-menu', 
-    	  // Cache the template function for a single item.
-
-    	  events: {
-    	   
-    	   
-    	    'click #url': 'change_menu',
-    	    'mouseover #menu': 'activeMenu'
-    	  },
-
-    	  initialize: function (options) {
-    		  
-    		  
-    	    // In Backbone 1.1.0, if you want to access passed options in
-    	    // your view, you will need to save them as follows:
-    	    this.loadPage("{{user.currentpage}}");
-    	    this.options = options || {};
-    	   // this.listenTo(app.Todos, 'reset', this.render);
-    	    //this.listenTo(this.model, 'change', this.render);
-    	    
-    	    console.log(this.model);
-    	    
-    	  },
-       activeMenu: function(e){
-    	   
-    	   	e.stopImmediatePropagation();
-        	var $li=$(e.currentTarget);
-        	debugger;
-        	if($('#sidebar-menu').find('li[id="menuActif"]').size()!=0){
-        		$('#sidebar-menu').find('li[id="menuActif"]').attr('id','menu');
-            }
-        	$li.attr('id','menuActif');
-        	
-        	
-    debugger;
-            if ($li.is('.active')) {
-                $li.removeClass('active active-sm');
-                $('ul:first', $li).slideUp(function() {
-                	$TEST();
-                });
-            } else {
-                // prevent closing menu if we are on child menu
-                if (!$li.parent().is('.child_menu')) {
-                    $SIDEBAR_MENU.find('li').removeClass('active active-sm');
-                    $SIDEBAR_MENU.find('li ul').slideUp();
-                }
-                
-                $li.addClass('active');
-
-                $('ul:first', $li).slideDown(function() {
-                	$TEST();
-                });
-            }
-        
-       },
-    	  // Re-render the title of the todo item.
-    	  render: function() {
-    		  this.$el.html("jai changé");
-    	    return this;
-    	  },
-
-    	  edit: function() {
-    		  this.$el.html("jai changé");
-    		  
-    	  },
-    	  change_menu:function(e) {
-    		  
-    		  var target =  $(e.currentTarget);
-    		   
-    		  var myUrl=target.children().attr("href") 
-    		  e.stopImmediatePropagation();
-    		  if($('li[id="urlOn"]'))
-    			  {
-    			  $('li[id="urlOn"]').attr('class','');
-    			  }
-    		 
-    		  if($('li[class="current-page"]'))
-    			  {
-    			  $('li[class="current-page"]').attr('class','');
-    			  }
-    		  $('li[id="urlOn"]').attr('id', 'url');
-    		  target.attr('id', 'urlOn');
-    		  this.loadPage(myUrl);
-    	  },
-    	  close: function() {
-    	    // executed when todo loses focus
-    		  this.$el.html("jai changé");
-    	  },
-    	  
-    	 
-    	  
-    	  loadPage:function(myUrl)
-    	  {
-    		  try{
-    		  window.history.replaceState( {} , myUrl, myUrl );
-    		  }catch(e)
-    		  {
-    			  
-    		  }
-    		  
-    		  that=this;
-    	  	$.ajax({
-    	  	       url : myUrl, // La ressource ciblée
-    	  	       type : 'GET', // Le type de la requête HTTP. 
-    	  	        dataType: "html",
-    	  	        async: true,
-    	  	      data: 'currentPage=' + myUrl,
-    	  	   contentType: "application/x-www-form-urlencoded",
-    	  	      success : function(code_html, statut){ // code_html contient le HTML renvoyé
-    	  	    	  
-    	  	    	
-    	  	    	  $('div[role="main"]').html(code_html);
-    	  	    	if($(document).width() <992 )
-    	  	    	{
-    	  	    		that.$('ul[style="display: block;"]').attr('style','display: none;');
-                        that.$('li[class="active"]').attr('class','active-sm');
-    	  	    	  //Do Something
-    	  	    	}
-    	  	    	
-    	  	        },
-    	  	    error : function(resultat, statut, erreur){
-    	  	    	new PNotify({
-    	           title: 'Wrong menu!',
-    	           text: 'the menu '+ myUrl +' don\'t exist',
-    	           type: 'error',
-    	           styling: 'bootstrap3'
-    	       });
-    	  	       },
-    	  	        complete : function(resultat, statut){
-    	  	        	
-    	  	        	
-    	  		    	
-    	  	        }
-    	  	    });
-    	    
-    	  }
-    	
-    	});
-    	
-    	
-
-    	
-
-    // sends HTTP GET to /todos
-
-    var todoView2 = new app.BodyNav();
-
-    	
-    });
-    <!-- Custom Theme Scripts -->
-</script>
+  <!--  Dialog modal -->
+		<div class="modal fade" id="dialog" tabindex="-1" role="dialog"
+			aria-hidden="true"></div>
+		<!-- /Dialog modal -->
+<script type="text/javascript">
+var app = app || {};
+  
+</script>  
+<script data-main="../../inc/js/custom/config" type="text/javascript" src="../../inc/js/standard/require.js"></script>
+   
   </body>
 </html>

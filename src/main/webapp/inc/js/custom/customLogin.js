@@ -121,48 +121,57 @@
 		  signup:function() {
 			  var email=this.$("#signEmailInput");
 			  var password=this.$("#signPasswordInput");
+			  var passwordRetype=this.$("#signChekEqualPasswordInput");
 			  var firstName=this.$(".firstName");
 			  var lastName=this.$(".lastName");
-			  //var donnees = $(this).$el.serialize();
+			  
+			  if(password.val()!=passwordRetype.val()){
+				  
+				    	new PNotify({
+		                    title: 'Password re type',
+		                    text: 'The two passwords are nor equals, please retape',
+		                    type: 'error',
+		                    styling: 'bootstrap3'
+		                });
+				    	password.val("");
+				    	passwordRetype.val("");
+				    	
+			  }else{
 			 
 				     
 				    $.ajax({
 				       url : 'signup', // La ressource ciblée
 				       type : 'GET', // Le type de la requête HTTP.
 				        data : 'email=' + email.val() +"&"+ 'password=' + password.val()+"&"+'firstName='+firstName.val()+"&"+'lastName='+lastName.val(), 
-				        dataType: "json",
+				        dataType: "html",
 				      // data: donnees,
 				   contentType: "application/x-www-form-urlencoded",
 				      success : function(resultat, statut, erreur){ 
-				    	  if(resultat.inscription=="ok"){
+				    	  
 				    	  new PNotify({
 			                    title: 'Signup succed',
 			                    text: 'Welcom '+firstName.val()+" you can now conect",
 			                    type: 'success',
 			                    styling: 'bootstrap3'
 			                });
-				    	  }
-				    	  else
-				    		  {
-				    		  new PNotify({
-				                    title: 'Signup failed',
-				                    text: 'sorry '+firstName.val()+" please verify your informations",
-				                    type: 'error',
-				                    styling: 'bootstrap3'
-				                });
-				    		  }
 				    
 				        },
 				    error : function(resultat, statut, erreur){
-                       alert("error ajax requete"+erreur+" "+statut+" "+resultat);
-				       },
+				    	new PNotify({
+		                    title: 'Signup failed',
+		                    text: 'sorry '+firstName.val()+" please verify your informations :"+resultat.responseText,
+		                    type: 'error',
+		                    styling: 'bootstrap3'
+		                });
+		    		  }
+				       ,
 				        complete : function(resultat, statut){
 				        	
 				        	
 					    	
 				        }
 				    });
-			  
+			  }
 		  },
 		  close: function() {
 		    // executed when todo loses focus

@@ -48,8 +48,8 @@ public class RestMenuController extends WebContext {
         UserCustom user = getUser();
         //provide a multi context environment to the handlebar template, add object to map and use context helper with the first option= key of the map
         ConcurrentHashMap<String, UserCustom> multiContext= new ConcurrentHashMap<String,UserCustom>();
-        com.github.jknack.handlebars.Context context = com.github.jknack.handlebars.Context.newBuilder( multiContext )
-                .combine( "user", user ).resolver( MapValueResolver.INSTANCE, JavaBeanValueResolver.INSTANCE ).build();
+        com.github.jknack.handlebars.Context context = com.github.jknack.handlebars.Context.newBuilder( user )
+                .combine( multiContext).resolver( MapValueResolver.INSTANCE, JavaBeanValueResolver.INSTANCE ).build();
         
         if ( !DefaultProperties.getOption( "multiDesk" ).equals( "True" ) ) {
             user.setDefaultpage( DefaultProperties.getMapping( "default" ) );
@@ -87,8 +87,8 @@ public class RestMenuController extends WebContext {
         ConcurrentHashMap<String, UserCustom> multiContext= new ConcurrentHashMap<String,UserCustom>();
         
         //load the user by default in the context and optionally the others context with multiContext
-        com.github.jknack.handlebars.Context context = com.github.jknack.handlebars.Context.newBuilder( multiContext )
-                .combine( "user", user ).resolver( MapValueResolver.INSTANCE, JavaBeanValueResolver.INSTANCE ).build();
+        com.github.jknack.handlebars.Context context = com.github.jknack.handlebars.Context.newBuilder( user )
+                .combine( multiContext).resolver( MapValueResolver.INSTANCE, JavaBeanValueResolver.INSTANCE ).build();
         //update the current user page in ajax mode
         if ( currentPage != null & !"".equals( currentPage ) ) {
             user.setCurrentpage( currentPage );
