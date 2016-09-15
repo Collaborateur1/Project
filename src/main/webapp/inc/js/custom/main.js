@@ -1,11 +1,8 @@
-/**
- * Main app initialization and initial auth check
- */
+
 
  require([
              'jquery',
              'underscore',
-             'backbone',
              'raphael',
              'bootstrap',
              'nprogress',
@@ -13,13 +10,13 @@
              'custom',
              'pnotify',
              'smartresize',
-             'raphael'
+             'raphael',
+             'bodyNav'
              
              ],
              function(
              		$, 
              		_, 
-             		Backbone,
              		raphael,
              		bootstrap,
              		nprogress,
@@ -27,8 +24,10 @@
                     custom,
                     pnotify,
                     smartresize,
-                    raphael
+                    raphael,
+                    bodyNav
             ) {
-
-    	debugger;
+	
+	app.ListModel=new Backbone.Collection();
+	app.ListView=new Backbone.Collection();
     });
