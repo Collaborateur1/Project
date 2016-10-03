@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gentallela Alela! | </title>
+    <title>The project</title>
 
     <!-- Bootstrap -->
     <link href="/puls/inc//vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -211,8 +211,11 @@
 		<!-- /Dialog modal -->
 <script type="text/javascript">
 var app = app || {};
-  
-</script>  
+  var I18n={};
+  I18n.locale='fr_FR';
+</script>
+
+{{i18nJs [locale] [bundle=messages]}} 
 <script data-main="../../inc/js/custom/config" type="text/javascript" src="../../inc/js/standard/require.js"></script>
    
   </body>

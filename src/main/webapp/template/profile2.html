@@ -65,7 +65,10 @@
 	  var userModel= User;
 	  var idUser={{dusID}};
 	  var userView= new UserView({model:new userModel({id:idUser})});
-	  
+       Handlebars.registerHelper('i18n', function(textToTranslate) {
+		  
+		  return I18n.translations[I18n.locale][textToTranslate];
+		});
 	  app.ListModel.add(userView.model);
 	  app.ListView.add(userView);
 	  debugger;

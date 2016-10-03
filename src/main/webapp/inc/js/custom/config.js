@@ -39,6 +39,7 @@
     			'user': '../../../inc/js/model/User',
     			'userView': '../../../inc/js/view/user/UserView',
     			'bodyNav': '../../../inc/js/view/menu/BodyNav',
+    			'i18n' : '../../../inc/js/standard/i18n',
     			'handlebars': '../../../inc/js/standard/handlebars-v4.0.5'
     		
     		},
