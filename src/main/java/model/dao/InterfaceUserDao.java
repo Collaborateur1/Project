@@ -15,7 +15,7 @@ public interface InterfaceUserDao extends InterfaceCenter {
     public boolean create(UserCustom user);
     public UserCustom getUser(String email,String mdp);
     public  boolean AuthorizerUser(String email,String mdp);
-    boolean UserExiste2( String email );
+    boolean UserExiste( String email )throws Exception;
     public boolean UpdateUser(UserCustom user);
     
 }

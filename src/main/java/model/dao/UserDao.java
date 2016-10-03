@@ -234,7 +234,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
     }
 
     @Override
-    public boolean UserExiste2( String email) {
+    public boolean UserExiste( String email) throws Exception {
         // TODO Auto-generated method stub
         Session  s=null;
         try{
@@ -258,6 +258,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
         } catch(Exception e)
         {
            logger.debug( e );
+           throw new Exception(" a error occure in UserExiste function with email:"+email, e);
         }finally{
             try {
                 CloseConnexion(s);
@@ -266,7 +267,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
                 e.printStackTrace();
             }   
         }
-        return false;
+        
     }
     
    

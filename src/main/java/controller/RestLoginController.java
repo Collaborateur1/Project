@@ -3,10 +3,8 @@ package controller;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.CookieParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,90 +12,83 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.server.mvc.Viewable;
 import org.joda.time.DateTime;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
-import com.sun.jersey.api.client.ClientResponse.Status;
-import com.sun.jersey.api.core.ResourceContext;
-import com.sun.jersey.api.view.Viewable;
 
+import filter.security.HttpHeaderNames;
 import filter.security.SecureTool;
 import model.bean.DefaultUser.Role;
 import model.custom.UserCustom;
 import model.session.UserSession;
 import other.DefaultProperties;
 import other.SpringFactory;
+import other.WebContext;
+import other.token.TokenBuilder;
+import other.token.Utils;
 import view.handlebars.HandlebarsManager;
 
-
 @Path( "/login" )
-public class RestLoginController {
+public class RestLoginController extends WebContext {
 
-    private static Logger logger = Logger.getLogger( RestLoginController.class );
-   
-    
-    private Handlebars publicTemplate=HandlebarsManager.get();
+    public RestLoginController( @Context SecurityContext securityContext ) {
+        super( securityContext );
+        // TODO Auto-generated constructor stub
+    }
 
-    @Context private ResourceContext rc;
-    
+    private static Logger logger         = Logger.getLogger( RestLoginController.class );
+
+    private Handlebars    publicTemplate = HandlebarsManager.get();
+
     @javax.annotation.security.PermitAll
     @GET
-    @Path("/page")
-    public Response get(@QueryParam(value = "fowardTo") String foward,@Context HttpServletRequest httpRequest) {
-      
-        
+    @Path( "/page" )
+    public Response get( @QueryParam( value = "fowardTo" ) String foward, @Context HttpServletRequest httpRequest) {
+
         Template template = null;
         try {
-  
-            
-            template=publicTemplate.compile("login");
+
+            template = publicTemplate.compile( "login" );
         } catch ( IOException e1 ) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        
+
         try {
-            
-            UUID uuid = UUID.randomUUID();
-            String randomUUIDString = uuid.toString();
-            return Response.ok( template.apply(foward)).cookie( new NewCookie( new Cookie( "cookie",randomUUIDString,"/",null),"nocomment",2000,false  ) ).header("test", "wopapa" ).build();
-           
-        } catch (IOException e ) {
+
+            return Response.ok( template.apply( foward ) ).build();
+
+        } catch ( IOException e ) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
-            UUID uuid = UUID.randomUUID();
-            String randomUUIDString = uuid.toString();
-            return Response.ok(new Viewable("/WEB-INF/htmlFile/login.html")).cookie( new NewCookie( new Cookie( "cookie",randomUUIDString,"/",null),"nocomment",2000,false  ) ).header("test", "wopapa" ).build();
+            logger.error( e );
+
+            return Response.ok( new Viewable( "/WEB-INF/htmlFile/login.html" ) ).build();
+
         }
     }
-    
-    
+
     @javax.annotation.security.PermitAll
     @GET
-    @Path("/logout")
-   public Response logout(@Context HttpServletRequest httpRequest) throws URISyntaxException {
-        
-        
-        try{
-            final String sessionId = httpRequest.getHeader( "cookie" ).split("=")[1];
-            SpringFactory.getUsersProvider().removeUser( sessionId );
-            URI targetURIForRedirection = new URI( DefaultProperties.getProperties("login"));
-            return Response.seeOther(targetURIForRedirection).build();
-        }catch (Exception ex)
-        {
-            return Response.status(Status.BAD_REQUEST)
-                    .entity(new Viewable("/failure")).build();
+    @Path( "/logout" )
+    public Response logout( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
+
+        try {
+
+            SpringFactory.getUsersProvider().removeUser( getUser().getDusToken() );
+            URI targetURIForRedirection = new URI( DefaultProperties.getProperties( "login" ) );
+            return Response.seeOther( targetURIForRedirection ).build();
+        } catch ( Exception ex ) {
+            return Response.status( Response.Status.BAD_REQUEST )
+                    .entity( new Viewable( "/failure" ) ).build();
         }
-        
-       
-       
+
     }
 
     @javax.annotation.security.PermitAll
@@ -106,131 +97,167 @@ public class RestLoginController {
     public Response login( @FormParam( "email" ) String userName,
             @FormParam( "password" ) String password,
             @Context HttpServletRequest httpRequest,
-            @FormParam( "fowardTo" ) String foward,@CookieParam("cookie") Cookie cookie) throws URISyntaxException {
-        
-        
-        logger.info(SecureTool.getClientIpAddress(httpRequest) +DefaultProperties.getProperties( "ipconnect" ));
-      
-       
-           
-            
-        
-       
+            @FormParam( "fowardTo" ) String foward) throws URISyntaxException {
+
+        // @CookieParam(HttpHeaderNames.AUTH_TOKEN) Cookie cookie
+        boolean valideToken = (boolean) httpRequest.getAttribute( "valideToken" );
+
+        String userIp = SecureTool.getClientIpAddress( httpRequest );
+
+        logger.info( userIp + " " + DefaultProperties.getProperties( "ipconnect" ) );
+
         try {
-            String sessionId = "";
-            if ( httpRequest != null )
-                {
-                
-                
-                sessionId =cookie.getValue();
-                
-                
-                
-                }
 
             if ( userName == null || password == null ) {
-                return Response.status( Status.PRECONDITION_FAILED ).build();
+                return Response.status( Response.Status.PRECONDITION_FAILED ).build();
             }
 
             UserCustom user = SpringFactory.getUserJob().getUser( userName, password );
-            
-           
-           // DefaultUser user = userjob.getUser( "makilapuls@msn.com", "makilapuls@msn.com" );
+
+        
             if ( null != user ) {
-                URI targetURIForRedirection = new URI(
-                        "".equals( foward ) || foward == null ? "menu/acceuil": foward );
-                
-                if(DefaultProperties.getOption( "multiDesk").equals( "True"))
-                {UserCustom userTemp;
-                    userTemp=SpringFactory.getUsersProvider().userIsAlreadyConnected( userName );
-                    if(userTemp!=null){
-                        
-                    UserSession userSess =new UserSession( sessionId, userTemp, true, false, new DateTime(), new DateTime() );
-                    SpringFactory.getUsersProvider().setUserSession( sessionId, userSess );
-                    return Response.seeOther( targetURIForRedirection ).build();
+
+                String sessionId = "", newSessionId = "";
+
+                long maxAge;
+                try {
+                    maxAge = Long.valueOf( DefaultProperties.getOption( "tokenMaxAge" ) );
+                } catch ( Exception ex ) {
+                    logger.error( "option TockenMaxAge must be a int value default=2000", ex );
+                    maxAge = 2000;
+                }
+
+                sessionId = (String) httpRequest.getAttribute( "Token" );
+
+                try {
+                    if ( valideToken )
+                        valideToken = Utils.AuthTokenIsValide( user, sessionId );
+                } catch ( Exception ex ) {
+                    valideToken = false;
+                }
+
+                if ( !valideToken ) {
+
+                    try {
+                        sessionId = TokenBuilder.createAuthToken( String.valueOf( user.getID() ), user.getDusEmail(),
+                                HttpHeaderNames.AUTH_TOKEN, user.getDusMdp(), maxAge * 1000 );
+                    } catch ( Exception e ) {
+                        logger.info( "can't generate the tocken" + e );
                     }
+
                 }
 
-                // si l'utilisateur est c'est deja connecté et que son token est
-                // valide
-                // prévoir system d'automatisation de la connexion
-                if ( SpringFactory.getUsersProvider().userIsValidForConnect( sessionId, true ) ) {
-//                    RestMenuController restM= rc.getResource(RestMenuController.class);
-//                    return restM.checkSignup();
-                   
-                    return Response.seeOther( targetURIForRedirection ).build();
-                    // return Response.ok().entity(new
-                    // Viewable("/WEB-INF/htmlFile/body.html")).header( "testé",
-                    // "test" ).build();
-                }
-
+                user.setDusIp( userIp );
                 user.addRole( Role.Connected );
-                //temporaire, pour charger le menu
+             // temporaire, pour charger le menu
                 user.getDusParameters();
-                UserSession userSess =new UserSession( sessionId, user, true, false, new DateTime(), new DateTime() );
+                URI targetURIForRedirection = new URI(
+                        "".equals( foward ) || foward == null ? "menu/acceuil" : foward );
+
+                UserCustom userTemp;
+                //now we look if user already connect
+                userTemp = SpringFactory.getUsersProvider().userIsAlreadyConnected( userName );
+               
+                if ( userTemp != null ) {
+                    //if user already connect we check the tocken
+                    boolean tokenUserTempValide = false;
+                    try {
+
+                        tokenUserTempValide = Utils.AuthTokenIsValide( user, userTemp.getDusToken() );
+                    } catch ( Exception ex ) {
+                        tokenUserTempValide = false;
+                    }
+                    
+                    if ( !tokenUserTempValide ) {
+                         //if the cache token is not valid we change it with the new  
+                        SpringFactory.getUsersProvider().removeUser( userTemp.getDusToken() );
+                        user.setDusToken( sessionId );
+                        
+                        UserSession userSess = new UserSession(user.getDusToken(), user, true, false,
+                                new DateTime(),
+                                new DateTime() );
+                        SpringFactory.getUsersProvider().setUserSession( user.getDusToken(), userSess );
+
+                        SpringFactory.getGenericJob().updateObject( user );
+
+                    } else {
+                        //if the user in the cache is valid we use it
+                        user.setDusToken(userTemp.getDusToken());
+                        SpringFactory.getUsersProvider().userIsValidForConnect( userTemp.getDusToken(), true );// nom
+                                                                                                               // à
+                                                                                                               // changer
+                    }
+                    return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN, user.getDusToken(), maxAge,
+                            targetURIForRedirection, true );
+                }
+
+                //
+
+                user.setDusToken( sessionId );               
+                UserSession userSess = new UserSession( sessionId, user, true, false, new DateTime(),
+                        new DateTime() );
                 SpringFactory.getUsersProvider().setUserSession( sessionId, userSess );
-//                RestMenuController restM= rc.getResource(RestMenuController.class);
-//                return restM.checkSignup();
-                return Response.ok().build();
+                SpringFactory.getGenericJob().updateObject( user );
+                return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN, user.getDusToken(), maxAge * 1000,
+                        targetURIForRedirection, true );
             } else {
-                // return Response.status(Status.BAD_REQUEST)
-                // .entity(new Viewable("/failure")).build();
-                return Response.status( Status.PRECONDITION_FAILED ).build();
+
+                return Response.status( Response.Status.PRECONDITION_FAILED ).build();
             }
 
         } catch ( Exception ex ) {
-            logger.error( ex.getMessage() );
-            return Response.status( Status.PRECONDITION_FAILED ).build();
+            logger.error( ex );
+            return Response.status( Response.Status.PRECONDITION_FAILED ).build();
         }
 
     }
-    
-   
 
     @GET
-    @Path("/checkSignup")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String checkSignup( @QueryParam(value="email")String email,@QueryParam(value="password") String  password ) {
-        String variable="{signEmailInput:true,signPasswordInput :true";
-       
-       
-        try{
+    @Path( "/checkSignup" )
+    @Produces( MediaType.APPLICATION_JSON )
+    public String checkSignup( @QueryParam( value = "email" ) String email,
+            @QueryParam( value = "password" ) String password) {
+        String variable = "{signEmailInput:true,signPasswordInput :true";
+
+        try {
             SpringFactory.getUserJob().CheckEmail( email );
-            SpringFactory.getUserJob().IsNew(email);
-           variable="{\"signEmailInput\":\"true\",";
-        }catch(Exception ex)
-        {
-            variable="{\"signEmailInput\":\"false\",";    
+            SpringFactory.getUserJob().IsNew( email );
+            variable = "{\"signEmailInput\":\"true\",";
+        } catch ( Exception ex ) {
+            variable = "{\"signEmailInput\":\"false\",";
         }
-        
-        try{
+
+        try {
             SpringFactory.getUserJob().CheckMdp( password );
-            
-           variable+="\"signPasswordInput\":\"true\"}";
-        }catch(Exception ex)
-        {
-            variable+="\"signPasswordInput\":\"false\"}";    
+
+            variable += "\"signPasswordInput\":\"true\"}";
+        } catch ( Exception ex ) {
+            variable += "\"signPasswordInput\":\"false\"}";
         }
-        
-       // ObjectMapper jackson= new ObjectMapper(); java to json 
-       
+
+        // ObjectMapper jackson= new ObjectMapper(); java to json
+
         return variable;
     }
-    
-    @GET
-    @Path("signup")
-    @Produces(MediaType.TEXT_HTML)
-    public Response signup(@QueryParam(value="email")String email,
-            @QueryParam(value="password") String  password, 
-            @QueryParam("firstName") String firstName,
-            @QueryParam("lastName") String lastName) {
-        //toUpdate
-        if(SpringFactory.getUserJob().ValidateAndCreateUser(lastName, firstName, email,"",password,""))
-        return Response.ok().build();
-        
-        return Response.status(Status.BAD_REQUEST).build();
-    }
-    
 
-    
+    @GET
+    @Path( "signup" )
+    @Produces( MediaType.TEXT_HTML )
+    public Response signup( @QueryParam( value = "email" ) String email,
+            @QueryParam( value = "password" ) String password,
+            @QueryParam( "firstName" ) String firstName,
+            @QueryParam( "lastName" ) String lastName) {
+        // toUpdate
+        try {
+            if ( SpringFactory.getUserJob().ValidateAndCreateUser( lastName, firstName, email, "", password, "" ) )
+                return Response.ok().build();
+        } catch ( Exception e ) {
+            // TODO Auto-generated catch block
+            logger.error( e );
+            return Response.status( Response.Status.PRECONDITION_FAILED ).entity(" email "+email+" already exist").build();
+        }
+
+        return Response.status( Response.Status.PRECONDITION_FAILED ).build();
+    }
+
 }

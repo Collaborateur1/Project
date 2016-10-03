@@ -96,19 +96,20 @@ public class UserJobImpl implements UserJob{
        
             
         try {
-            IsNew(email);
+            if(!IsNew(email))
+                throw  new Exception();   
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
            // erreurs.put( "IsNew", e.getMessage() );
            
-            throw new Exception( "this user already exist in database (email) please use a valide mail"+ e.getMessage());
+            throw new Exception( "this user already exist in database (email) please use a valide email"+ e.getMessage());
            
         }
         
 
  user.setDusPict("/puls/inc/pictures/default.png");
  
-        logger.info("New user informations is conform");
+        logger.info("New user information is conform");
         return userDao.create( user);
               
   
@@ -240,7 +241,7 @@ public class UserJobImpl implements UserJob{
     public boolean IsNew(String email)throws Exception{
         //true pour lui dire de laisser la connexion ouverte
       
-        return !userDao.UserExiste2( email);
+        return !userDao.UserExiste( email);
            
         
         

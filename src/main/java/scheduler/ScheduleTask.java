@@ -9,7 +9,7 @@ public class ScheduleTask extends QuartzJobBean {
     @Override
     protected void executeInternal( JobExecutionContext arg0 ) throws JobExecutionException {
         // TODO Auto-generated method stub
-        System.out.println( "hahaha sa marche..." );
+        // System.out.println( "hahaha sa marche..." );
     }
 
 }

@@ -26,7 +26,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.transform.stream.StreamSource;
 
-import org.codehaus.jackson.annotate.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import model.custom.DossierCustom;
 import model.dao.Executable;
@@ -65,13 +66,14 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
   
     @Column(name="dusPict")
     private String dusPict;
-    
+    @JsonIgnore
     @Column(name="dusIsAdmin")
     private boolean dusIsAdmin;
-    
+    @Transient
+    @JsonIgnore
     @Column(name="dusParameters")
     StringBuffer dusParameters;
-    
+    @JsonIgnore
     @Column(name="dusMdp")
     private String dusMdp;
     
@@ -84,15 +86,32 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
     private List<DossierCustom> dusDossier;
 
     //@Transient
+    @JsonIgnore
     @Column(name="dusToken")
     private String dusToken;
    /* @Column(name = "Roles")
     @ElementCollection
     @Enumerated(EnumType.STRING)*/
     @Transient
+    @JsonIgnore
     private Set<Role> dusRoles;
    
- 
+    @Transient
+    @JsonIgnore
+    private String dusIp;
+    
+    public String getDusIp() {
+        return dusIp;
+    }
+
+
+
+    public void setDusIp( String dusIp ) {
+        this.dusIp = dusIp;
+    }
+
+
+
     public Long getDusID() {
         return dusID;
     }

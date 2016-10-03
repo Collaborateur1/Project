@@ -11,8 +11,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.server.mvc.Viewable;
+
 import com.github.jknack.handlebars.Template;
-import com.sun.jersey.api.view.Viewable;
 
 import view.handlebars.HandlebarsManager;
 
