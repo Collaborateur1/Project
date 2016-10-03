@@ -12,6 +12,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.0.0.RELEASE</spring.version>
 		  <jdk.version>1.7</jdk.version>
+		   <jersey2.version>2.19</jersey2.version>
+        <jaxrs.version>2.0.1</jaxrs.version>
 		  <quartz.version>2.2.1</quartz.version>
 	</properties>
  
@@ -20,22 +22,13 @@
   <dependencies>
   
   <!-- 		************Spring*************** -->	
-  <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${spring.version}</version>
-    </dependency>
+  
 <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
         <version>${spring.version}</version>
     </dependency>
-
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
-    </dependency>
+ 
      <!--required with Quartz-->
      <dependency>
             <groupId>org.springframework</groupId>
@@ -62,12 +55,13 @@
 			<scope>provided</scope>
 		</dependency>
 		
+<!-- Spring and hibernate-->
 <dependency>
 	<groupId>org.springframework</groupId>
 	<artifactId>spring-orm</artifactId>
 	<version>${spring.version}</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/org.springframework/spring-oxm -->
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-oxm (Jaxb2Marshaller)-->
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-oxm</artifactId>
@@ -86,11 +80,7 @@
       <scope>test</scope>
       
     </dependency>
-    <dependency>
-    <groupId>javax.servlet</groupId>
-    <artifactId>javax.servlet-api</artifactId>
-    <version>3.0.1</version>
-</dependency>
+  
 
 		<dependency>
 			<groupId>jstl</groupId>
@@ -143,76 +133,47 @@
 <!-- 		*************END_BDD*************** -->
 
 <!-- 		*************Rest*************** -->
-<dependency>
-	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-client</artifactId>
-	<version>1.19</version>
-</dependency>
 
-<dependency>
-	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-json</artifactId>
-	<version>1.19</version>
-</dependency>
-<dependency>
-			<groupId>com.sun.jersey.contribs</groupId>
-			<artifactId>jersey-multipart</artifactId>
-			<version>1.19</version>
-		</dependency>
+
+
 <dependency>
 	<groupId>com.fasterxml.jackson.core</groupId>
 	<artifactId>jackson-core</artifactId>
 	<version>2.7.2</version>
 </dependency>
-
+<!-- 	avoid dynamically pojo field -->
 <dependency>
-
-	<groupId>com.sun.jersey.contribs</groupId>
-	<artifactId>jersey-spring</artifactId>
-	<version>1.19</version>
-	<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-web</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-beans</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-context</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-aop</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-asm</artifactId>
-				</exclusion>
-			</exclusions>
+    <groupId>com.monitorjbl</groupId>
+    <artifactId>json-view</artifactId>
+    <version>0.12</version>
+</dependency>
+<dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>${jaxrs.version}</version>
+            </dependency>
+<dependency>
+    <groupId>org.glassfish.jersey.core</groupId>
+    <artifactId>jersey-server</artifactId>
+    <version>${jersey2.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.glassfish.jersey.containers</groupId>
+    <artifactId>jersey-container-servlet</artifactId>
+    <version>${jersey2.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.glassfish.jersey.media</groupId>
+    <artifactId>jersey-media-multipart</artifactId>
+    <version>${jersey2.version}</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.ext/jersey-mvc -->
+<dependency>
+    <groupId>org.glassfish.jersey.ext</groupId>
+    <artifactId>jersey-mvc</artifactId>
+    <version>${jersey2.version}</version>
 </dependency>
 
-<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>1.8</version>
-		</dependency>
-		
-		<dependency>
-	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-bundle</artifactId>
-	<version>1.8-ea03</version>
-</dependency>
 	<!-- 		+++JWT token aussi+++ -->	
 <dependency>
 	<groupId>commons-codec</groupId>
