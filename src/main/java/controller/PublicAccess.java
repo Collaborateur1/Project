@@ -74,8 +74,8 @@ private Handlebars publicTemplate=HandlebarsManager.get();
     @Path("/test")
     @Produces( MediaType.APPLICATION_JSON )
     public Response get() throws JsonProcessingException {
-      
-      
+              
+      /*
         GenericJob test= SpringFactory.getGenericJob();
         voidAdd100Person();
         voidAdd100Person();
@@ -99,7 +99,7 @@ private Handlebars publicTemplate=HandlebarsManager.get();
           
         */
         
-        return Response.ok().entity( dossier).build();
+        return Response.ok().build();
     }
     
     

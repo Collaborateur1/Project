@@ -18,7 +18,6 @@ import javax.ws.rs.core.SecurityContext;
 
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.server.mvc.Viewable;
-import org.joda.time.DateTime;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
@@ -27,7 +26,6 @@ import filter.security.HttpHeaderNames;
 import filter.security.SecureTool;
 import model.bean.DefaultUser.Role;
 import model.custom.UserCustom;
-import model.session.UserSession;
 import other.DefaultProperties;
 import other.SpringFactory;
 import other.WebContext;
@@ -80,8 +78,7 @@ public class RestLoginController extends WebContext {
     public Response logout( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
 
         try {
-
-            SpringFactory.getUsersProvider().removeUser( getUser().getDusToken() );
+            SpringFactory.getUsersProvider().revokeUser(getUser().getDusToken());
             URI targetURIForRedirection = new URI( DefaultProperties.getProperties( "login" ) );
             return Response.seeOther( targetURIForRedirection ).build();
         } catch ( Exception ex ) {
@@ -156,7 +153,7 @@ public class RestLoginController extends WebContext {
 
                 UserCustom userTemp;
                 //now we look if user already connect
-                userTemp = SpringFactory.getUsersProvider().userIsAlreadyConnected( userName );
+                userTemp =  SpringFactory.getUsersProvider().userCacheIsAlreadyConnected( userName );
                
                 if ( userTemp != null ) {
                     //if user already connect we check the tocken
@@ -170,22 +167,19 @@ public class RestLoginController extends WebContext {
                     
                     if ( !tokenUserTempValide ) {
                          //if the cache token is not valid we change it with the new  
-                        SpringFactory.getUsersProvider().removeUser( userTemp.getDusToken() );
+                        SpringFactory.getUsersProvider().revokeUser( userTemp.getDusToken() );
                         user.setDusToken( sessionId );
                         
-                        UserSession userSess = new UserSession(user.getDusToken(), user, true, false,
-                                new DateTime(),
-                                new DateTime() );
-                        SpringFactory.getUsersProvider().setUserSession( user.getDusToken(), userSess );
+                        
+                        SpringFactory.getUsersProvider().setUserInCache( user.getDusToken(), user );
+                       
 
                         SpringFactory.getGenericJob().updateObject( user );
 
                     } else {
                         //if the user in the cache is valid we use it
                         user.setDusToken(userTemp.getDusToken());
-                        SpringFactory.getUsersProvider().userIsValidForConnect( userTemp.getDusToken(), true );// nom
-                                                                                                               // à
-                                                                                                               // changer
+                        
                     }
                     return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN, user.getDusToken(), maxAge,
                             targetURIForRedirection, true );
@@ -194,9 +188,9 @@ public class RestLoginController extends WebContext {
                 //
 
                 user.setDusToken( sessionId );               
-                UserSession userSess = new UserSession( sessionId, user, true, false, new DateTime(),
-                        new DateTime() );
-                SpringFactory.getUsersProvider().setUserSession( sessionId, userSess );
+               
+                
+                SpringFactory.getUsersProvider().setUserInCache( sessionId, user );
                 SpringFactory.getGenericJob().updateObject( user );
                 return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN, user.getDusToken(), maxAge * 1000,
                         targetURIForRedirection, true );

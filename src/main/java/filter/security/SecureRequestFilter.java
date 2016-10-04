@@ -16,7 +16,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
 
-import model.session.UserSession;
+import model.custom.UserCustom;
 import other.DefaultProperties;
 import other.SpringFactory;
 import other.token.Utils;
@@ -56,20 +56,20 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
             
         }
       
-        UserSession session = null;
+        UserCustom user = null;
         String uri=requestContext.getUriInfo().getPath( true ).toString();
        
             // Load session object from repository
         if(sessionId==null)
             sessionId="";
         
-            session = SpringFactory.getUsersProvider().getUserSession(sessionId);
+        user = SpringFactory.getUsersProvider().getCacheUserSession(sessionId);
             
             boolean valideToken=false;
             boolean sessionToken=true;
             try{
-            if(session!=null){
-                valideToken=Utils.AuthTokenIsValide(session.getUser(),sessionId);
+            if(user!=null){
+                valideToken=Utils.AuthTokenIsValide(user,sessionId);
                 sessionToken=valideToken;
             }
             }catch(Exception ex){
@@ -77,7 +77,7 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
                 valideToken=false; 
             }
             
-             if(!AuthorizedURL.contains(uri)&&!sessionToken)
+             if(!AuthorizedURL.contains(uri)&&!valideToken)
              {
                  URI targetURIForRedirection=null;
                  try {
@@ -100,9 +100,10 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
        
              
         // Set security context
-             if(session==null)
-                 session=new UserSession();
-          requestContext.setSecurityContext(new AuthentificationRestEndPointSecure(session));
+          //if user is null set a empty user for role access    
+             if(user==null)
+                 user=new UserCustom();
+          requestContext.setSecurityContext(new AuthentificationRestEndPointSecure(user,valideToken));
           requestContext.setProperty( "valideToken", valideToken );
           requestContext.setProperty( "Token", sessionId );
           

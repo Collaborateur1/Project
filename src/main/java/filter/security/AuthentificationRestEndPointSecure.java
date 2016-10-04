@@ -9,17 +9,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import model.custom.UserCustom;
-import model.session.UserSession;
 
 
 public class AuthentificationRestEndPointSecure implements javax.ws.rs.core.SecurityContext {
  
 
-    private final UserSession session;
- 
-    public AuthentificationRestEndPointSecure(UserSession session) {
-        this.session = session;
-        
+    private final UserCustom user;
+    private final Boolean isSecure;
+    public AuthentificationRestEndPointSecure(UserCustom user, Boolean isSecure) {
+        this.user = user;
+        this.isSecure=isSecure;
   
     }
  
@@ -30,18 +29,18 @@ public class AuthentificationRestEndPointSecure implements javax.ws.rs.core.Secu
  
     @Override
     public Principal getUserPrincipal() {
-        return session.getUser();
+        return user;
     }
  
     @Override
     public boolean isSecure() {
-        return (null != session) ? session.isSecure() : false;
+        return isSecure;
     }
  
     @Override
     public boolean isUserInRole(String role) {
  
-        if (null == session || !session.isActive()) {
+        if (null == user || !isSecure) {
            
             // Forbidden
            /* Response denied = Response.status(Response.Status.FORBIDDEN).entity("Permission Denied").build();
@@ -58,7 +57,7 @@ public class AuthentificationRestEndPointSecure implements javax.ws.rs.core.Secu
  
         try {
             // this user has this role?
-            return session.getUser().getDusRoles().contains(UserCustom.Role.valueOf(role));
+            return user.getDusRoles().contains(UserCustom.Role.valueOf(role));
         } catch (Exception e) {
         }
          

@@ -17,17 +17,25 @@ public class DefaultProperties implements ServletContextListener {
     private static final Properties prop = new Properties();
     private static final Properties mapp = new Properties();
     private static final Properties option = new Properties();
+    private static final Properties cache = new Properties();
     
     private void loadProperties(){
         loadProperties("Config.properties",prop);
         loadProperties("Mapping.properties",mapp);
         loadProperties("options.properties",option);
+        loadProperties("cache.properties",cache);
     
     }
     public static String getProperties(String name)
     {
         
         return prop.getProperty( name );
+    }
+    
+    public static String geCacheProperties(String name)
+    {
+        
+        return cache.getProperty( name );
     }
     
     public static String getMapping(String name)

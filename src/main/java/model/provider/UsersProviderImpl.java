@@ -1,104 +1,94 @@
 package model.provider;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 
-import org.joda.time.DateTime;
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Service;
 
 import model.custom.UserCustom;
-import model.session.UserSession;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+import net.sf.ehcache.config.CacheConfiguration;
+import net.sf.ehcache.config.PersistenceConfiguration;
+import net.sf.ehcache.config.PersistenceConfiguration.Strategy;
+import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
+import other.DefaultProperties;
 
-
-@Service("usersProvider")
+@Service( "usersProvider" )
 public class UsersProviderImpl implements UsersProvider {
-private Hashtable<String, UserSession> ListUserSession=new Hashtable<String, UserSession>();
+    private Cache                  userSessionCache    ;
+    private final String                   cacheName       = "UserSessionCache";
 
-
-
-public  UserSession getUserSession(String token) {
-    return ListUserSession.get( token );
-}
-public boolean deleteUser(String Token)
-{
-    return (ListUserSession.remove( Token )!=null);
-}
-public  boolean userExist(String token) {
-    return ListUserSession.containsKey( token );
-}
-public  void setUserSession(String token, UserSession user) {
-    ListUserSession.put( token ,  user);
-}
-public Hashtable<String, UserSession> getListUserSession() {
-    return ListUserSession;
-}
-//le boolean pour dire si on doit mettre a jour la date de connexion
-public boolean userIsValidForConnect(String token, boolean connection){
-    UserSession user=ListUserSession.get (token);
-    if(user!=null)
-    {
-        if(connection)
-            user.setLastAccessedTime(  DateTime.now() );
-        //ajouter user is valide
-        return user.tokenValide();
-    }
-    return false;
-}
-
-public UserCustom userIsAlreadyConnected(String email){
     
-    Enumeration<UserSession> userS=null;
-    userS=ListUserSession.elements();
-    UserCustom user;       
-    while (userS.hasMoreElements())
-            {
-             user=userS.nextElement().getUser( email );
-                if(user!=null)
-                {
-                    return user;
-                }
-            }
-    return null;
-}
-
-
-public int cleanUser()
-{
-    Enumeration<UserSession> users= ListUserSession.elements();
-    Enumeration<String> keys= ListUserSession.keys();
-    UserSession user;
-    String key;
-    while(users.hasMoreElements()&&keys.hasMoreElements())
-    {
-         user=users.nextElement();
-         key=keys.nextElement();
-         
-         if(user!=null)
-         {
-             if(!user.isActive()||!user.tokenValide())
-             {
-                 removeUser(key);
-             }
-             
-             
-             
-         }else
-         {
-             removeUser(key);
-         }
+    @PostConstruct
+    public void init() {
+        CacheManager   sessionCache    =CacheManager.create();
+        this.userSessionCache = new Cache(
+                new CacheConfiguration( cacheName,
+                        Integer.parseInt( DefaultProperties.geCacheProperties( "maxEntries" ) ) )
+                                .memoryStoreEvictionPolicy( MemoryStoreEvictionPolicy.LFU )
+                                .eternal( false )
+                                .timeToLiveSeconds( Long.parseLong( DefaultProperties.getOption( "tokenMaxAge" ) ) )
+                                .timeToIdleSeconds( Long.parseLong(DefaultProperties.geCacheProperties( "timeToIdleSeconds" )))
+                                .diskExpiryThreadIntervalSeconds( 0 )
+                                .persistence( new PersistenceConfiguration().strategy( Strategy.LOCALTEMPSWAP ) ) );
+        sessionCache.addCache( this.userSessionCache );
+        
     }
-    return 0;
-}
-public void setListUserSession( Hashtable<String, UserSession> listUserSession ) {
-    ListUserSession = listUserSession;
-}
+    
+    public UserCustom getCacheUserSession( String token ) {
+        Element elemt= userSessionCache.get( token );
+        if(elemt!=null)
+        return (UserCustom) elemt.getObjectValue();
+        
+        return null;
 
-public boolean logOut(String token)
-{
-   return (removeUser(token));
-}
-public boolean removeUser(String token){
-    return (ListUserSession.remove(token)!=null);
-}
+    }
+
+    public boolean revokeUser( String token ) {
+       
+        return userSessionCache.remove( token );
+
+    }
+    public boolean userInCache( String token ) {
+    
+        return userSessionCache.isKeyInCache( token );
+       
+    }
+    
+    public void setUserInCache( String token, UserCustom user ) {
+        
+        userSessionCache.put(new Element(token, user) );
+    }
+    
+    public int getCacheSize()
+    { 
+        return userSessionCache.getSize();
+    }
+    
+    public Hashtable<String, UserCustom> getUsersInCache() {
+       
+       // userSessionCache.
+        return null;
+    }
+    
+    public UserCustom userCacheIsAlreadyConnected( String email ) {
+
+        final Map<Object, Element> mapElements = userSessionCache.getAll(userSessionCache.getKeys()); 
+      
+        for (final Element element : mapElements.values()) { 
+            
+              if(((UserCustom)element.getObjectValue()).getDusEmail().equals( email ))
+                  return (UserCustom)element.getObjectValue();
+            } 
+        
+       
+        return null;
+    }
+    
+
 
 }

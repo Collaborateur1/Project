@@ -276,6 +276,14 @@
 
 <!-- *************End templating java*************** -->
 
+<!-- *************cache java*************** -->
+<!-- https://mvnrepository.com/artifact/net.sf.ehcache/ehcache -->
+<dependency>
+    <groupId>net.sf.ehcache</groupId>
+    <artifactId>ehcache</artifactId>
+    <version>2.10.2.2.21</version>
+</dependency>
+<!-- *************End cache java*************** -->
   </dependencies>
   
   
