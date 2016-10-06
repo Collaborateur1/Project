@@ -13,11 +13,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
 import org.apache.log4j.Logger;
 
-import model.custom.DossierCustom;
 import model.custom.EnterpriseCustom;
 import model.dao.Executable;
 
@@ -67,8 +65,6 @@ public class DefaultCustomer implements Executable{
     private List<EnterpriseCustom> cusEnterprise;
 
   
-    @OneToMany(mappedBy="dosCustomer")
-    private List<DossierCustom> cusDossier;
 
    
     public long getCusID() {
@@ -176,13 +172,7 @@ public class DefaultCustomer implements Executable{
         this.cusEnterprise = cusEnterprise;
     }
 
-    public List<DossierCustom> getCusDossier() {
-        return cusDossier;
-    }
-
-    public void setCusDossier( List<DossierCustom> cusDossier ) {
-        this.cusDossier = cusDossier;
-    }
+ 
 
     @Override
     public boolean presave( ConcurrentHashMap<String, Object> item ) {

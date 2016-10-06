@@ -24,7 +24,6 @@ import com.github.jknack.handlebars.Template;
 
 import model.bean.DefaultCustomer;
 import model.custom.CustomerCustom;
-import model.custom.DossierCustom;
 import model.custom.EnterpriseCustom;
 import model.custom.UserCustom;
 import model.job.GenericJob;
@@ -130,7 +129,7 @@ private Handlebars publicTemplate=HandlebarsManager.get();
             String id="";
              id=result.get( i ).get( "id" ).toString();
              
-            
+            /*
             DossierCustom dossier=new DossierCustom();
             dossier.setDosCreation( new Date() );
             UserCustom testt=(UserCustom)test.getObject( UserCustom.class, id ,false);
@@ -142,6 +141,7 @@ private Handlebars publicTemplate=HandlebarsManager.get();
             arr.add( dossier );
             testt.setDusDossier( arr );
             test.updateObject(testt);
+            */
             
         }
         

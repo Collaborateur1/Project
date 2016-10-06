@@ -2,7 +2,7 @@
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
  
-  <display-name>puls97</display-name>
+  <display-name>Project ManagO</display-name>
   
   <!-- *********************************************Listener**************************************************** -->
   
@@ -21,7 +21,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			/WEB-INF/jvspring-data.xml
+			/WEB-INF/spring-data.xml
 		</param-value>
 		
 	</context-param>

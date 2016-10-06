@@ -7,29 +7,21 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.transform.stream.StreamSource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import model.custom.DossierCustom;
 import model.dao.Executable;
 import model.menu.Globalmenu;
 import other.SpringFactory;
@@ -77,13 +69,6 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
     @Column(name="dusMdp")
     private String dusMdp;
     
-    //@BatchSize(size=10)
-    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.MERGE )
-    @JoinTable( name = "User_Dossier", joinColumns = {
-            @JoinColumn( name = "id", nullable = false, updatable = false ) }, inverseJoinColumns = {
-                    @JoinColumn( name = "dosID", nullable = false, updatable = false ) })
-    @JsonManagedReference
-    private List<DossierCustom> dusDossier;
 
     //@Transient
     @JsonIgnore
@@ -236,16 +221,6 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
     }
 
 
-
-    public List<DossierCustom> getDusDossier() {
-        return dusDossier;
-    }
-
-
-
-    public void setDusDossier( List<DossierCustom> dusDossier ) {
-        this.dusDossier = dusDossier;
-    }
 
 
 
