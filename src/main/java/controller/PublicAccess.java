@@ -19,8 +19,6 @@ import org.glassfish.jersey.server.mvc.Viewable;
 import org.springframework.stereotype.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.Template;
 
 import model.bean.DefaultCustomer;
 import model.custom.CustomerCustom;
@@ -28,13 +26,12 @@ import model.custom.EnterpriseCustom;
 import model.custom.UserCustom;
 import model.job.GenericJob;
 import other.SpringFactory;
-import view.handlebars.HandlebarsManager;
 
 
 @Controller
 @Path( "/public" )
 public class PublicAccess {
-private Handlebars publicTemplate=HandlebarsManager.get();
+
 
 
     @javax.annotation.security.PermitAll
@@ -43,21 +40,13 @@ private Handlebars publicTemplate=HandlebarsManager.get();
     public Response get(@QueryParam(value = "fowardTo") String foward) {
       
         
-        Template template = null;
-        try {
-  
-            
-            template=publicTemplate.compile("login");
-        } catch ( IOException e1 ) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+      
         
         try {
             
             UUID uuid = UUID.randomUUID();
             String randomUUIDString = uuid.toString();
-            return Response.ok( template.apply(foward)).cookie( new NewCookie( "cookie",randomUUIDString  ) ).header("test", "wopapa" ).build();
+            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( "login" ).apply(foward)).cookie( new NewCookie( "cookie",randomUUIDString  ) ).header("test", "wopapa" ).build();
            
         } catch (IOException e ) {
             // TODO Auto-generated catch block

@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -19,9 +18,6 @@ import javax.ws.rs.core.SecurityContext;
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.Template;
-
 import filter.security.HttpHeaderNames;
 import filter.security.SecureTool;
 import model.bean.DefaultUser.Role;
@@ -31,7 +27,6 @@ import other.SpringFactory;
 import other.WebContext;
 import other.token.TokenBuilder;
 import other.token.Utils;
-import view.handlebars.HandlebarsManager;
 
 @Path( "/login" )
 public class RestLoginController extends WebContext {
@@ -42,28 +37,18 @@ public class RestLoginController extends WebContext {
     }
 
     private static Logger logger         = Logger.getLogger( RestLoginController.class );
-
-    private Handlebars    publicTemplate = HandlebarsManager.get();
+    
 
     @javax.annotation.security.PermitAll
     @GET
-    @Path( "/page" )
     public Response get( @QueryParam( value = "fowardTo" ) String foward, @Context HttpServletRequest httpRequest) {
 
-        Template template = null;
+        
         try {
+            
+            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( "login" ).apply( foward ) ).build();
 
-            template = publicTemplate.compile( "login" );
-        } catch ( IOException e1 ) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
-        try {
-
-            return Response.ok( template.apply( foward ) ).build();
-
-        } catch ( IOException e ) {
+        } catch (  Exception e ) {
             // TODO Auto-generated catch block
             logger.error( e );
 

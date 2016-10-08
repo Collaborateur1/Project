@@ -17,19 +17,17 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.context.JavaBeanValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 
 import model.custom.UserCustom;
 import other.DefaultProperties;
+import other.SpringFactory;
 import other.WebContext;
-import view.handlebars.HandlebarsManager;
 
 @Path( "/menu" )
 public class RestMenuController extends WebContext {
-    private Handlebars      menuTemplate = HandlebarsManager.get();
+   
     private static Logger   logger       = Logger.getLogger( RestMenuController.class );
     @Autowired
     private Jaxb2Marshaller marshaller;
@@ -60,9 +58,9 @@ public class RestMenuController extends WebContext {
             // à commenter
            
 
-            Template template = null;
-            template = menuTemplate.compile( "index2" );
-            return Response.ok( template.apply( context ) ).build();
+            
+            
+            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( "index2" ).apply( context ) ).build();
 
         } catch ( IOException e1 ) {
             // TODO Auto-generated catch block
@@ -99,21 +97,21 @@ public class RestMenuController extends WebContext {
             return reloadPage( user, context );
         }
         
-        Template template = null;
+
         
         try {
             
             //try to compile the url send by the user
-            template = menuTemplate.compile( url );
-            return Response.ok( template.apply( context ) ).build();
+        
+            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( url ).apply( context ) ).build();
         } catch ( IOException e1 ) {
             // TODO Auto-generated catch block
             //the user url don't map with any html file so we look the mapping properties
             logger.info( "Page" + url + " don't exist default or custom page will load" );
             
             //we look if the user url have any mapping properties if not we charge the default white page
-            template = menuTemplate.compile( DefaultProperties.getMapping( url ) );
-            return Response.ok( template.apply( context ) ).build();
+            ;
+            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( DefaultProperties.getMapping( url ) ).apply( context ) ).build();
         }
         finally{
             context.destroy(); 
@@ -127,8 +125,8 @@ public class RestMenuController extends WebContext {
 
         try {
 
-            Template template = menuTemplate.compile( "index2" );
-            return Response.ok( template.apply( context ) ).build();
+     
+            return Response.ok(  SpringFactory.getHandlebarsManager().getTemplate("index2").apply( context ) ).build();
 
         } catch ( IOException e1 ) {
             // TODO Auto-generated catch block

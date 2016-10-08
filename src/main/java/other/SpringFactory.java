@@ -5,6 +5,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import model.job.GenericJob;
 import model.job.UserJob;
 import model.provider.UsersProvider;
+import view.handlebars.HandlebarsManager;
 
 public class SpringFactory {
     
@@ -20,6 +21,9 @@ public class SpringFactory {
     
     public static GenericJob getGenericJob() {
         return (GenericJob) SpringContext.getContext().getBean("genericJob");
+    }
+    public static HandlebarsManager getHandlebarsManager() {
+        return (HandlebarsManager) SpringContext.getContext().getBean("handlebarsManager");
     }
     
 }

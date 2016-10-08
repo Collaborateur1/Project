@@ -81,7 +81,7 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
              {
                  URI targetURIForRedirection=null;
                  try {
-                     targetURIForRedirection = new URI("login/page"+"?fowardTo="+uri);
+                     targetURIForRedirection = new URI(DefaultProperties.getProperties( "login" )+"?fowardTo="+uri);
                  } catch ( URISyntaxException e ) {
                      // TODO Auto-generated catch block
                      e.printStackTrace();
@@ -115,7 +115,7 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
         String st[]=DefaultProperties.getProperties( "authorizedurl" ).split(";");
        
         for(int i=0;i<st.length;i++)
-            temp.add(st[i]); 
+            temp.add(st[i].trim()); 
         
         
         return temp;

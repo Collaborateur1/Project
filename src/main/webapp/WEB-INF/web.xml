@@ -62,7 +62,6 @@
 
 	<servlet-mapping>
 		<servlet-name>filter.ServletMaster</servlet-name>
-		<url-pattern>/web/*</url-pattern>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 

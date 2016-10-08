@@ -12,7 +12,7 @@
 
 
 <context:annotation-config />
-	<context:component-scan base-package="controller,model,filter,other,scheduler" />
+	<context:component-scan base-package="controller,model,filter,other,scheduler,view.handlebars" />
 
 
 	
