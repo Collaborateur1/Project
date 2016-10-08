@@ -60,7 +60,7 @@
 			 
 				 //vraiment à améliorer    
 				    $.ajax({
-				       url : 'checkSignup', // La ressource ciblée
+				       url : 'login/checkSignup', // La ressource ciblée
 				       type : 'GET', // Le type de la requête HTTP.
 				        data : 'email=' + email.val() +"&"+ 'password=' + password.val(), 
 				        dataType: "json",
@@ -140,7 +140,7 @@
 			 
 				     
 				    $.ajax({
-				       url : 'signup', // La ressource ciblée
+				       url : 'login/signup', // La ressource ciblée
 				       type : 'GET', // Le type de la requête HTTP.
 				        data : 'email=' + email.val() +"&"+ 'password=' + password.val()+"&"+'firstName='+firstName.val()+"&"+'lastName='+lastName.val(), 
 				        dataType: "html",

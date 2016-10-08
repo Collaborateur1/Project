@@ -107,7 +107,7 @@ public class UserJobImpl implements UserJob{
         }
         
 
- user.setDusPict("/puls/inc/pictures/default.png");
+ user.setDusPict("../inc/pictures/default.png");
  
         logger.info("New user information is conform");
         return userDao.create( user);

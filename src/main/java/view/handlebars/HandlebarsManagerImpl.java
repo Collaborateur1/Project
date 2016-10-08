@@ -36,7 +36,7 @@ public final class HandlebarsManagerImpl  extends Handlebars implements Handleba
   public Template getTemplate(String template) throws IOException
   {
       if(template!=null&&!"".equals( template )){
-          if(preloadedTemplates.isKeyInCache( template ))
+          if(preloadedTemplates.isKeyInCache( template )&&!DefaultProperties.getOption( "developerMode" ).equals( "true" ))
           {
               
               
@@ -45,7 +45,8 @@ public final class HandlebarsManagerImpl  extends Handlebars implements Handleba
           {  
           try {
               Template tmp=this.compile( template );
-             preloadedTemplates.put( new Element( template, tmp ) );
+             if(!DefaultProperties.getOption( "developerMode" ).equals( "true" ))
+              preloadedTemplates.put( new Element( template, tmp ) );
               return tmp;
          
           } catch ( IOException e ) {

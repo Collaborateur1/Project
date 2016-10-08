@@ -16,7 +16,7 @@ define( [
 
 	var user = Backbone.Model.extend({
 		  // Default todo attribute values
-		urlRoot:'/puls/user',
+		urlRoot:'../user',
 		  defaults : {
 				id : null
 			},

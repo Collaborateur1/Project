@@ -1,7 +1,9 @@
  require([
-          'backbone' 
+          'backbone',
+          'pnotify'
           ],function(
-             backbone	
+             backbone,
+             PNotify
           ) {
 
 	 'use strict';
@@ -18,8 +20,8 @@
     	  events: {
     	   
     	   
-    	    'click #url': 'change_menu',
-    	    'mouseover #menu': 'activeMenu'
+    	    'click #url': 'change_menu'/*,
+    	    'mouseover #menu': 'activeMenu'*/
     	  },
 
     	  initialize: function (options) {
@@ -117,6 +119,7 @@
     		  app.ListView._reset();
     		  }
     		  var that=this;
+    		  $('.content').fadeOut(250);
     	  	$.ajax({
     	  	       url : myUrl, // La ressource ciblée
     	  	       type : 'GET', // Le type de la requête HTTP. 
@@ -126,8 +129,13 @@
     	  	   contentType: "application/x-www-form-urlencoded",
     	  	      success : function(code_html, statut){ // code_html contient le HTML renvoyé
     	  	    	  
+    	  	    	 
     	  	    	
+    	  	    	 $('.content').hide().html(code_html).fadeIn(500);
+    	  	    	/* debugger;
+    	  	    	 $($('div[role="main"]').children()[0]).code_html;
     	  	    	  $('div[role="main"]').html(code_html);
+    	  	    	//$($('div[role="main"]').children()[0]).fadeIn();*/
     	  	    	if($(document).width() <992 )
     	  	    	{
     	  	    		that.$('ul[style="display: block;"]').attr('style','display: none;');

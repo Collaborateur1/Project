@@ -44,7 +44,7 @@ public class RestMenuController extends WebContext {
     public Response checkSignup( @Context SecurityContext sc ) {
 
         UserCustom user = getUser();
-        //provide a multi context environment to the handlebar template, add object to map and use context helper with the first option= key of the map
+        //provide a multi contexts environment to the handlebars template, add object to map and use context helper with the first option= key of the map
         ConcurrentHashMap<String, UserCustom> multiContext= new ConcurrentHashMap<String,UserCustom>();
         com.github.jknack.handlebars.Context context = com.github.jknack.handlebars.Context.newBuilder( user )
                 .combine( multiContext).resolver( MapValueResolver.INSTANCE, JavaBeanValueResolver.INSTANCE ).build();
@@ -60,7 +60,7 @@ public class RestMenuController extends WebContext {
 
             
             
-            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( "index2" ).apply( context ) ).build();
+            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( "html/template/mainPage/index" ).apply( context ) ).build();
 
         } catch ( IOException e1 ) {
             // TODO Auto-generated catch block
@@ -126,7 +126,7 @@ public class RestMenuController extends WebContext {
         try {
 
      
-            return Response.ok(  SpringFactory.getHandlebarsManager().getTemplate("index2").apply( context ) ).build();
+            return Response.ok(  SpringFactory.getHandlebarsManager().getTemplate("html/template/mainPage/index").apply( context ) ).build();
 
         } catch ( IOException e1 ) {
             // TODO Auto-generated catch block

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<globalmenu>
+<globalmenu defaultpage="Dashboard">
     <section>
         <title>General</title>
         <menu>
-            <class>fa fa-home</class>
+            <classe>fa fa-home</classe>
             <title>Home</title>
             <sousmenu>
-                <template>Dashboard</template>
+                <template>cloud</template>
                 <title>Dashboard</title>
             </sousmenu>
             <sousmenu>
@@ -19,7 +19,7 @@
             </sousmenu>
         </menu>
         <menu>
-            <class>fa fa-edit</class>
+            <classe>fa fa-edit</classe>
             <title>Forms</title>
             <sousmenu>
                 <template>General Form</template>
@@ -48,13 +48,17 @@
         </menu>
     </section>
     <section>
-        <title>Live On</title>
+        <title>Admin</title>
         <menu>
-            <class>fa fa-bug</class>
-            <title>test</title>
+            <classe>fa cogs</classe>
+            <title>Setting</title>
             <sousmenu>
-                <template>main</template>
-                <title>sous menu 1</title>
+                <template>profile</template>
+                <title>My account</title>
+            </sousmenu>
+			<sousmenu>
+                <template>setting</template>
+                <title>My Setting </title>
             </sousmenu>
         </menu>
     </section>

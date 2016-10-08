@@ -20,6 +20,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.transform.stream.StreamSource;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import model.dao.Executable;
@@ -170,7 +173,7 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
     public String getDusPict() {
         if(dusPict==null)
         {
-           this.setDusPict("/puls/inc/pictures/default.png");
+           this.setDusPict("../inc/pictures/default.png");
         }
         return dusPict;
     }
@@ -268,15 +271,13 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
            
             FileReader fr = null;
             BufferedReader br = null;
+           
             try {
-                /*DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                Document document= builder.parse(new File("C:\\fichiers\\menu.xml")); 
-                String st =document.getChildNodes().toString();
-            
-        
-                System.out.println( st );*/
+                             
+                Resource resource = new ClassPathResource("menu.xml");
+             
+                File f=resource.getFile();
                 
-                File f=new File("C:\\fichiers\\menu.xml");
                 fr=new FileReader(f);
                 br=new BufferedReader(fr);
                 dusParameters=new StringBuffer();
@@ -294,6 +295,7 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
              try {
                 fr.close();
                 br.close();
+                
             } catch ( IOException e ) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

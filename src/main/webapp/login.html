@@ -7,24 +7,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gentallela Alela! | </title>
+    <title>Project</title>
 
     
     <!-- Bootstrap -->
-    <link href="/puls/inc/js/library/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="inc/js/library/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Animate.css -->
     <link href="https://colorlib.com/polygon/gentelella/css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="/puls/inc/css/custom/custom.min.css" rel="stylesheet">
+    <link href="inc/css/custom/custom.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="/puls/inc/css/custom/style.css" rel="stylesheet">
+    <link href="inc/css/custom/style.css" rel="stylesheet">
      
      <!-- PNotify -->
-     <link href="/puls/inc/js/library/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="/puls/inc/js/library/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="/puls/inc/js/library/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+     <link href="inc/js/library/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="inc/js/library/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="inc/js/library/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
    
     
     
@@ -42,7 +42,7 @@
 
       <div class="login_wrapper">
      
-         <form class="form-login" action="signin" method="POST">
+         <form class="form-login" action="login/signin" method="POST">
 		        <h2 class="form-login-heading">sign in now</h2>
 		        <div class="login-wrap">
 		            <input id="UserName" name="email" type="text" class="form-control" placeholder="User ID" autofocus>
@@ -146,19 +146,19 @@
   	
      <!-- js placed at the end of the document so the pages load faster -->
 
-     <script src="/puls/inc/js/library/underscorejs/underscore-min.js"></script>  
-    <script src="/puls/inc/js/library/jquery/dist/jquery.min.js"></script>
-	<script src="/puls/inc/js/library/backbonejs/backbone-min.js"></script>
-    <script src="/puls/inc/js/library/bootstrap/dist/js/bootstrap.min.js"></script>
-     <script src="/puls/inc/js/custom/login/customLogin.js"></script>
-     <script src="/puls/inc/js/library/pnotify/dist/pnotify.js"></script>
+     <script src="inc/js/library/underscorejs/underscore-min.js"></script>  
+    <script src="inc/js/library/jquery/dist/jquery.min.js"></script>
+	<script src="inc/js/library/backbonejs/backbone-min.js"></script>
+    <script src="inc/js/library/bootstrap/dist/js/bootstrap.min.js"></script>
+     <script src="inc/js/custom/login/customLogin.js"></script>
+     <script src="inc/js/library/pnotify/dist/pnotify.js"></script>
   
     
     <!--BACKSTRETCH-->
     <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
-    <script type="text/javascript" src="/puls/inc/js/library/jquery/dist/jquery.backstretch.min.js"></script>
+    <script type="text/javascript" src="inc/js/library/jquery/dist/jquery.backstretch.min.js"></script>
     <script>
-        $.backstretch("/puls/inc/pictures/pro3.jpg", {speed: 500}),
+        $.backstretch("inc/pictures/pro3.jpg", {speed: 500}),
         
         valideFormulaire =function()
         {
@@ -166,7 +166,7 @@
         	var login=$('#UserName');
         	var password=$('#Password');
         	$.ajax({
-			       url : 'signin', // La ressource ciblée
+			       url : 'login/signin', // La ressource ciblée
 			       type : 'POST', // Le type de la requête HTTP.
 			        data : 'email=' + login.val() +"&"+ 'password=' + password.val(), 
 			        dataType: "html",
