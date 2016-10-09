@@ -4,9 +4,10 @@
 
 define( [       
 
-'text!../../../template/user.html',
+'text!../../html/template/user/user.html',
 'handlebars',
-'updateProfilPicture'
+'updateProfilPicture',
+'moment'
          
         
          ],
@@ -14,7 +15,8 @@ define( [
         		 
                  user,
                  handlebars,
-                 UpdateProfilPicture
+                 UpdateProfilPicture,
+                 moment
                
         		 
          ) {
@@ -48,35 +50,39 @@ define( [
 		  
 		  load: function(){
 			 // tesi=new updateProfilPicture();
-				 
+				 debugger;
 			   window.Raphael = require('raphael');
 			   if ($(".progress .progress-bar")[0]) {
 				    $('.progress .progress-bar').progressbar();
 				}
-			 
+			   setTimeout(function() {
+				   Morris.Bar({
+				          element: 'graph_bar',
+				          data: [
+				            { "period": "Jan", "Hours worked": 80 }, 
+				            { "period": "Feb", "Hours worked": 125 }, 
+				            { "period": "Mar", "Hours worked": 176 }, 
+				            { "period": "Apr", "Hours worked": 224 }, 
+				            { "period": "May", "Hours worked": 265 }, 
+				            { "period": "Jun", "Hours worked": 314 }, 
+				            { "period": "Jul", "Hours worked": 347 }, 
+				            { "period": "Aug", "Hours worked": 287 }, 
+				            { "period": "Sep", "Hours worked": 240 }, 
+				            { "period": "Oct", "Hours worked": 211 }
+				          ],
+				          xkey: 'period',
+				          hideHover: 'auto',
+				          barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
+				          ykeys: ['Hours worked', 'sorned'],
+				          labels: ['Hours worked', 'SORN'],
+				          xLabelAngle: 60,
+				          resize: true
+				        });  // Your code here
+				}, 500);
+				  
+				
 			  
-			  Morris.Bar({
-		          element: 'graph_bar',
-		          data: [
-		            { "period": "Jan", "Hours worked": 80 }, 
-		            { "period": "Feb", "Hours worked": 125 }, 
-		            { "period": "Mar", "Hours worked": 176 }, 
-		            { "period": "Apr", "Hours worked": 224 }, 
-		            { "period": "May", "Hours worked": 265 }, 
-		            { "period": "Jun", "Hours worked": 314 }, 
-		            { "period": "Jul", "Hours worked": 347 }, 
-		            { "period": "Aug", "Hours worked": 287 }, 
-		            { "period": "Sep", "Hours worked": 240 }, 
-		            { "period": "Oct", "Hours worked": 211 }
-		          ],
-		          xkey: 'period',
-		          hideHover: 'auto',
-		          barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
-		          ykeys: ['Hours worked', 'sorned'],
-		          labels: ['Hours worked', 'SORN'],
-		          xLabelAngle: 60,
-		          resize: true
-		        });
+			 
 		  
 		        $MENU_TOGGLE.on('click', function() {
 		          $(window).resize();

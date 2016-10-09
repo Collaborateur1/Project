@@ -4,7 +4,7 @@
 define([
         
         'defaultDialogModalView',
-        'text!../../../template/modal/updateProfilPicture.html'
+        'text!../../html/template/modal/updateProfilPicture.html'
         ], function (
         		
         		DefaultDialogModalView,

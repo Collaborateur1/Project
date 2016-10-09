@@ -131,7 +131,7 @@
     	  	    	  
     	  	    	 
     	  	    	
-    	  	    	 $('.content').hide().html(code_html).fadeIn(500);
+    	  	    	 $('.content').css("display", "none").html(code_html).fadeIn(500);
     	  	    	/* debugger;
     	  	    	 $($('div[role="main"]').children()[0]).code_html;
     	  	    	  $('div[role="main"]').html(code_html);

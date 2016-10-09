@@ -13,7 +13,7 @@ define( [
         		 
          ) {
 	'use strict';
-
+debugger;
 	var user = Backbone.Model.extend({
 		  // Default todo attribute values
 		urlRoot:'../user',
@@ -24,6 +24,7 @@ define( [
 		  
 		  },
 		   initialize: function(){
+			   debugger;
 		    console.log('This model has been initialized.');
 		    this.on('change', function(){
 		        console.log('- Values for this model have changed.');

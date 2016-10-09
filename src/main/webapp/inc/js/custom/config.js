@@ -29,18 +29,18 @@
     			'jquerytagsinput': '../../inc/js/library/jquery.tagsinput/src/jquery.tagsinput',
     			'morris': '../../inc/js/library/morris/morris.min',
     			'select2': '../../inc/js/library/select2/dist/js/select2.full.min',		
-    			'moment': '../../inc/js/standard/moment/moment.min',
-    			'daterangepicker': '../../inc/js/standard/datepicker/daterangepicker',
+    			'moment': '../../inc/js/library/moment/min/moment.min',
+    			'daterangepicker': '../../inc/js/library/bootstrap-daterangepicker/daterangepicker',
     			'dropzone': '../../inc/js/library/dropzone/dist/min/dropzone.min',
-    			'defaultDialogModalView': '../../inc/js/view/dialogs/DefaultDialogModalView',
-    			'updateProfilPicture': '../../inc/js/view/dialogs/updateProfilPicture',
+    			'defaultDialogModalView': '../../inc/js/pattern/view/dialogs/DefaultDialogModalView',
+    			'updateProfilPicture': '../../inc/js/pattern/view/dialogs/updateProfilPicture',
     			'testDialog': '../../inc/js/view/dialogs/testDialog',
-    			'text': '../../inc/js/standard/text-2.0.12',
-    			'user': '../../inc/js/model/User',
-    			'userView': '../../inc/js/view/user/UserView',
+    			'text': '../../inc/js/library/text/text-2.0.12',
+    			'user': '../../inc/js/pattern/model/User',
+    			'userView': '../../inc/js/pattern/view/user/UserView',
     			'bodyNav': '../../inc/js/pattern/view/menu/BodyNav',
     			'i18n' : '../../inc/js/standard/i18n',
-    			'handlebars': '../../inc/js/standard/handlebars-v4.0.5'
+    			'handlebars': '../../inc/js/library/handlebars/handlebars-v4.0.5'
     		
     		},
 
