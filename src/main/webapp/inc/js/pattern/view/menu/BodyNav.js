@@ -9,7 +9,7 @@
 	 'use strict';
 
 
-
+	
     var bodyNav = Backbone.View.extend({
     id:'001BodyNav'
     ,
@@ -25,8 +25,14 @@
     	  },
 
     	  initialize: function (options) {
-    		  
-    		  
+    		  var that=this;
+    		  $(window).bind("popstate", function(e) {
+    			 
+    			var url=window.location.pathname.split('/');
+    			  
+    			 that.loadPage(url[url.length-1]);
+    			  
+    			});
     	    // In Backbone 1.1.0, if you want to access passed options in
     	    // your view, you will need to save them as follows:
     	    this.loadPage($('#currentPage').val());
@@ -96,7 +102,7 @@
     			  }
     		  $('li[id="urlOn"]').attr('id', 'url');
     		  target.attr('id', 'urlOn');
-    		  this.loadPage(myUrl);
+    		  this.loadPage(myUrl, true);
     	  },
     	  close: function() {
     	    // executed when todo loses focus
@@ -105,13 +111,16 @@
     	  
     	 
     	  
-    	  loadPage:function(myUrl)
+    	  loadPage:function(myUrl,history)
     	  {
+    		  if(history&&history===true){
     		  try{
-    		  window.history.replaceState( {} , myUrl, myUrl );
+    			  var stateObj = { foo: myUrl };
+    		  window.history.pushState( stateObj , myUrl, myUrl );
     		  }catch(e)
     		  {
-    			  
+    			 console.error("error"); 
+    		  }
     		  }
     		  //delete view from the current page
     		  if(app.ListModel){

@@ -152,7 +152,8 @@
 			                    title: 'Signup succed',
 			                    text: 'Welcom '+firstName.val()+" you can now conect",
 			                    type: 'success',
-			                    styling: 'bootstrap3'
+			                    styling: 'bootstrap3',
+			                    delay:2000
 			                });
 				    
 				        },
@@ -161,7 +162,8 @@
 		                    title: 'Signup failed',
 		                    text: 'sorry '+firstName.val()+" please verify your informations :"+resultat.responseText,
 		                    type: 'error',
-		                    styling: 'bootstrap3'
+		                    styling: 'bootstrap3',
+		                    delay:1500
 		                });
 		    		  }
 				       ,

@@ -178,11 +178,13 @@
 			    
 			        },
 			    error : function(resultat, statut, erreur){
+			    	
 			    	new PNotify({
                     title: 'Connexion failed!',
                     text: 'Wrong login/password',
                     type: 'error',
-                    styling: 'bootstrap3'
+                    styling: 'bootstrap3',
+                    delay:1500
                 });
 			       },
 			        complete : function(resultat, statut){
