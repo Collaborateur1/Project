@@ -2,7 +2,7 @@
 // Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.11 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2016.06.27 à 02:14:57 PM CST 
+// Généré le : 2016.10.12 à 04:55:39 PM CST 
 //
 
 
@@ -45,27 +45,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Globalmenu.Section }
+     * Create an instance of {@link Globalmenu.Menu }
      * 
      */
-    public Globalmenu.Section createGlobalmenuSection() {
-        return new Globalmenu.Section();
+    public Globalmenu.Menu createGlobalmenuMenu() {
+        return new Globalmenu.Menu();
     }
 
     /**
-     * Create an instance of {@link Globalmenu.Section.Menu }
+     * Create an instance of {@link Globalmenu.Menu.Sousmenu }
      * 
      */
-    public Globalmenu.Section.Menu createGlobalmenuSectionMenu() {
-        return new Globalmenu.Section.Menu();
-    }
-
-    /**
-     * Create an instance of {@link Globalmenu.Section.Menu.Sousmenu }
-     * 
-     */
-    public Globalmenu.Section.Menu.Sousmenu createGlobalmenuSectionMenuSousmenu() {
-        return new Globalmenu.Section.Menu.Sousmenu();
+    public Globalmenu.Menu.Sousmenu createGlobalmenuMenuSousmenu() {
+        return new Globalmenu.Menu.Sousmenu();
     }
 
 }

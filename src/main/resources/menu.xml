@@ -1,65 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <globalmenu defaultpage="Dashboard">
-    <section>
-        <title>General</title>
+    
         <menu>
             <classe>fa fa-home</classe>
             <title>Home</title>
             <sousmenu>
                 <template>cloud</template>
                 <title>Dashboard</title>
+                 <underclasse>icon-bar-chart</underclasse>
             </sousmenu>
             <sousmenu>
                 <template>Dashboard2</template>
                 <title>Dashboard2</title>
+                <underclasse>icon-bulb</underclasse>
             </sousmenu>
             <sousmenu>
                 <template>Dashboard3</template>
                 <title>Dashboard3</title>
+                <underclasse>icon-graph</underclasse>
             </sousmenu>
         </menu>
-        <menu>
-            <classe>fa fa-edit</classe>
-            <title>Forms</title>
-            <sousmenu>
-                <template>General Form</template>
-                <title>General Form</title>
-            </sousmenu>
-            <sousmenu>
-                <template>Advanced Components</template>
-                <title>Advanced Components</title>
-            </sousmenu>
-            <sousmenu>
-                <template>Form Validation</template>
-                <title>Form Validation</title>
-            </sousmenu>
-            <sousmenu>
-                <template>Form Wizard</template>
-                <title>Form Wizard</title>
-            </sousmenu>
-            <sousmenu>
-                <template>Form Upload</template>
-                <title>Form Upload</title>
-            </sousmenu>
-            <sousmenu>
-                <template>Form Buttons</template>
-                <title>Form Buttons</title>
-            </sousmenu>
-        </menu>
-    </section>
-    <section>
-        <title>Admin</title>
         <menu>
             <classe>fa cogs</classe>
             <title>Setting</title>
             <sousmenu>
                 <template>profile</template>
                 <title>My account</title>
+                <underclasse>icon-graph</underclasse>
             </sousmenu>
 			<sousmenu>
                 <template>setting</template>
                 <title>My Setting </title>
+                <underclasse>icon-graph</underclasse>
             </sousmenu>
         </menu>
-    </section>
+   
 </globalmenu>

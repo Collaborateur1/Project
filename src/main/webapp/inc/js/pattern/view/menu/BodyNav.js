@@ -14,14 +14,13 @@
     id:'001BodyNav'
     ,
     	  //tagName:  'div',
-    	  el: '#sidebar-menu', 
+    	  el: '.page-sidebar-menu', 
     	  // Cache the template function for a single item.
 
     	  events: {
     	   
     	   
-    	    'click #url': 'change_menu'/*,
-    	    'mouseover #menu': 'activeMenu'*/
+    	    'click #url': 'change_menu'
     	  },
 
     	  initialize: function (options) {
@@ -39,42 +38,11 @@
     	    this.options = options || {};
     	   // this.listenTo(app.Todos, 'reset', this.render);
     	    //this.listenTo(this.model, 'change', this.render);
-    	    
+    	    debugger;
     	    console.log(this.model);
     	    
     	  },
-       activeMenu: function(e){
-    	   
-    	   	e.stopImmediatePropagation();
-        	var $li=$(e.currentTarget);
-        	debugger;
-        	if($('#sidebar-menu').find('li[id="menuActif"]').size()!=0){
-        		$('#sidebar-menu').find('li[id="menuActif"]').attr('id','menu');
-            }
-        	$li.attr('id','menuActif');
-        	
-        	
-    
-            if ($li.is('.active')) {
-                $li.removeClass('active active-sm');
-                $('ul:first', $li).slideUp(function() {
-                	$TEST();
-                });
-            } else {
-                // prevent closing menu if we are on child menu
-                if (!$li.parent().is('.child_menu')) {
-                    $SIDEBAR_MENU.find('li').removeClass('active active-sm');
-                    $SIDEBAR_MENU.find('li ul').slideUp();
-                }
-                
-                $li.addClass('active');
-
-                $('ul:first', $li).slideDown(function() {
-                	$TEST();
-                });
-            }
-        
-       },
+ 
     	  // Re-render the title of the todo item.
     	  render: function() {
     		  this.$el.html("jai changé");
@@ -88,20 +56,25 @@
     	  change_menu:function(e) {
     		  
     		  var target =  $(e.currentTarget);
-    		   
+    		   debugger;
     		  var myUrl=target.children().attr("href") 
     		  e.stopImmediatePropagation();
-    		  if($('li[id="urlOn"]'))
+    		  if($('#MenuOn').length>0)
     			  {
-    			  $('li[id="urlOn"]').attr('class','');
+    			  $('#MenuOn').removeClass('active open');
+    			  $('#MenuOn').removeAttr('id');
+    			  target.parent().parent().children().first().children().last().removeClass('selected');
     			  }
-    		 
-    		  if($('li[class="current-page"]'))
-    			  {
-    			  $('li[class="current-page"]').attr('class','');
-    			  }
-    		  $('li[id="urlOn"]').attr('id', 'url');
-    		  target.attr('id', 'urlOn');
+    		  if($('#underMenuOn').length>0){
+    			  $('#underMenuOn').removeClass('active open');
+    			  $('#underMenuOn').attr('id','url');
+    		  }
+  
+    		  target.parent().parent().addClass('active open');
+    		  target.parent().parent().attr('id','MenuOn');
+    		  target.addClass('active open');
+    		  target.attr('id','underMenuOn');
+    		  target.parent().parent().children().first().children().last().addClass('selected');
     		  this.loadPage(myUrl, true);
     	  },
     	  close: function() {
@@ -128,7 +101,7 @@
     		  app.ListView._reset();
     		  }
     		  var that=this;
-    		  $('.content').fadeOut(250);
+    		  $('.dynamic-content').fadeOut(250);
     	  	$.ajax({
     	  	       url : myUrl, // La ressource ciblée
     	  	       type : 'GET', // Le type de la requête HTTP. 
@@ -140,17 +113,11 @@
     	  	    	  
     	  	    	 
     	  	    	
-    	  	    	 $('.content').css("display", "none").html(code_html).fadeIn(500);
+    	  	    	 $('.dynamic-content').css("display", "none").html(code_html).fadeIn(500);
     	  	    	/* debugger;
     	  	    	 $($('div[role="main"]').children()[0]).code_html;
     	  	    	  $('div[role="main"]').html(code_html);
     	  	    	//$($('div[role="main"]').children()[0]).fadeIn();*/
-    	  	    	if($(document).width() <992 )
-    	  	    	{
-    	  	    		that.$('ul[style="display: block;"]').attr('style','display: none;');
-                        that.$('li[class="active"]').attr('class','active-sm');
-    	  	    	  //Do Something
-    	  	    	}
     	  	    	
     	  	        },
     	  	    error : function(resultat, statut, erreur){

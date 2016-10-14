@@ -11,7 +11,16 @@
              'pnotify',
              'smartresize',
              'raphael',
-             'bodyNav'
+             'bodyNav',
+             'jscookie',
+             'jqueryslimscroll',
+             'jqueryblockui',
+             'bootstrapswitch',
+             'base',
+             'layout',
+             'demo',
+             'quicksidebar',
+             'quicknav'
              
              ],
              function(
@@ -25,7 +34,16 @@
                     pnotify,
                     smartresize,
                     raphael,
-                    bodyNav
+                    bodyNav,
+                    jscookie,
+                    jqueryslimscroll,
+                    jqueryblockui,
+                    bootstrapswitch,
+                    base,
+                    layout,
+                    demo,
+                    quicksidebar,
+                    quicknav
                     
             ) {
 	

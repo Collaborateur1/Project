@@ -40,7 +40,15 @@
     			'userView': '../../inc/js/pattern/view/user/UserView',
     			'bodyNav': '../../inc/js/pattern/view/menu/BodyNav',
     			'i18n' : '../../inc/js/standard/i18n',
-    			'handlebars': '../../inc/js/library/handlebars/handlebars-v4.0.5'
+    			'jscookie': '../../inc/js/library/js-cookie/js.cookie.min',
+    			'jqueryslimscroll': '../../inc/js/library/jquery-slimscroll/jquery.slimscroll.min',
+    			'jqueryblockui': '../../inc/js/library/jqueryblockui/jquery.blockui.min',
+    			'bootstrapswitch': '../../inc/js/library/bootstrap-switch/js/bootstrap-switch.min',
+    			'base': '../../inc/js/library/app/app.min',
+        		'layout': '../../inc/js/library/layout2/scripts/layout.min',
+        		'demo': '../../inc/js/library/layout2/scripts/demo.min',
+    			'quicksidebar': '../../inc/js/library/global/scripts/quick-sidebar.min',
+    			'quicknav': '../../inc/js/library/global/scripts/quick-nav.min'
     		
     		},
 
@@ -64,6 +72,22 @@
     			jquery: {
     				deps : ['raphael'],
     				exports: 'jquery'
+    			},
+    			base: {
+    				deps : ['bootstrap'],
+    				exports: 'base'
+    			},
+    			layout: {
+    				deps : ['base'],
+    				exports: 'layout'
+    			},
+    			demo: {
+    				deps : ['base'],
+    				exports: 'demo'
+    			},
+    			quicksidebar: {
+    				deps : ['base'],
+    				exports: 'quicksidebar'
     			},
     			
     			smartresize: {

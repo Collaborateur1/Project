@@ -312,7 +312,7 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
             {
                 Globalmenu object =(Globalmenu) SpringFactory.getJab2Marshaller().unmarshal( new StreamSource(new StringReader(dusParameters.toString())));
 
-            this.getSection().addAll( object.getSection());
+            this.getMenu().addAll( object.getMenu());
             this.setDefaultpage( object.getDefaultpage() );
             this.setCurrentpage(object.getDefaultpage());
             }

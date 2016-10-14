@@ -2,7 +2,7 @@
 // Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.11 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2016.06.27 à 02:14:57 PM CST 
+// Généré le : 2016.10.12 à 04:55:39 PM CST 
 //
 
 
@@ -29,31 +29,21 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="section" maxOccurs="unbounded"&gt;
+ *         &lt;element name="menu" maxOccurs="unbounded"&gt;
  *           &lt;complexType&gt;
  *             &lt;complexContent&gt;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *                 &lt;sequence&gt;
+ *                   &lt;element name="classe" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *                   &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *                   &lt;element name="menu" maxOccurs="unbounded"&gt;
+ *                   &lt;element name="sousmenu" maxOccurs="unbounded"&gt;
  *                     &lt;complexType&gt;
  *                       &lt;complexContent&gt;
  *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *                           &lt;sequence&gt;
- *                             &lt;element name="classe" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *                             &lt;element name="template" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *                             &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *                             &lt;element name="sousmenu" maxOccurs="unbounded"&gt;
- *                               &lt;complexType&gt;
- *                                 &lt;complexContent&gt;
- *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *                                     &lt;sequence&gt;
- *                                       &lt;element name="template" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *                                       &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *                                     &lt;/sequence&gt;
- *                                   &lt;/restriction&gt;
- *                                 &lt;/complexContent&gt;
- *                               &lt;/complexType&gt;
- *                             &lt;/element&gt;
+ *                             &lt;element name="underclasse" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *                           &lt;/sequence&gt;
  *                         &lt;/restriction&gt;
  *                       &lt;/complexContent&gt;
@@ -76,45 +66,45 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "section"
+    "menu"
 })
 @XmlRootElement(name = "globalmenu")
 public class Globalmenu {
 
     @XmlElement(required = true)
-    protected List<Globalmenu.Section> section;
+    protected List<Globalmenu.Menu> menu;
     @XmlAttribute(name = "defaultpage")
     protected String defaultpage;
     @XmlAttribute(name = "currentpage")
     protected String currentpage;
 
     /**
-     * Gets the value of the section property.
+     * Gets the value of the menu property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the section property.
+     * This is why there is not a <CODE>set</CODE> method for the menu property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSection().add(newItem);
+     *    getMenu().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Globalmenu.Section }
+     * {@link Globalmenu.Menu }
      * 
      * 
      */
-    public List<Globalmenu.Section> getSection() {
-        if (section == null) {
-            section = new ArrayList<Globalmenu.Section>();
+    public List<Globalmenu.Menu> getMenu() {
+        if (menu == null) {
+            menu = new ArrayList<Globalmenu.Menu>();
         }
-        return this.section;
+        return this.menu;
     }
 
     /**
@@ -176,26 +166,16 @@ public class Globalmenu {
      *   &lt;complexContent&gt;
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
      *       &lt;sequence&gt;
+     *         &lt;element name="classe" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
      *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-     *         &lt;element name="menu" maxOccurs="unbounded"&gt;
+     *         &lt;element name="sousmenu" maxOccurs="unbounded"&gt;
      *           &lt;complexType&gt;
      *             &lt;complexContent&gt;
      *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
      *                 &lt;sequence&gt;
-     *                   &lt;element name="classe" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+     *                   &lt;element name="template" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
      *                   &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-     *                   &lt;element name="sousmenu" maxOccurs="unbounded"&gt;
-     *                     &lt;complexType&gt;
-     *                       &lt;complexContent&gt;
-     *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-     *                           &lt;sequence&gt;
-     *                             &lt;element name="template" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-     *                             &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-     *                           &lt;/sequence&gt;
-     *                         &lt;/restriction&gt;
-     *                       &lt;/complexContent&gt;
-     *                     &lt;/complexType&gt;
-     *                   &lt;/element&gt;
+     *                   &lt;element name="underclasse" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
      *                 &lt;/sequence&gt;
      *               &lt;/restriction&gt;
      *             &lt;/complexContent&gt;
@@ -211,15 +191,42 @@ public class Globalmenu {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
+        "classe",
         "title",
-        "menu"
+        "sousmenu"
     })
-    public static class Section {
+    public static class Menu {
 
+        @XmlElement(required = true)
+        protected String classe;
         @XmlElement(required = true)
         protected String title;
         @XmlElement(required = true)
-        protected List<Globalmenu.Section.Menu> menu;
+        protected List<Globalmenu.Menu.Sousmenu> sousmenu;
+
+        /**
+         * Obtient la valeur de la propriété classe.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getClasse() {
+            return classe;
+        }
+
+        /**
+         * Définit la valeur de la propriété classe.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setClasse(String value) {
+            this.classe = value;
+        }
 
         /**
          * Obtient la valeur de la propriété title.
@@ -246,32 +253,32 @@ public class Globalmenu {
         }
 
         /**
-         * Gets the value of the menu property.
+         * Gets the value of the sousmenu property.
          * 
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the menu property.
+         * This is why there is not a <CODE>set</CODE> method for the sousmenu property.
          * 
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
-         *    getMenu().add(newItem);
+         *    getSousmenu().add(newItem);
          * </pre>
          * 
          * 
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link Globalmenu.Section.Menu }
+         * {@link Globalmenu.Menu.Sousmenu }
          * 
          * 
          */
-        public List<Globalmenu.Section.Menu> getMenu() {
-            if (menu == null) {
-                menu = new ArrayList<Globalmenu.Section.Menu>();
+        public List<Globalmenu.Menu.Sousmenu> getSousmenu() {
+            if (sousmenu == null) {
+                sousmenu = new ArrayList<Globalmenu.Menu.Sousmenu>();
             }
-            return this.menu;
+            return this.sousmenu;
         }
 
 
@@ -285,20 +292,9 @@ public class Globalmenu {
          *   &lt;complexContent&gt;
          *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
          *       &lt;sequence&gt;
-         *         &lt;element name="classe" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+         *         &lt;element name="template" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
          *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-         *         &lt;element name="sousmenu" maxOccurs="unbounded"&gt;
-         *           &lt;complexType&gt;
-         *             &lt;complexContent&gt;
-         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-         *                 &lt;sequence&gt;
-         *                   &lt;element name="template" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-         *                   &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-         *                 &lt;/sequence&gt;
-         *               &lt;/restriction&gt;
-         *             &lt;/complexContent&gt;
-         *           &lt;/complexType&gt;
-         *         &lt;/element&gt;
+         *         &lt;element name="underclasse" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
          *       &lt;/sequence&gt;
          *     &lt;/restriction&gt;
          *   &lt;/complexContent&gt;
@@ -309,41 +305,41 @@ public class Globalmenu {
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
-            "classe",
+            "template",
             "title",
-            "sousmenu"
+            "underclasse"
         })
-        public static class Menu {
+        public static class Sousmenu {
 
             @XmlElement(required = true)
-            protected String classe;
+            protected String template;
             @XmlElement(required = true)
             protected String title;
             @XmlElement(required = true)
-            protected List<Globalmenu.Section.Menu.Sousmenu> sousmenu;
+            protected String underclasse;
 
             /**
-             * Obtient la valeur de la propriété classe.
+             * Obtient la valeur de la propriété template.
              * 
              * @return
              *     possible object is
              *     {@link String }
              *     
              */
-            public String getClasse() {
-                return classe;
+            public String getTemplate() {
+                return template;
             }
 
             /**
-             * Définit la valeur de la propriété classe.
+             * Définit la valeur de la propriété template.
              * 
              * @param value
              *     allowed object is
              *     {@link String }
              *     
              */
-            public void setClasse(String value) {
-                this.classe = value;
+            public void setTemplate(String value) {
+                this.template = value;
             }
 
             /**
@@ -371,115 +367,27 @@ public class Globalmenu {
             }
 
             /**
-             * Gets the value of the sousmenu property.
+             * Obtient la valeur de la propriété underclasse.
              * 
-             * <p>
-             * This accessor method returns a reference to the live list,
-             * not a snapshot. Therefore any modification you make to the
-             * returned list will be present inside the JAXB object.
-             * This is why there is not a <CODE>set</CODE> method for the sousmenu property.
-             * 
-             * <p>
-             * For example, to add a new item, do as follows:
-             * <pre>
-             *    getSousmenu().add(newItem);
-             * </pre>
-             * 
-             * 
-             * <p>
-             * Objects of the following type(s) are allowed in the list
-             * {@link Globalmenu.Section.Menu.Sousmenu }
-             * 
-             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
              */
-            public List<Globalmenu.Section.Menu.Sousmenu> getSousmenu() {
-                if (sousmenu == null) {
-                    sousmenu = new ArrayList<Globalmenu.Section.Menu.Sousmenu>();
-                }
-                return this.sousmenu;
+            public String getUnderclasse() {
+                return underclasse;
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * Définit la valeur de la propriété underclasse.
              * 
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
-             * 
-             * <pre>
-             * &lt;complexType&gt;
-             *   &lt;complexContent&gt;
-             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-             *       &lt;sequence&gt;
-             *         &lt;element name="template" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-             *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-             *       &lt;/sequence&gt;
-             *     &lt;/restriction&gt;
-             *   &lt;/complexContent&gt;
-             * &lt;/complexType&gt;
-             * </pre>
-             * 
-             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
              */
-            @XmlAccessorType(XmlAccessType.FIELD)
-            @XmlType(name = "", propOrder = {
-                "template",
-                "title"
-            })
-            public static class Sousmenu {
-
-                @XmlElement(required = true)
-                protected String template;
-                @XmlElement(required = true)
-                protected String title;
-
-                /**
-                 * Obtient la valeur de la propriété template.
-                 * 
-                 * @return
-                 *     possible object is
-                 *     {@link String }
-                 *     
-                 */
-                public String getTemplate() {
-                    return template;
-                }
-
-                /**
-                 * Définit la valeur de la propriété template.
-                 * 
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
-                 *     
-                 */
-                public void setTemplate(String value) {
-                    this.template = value;
-                }
-
-                /**
-                 * Obtient la valeur de la propriété title.
-                 * 
-                 * @return
-                 *     possible object is
-                 *     {@link String }
-                 *     
-                 */
-                public String getTitle() {
-                    return title;
-                }
-
-                /**
-                 * Définit la valeur de la propriété title.
-                 * 
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
-                 *     
-                 */
-                public void setTitle(String value) {
-                    this.title = value;
-                }
-
+            public void setUnderclasse(String value) {
+                this.underclasse = value;
             }
 
         }
