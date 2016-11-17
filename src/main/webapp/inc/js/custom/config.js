@@ -48,7 +48,8 @@
         		'layout': '../../inc/js/library/layout2/scripts/layout.min',
         		'demo': '../../inc/js/library/layout2/scripts/demo.min',
     			'quicksidebar': '../../inc/js/library/global/scripts/quick-sidebar.min',
-    			'quicknav': '../../inc/js/library/global/scripts/quick-nav.min'
+    			'quicknav': '../../inc/js/library/global/scripts/quick-nav.min',
+    			'handlebars': '../../inc/js/library/handlebars/handlebars-v4.0.5'
     		
     		},
 

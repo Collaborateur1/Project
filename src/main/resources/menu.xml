@@ -2,7 +2,7 @@
 <globalmenu defaultpage="Dashboard">
     
         <menu>
-            <classe>fa fa-home</classe>
+            <classe>icon-home</classe>
             <title>Home</title>
             <sousmenu>
                 <template>cloud</template>
@@ -21,7 +21,7 @@
             </sousmenu>
         </menu>
         <menu>
-            <classe>fa cogs</classe>
+            <classe>icon-bar-chart</classe>
             <title>Setting</title>
             <sousmenu>
                 <template>profile</template>

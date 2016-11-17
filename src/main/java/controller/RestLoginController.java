@@ -45,8 +45,8 @@ public class RestLoginController extends WebContext {
 
         
         try {
-            
-            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( "login" ).apply( foward ) ).build();
+            String loginPage=DefaultProperties.getProperties( "connexionPage" );
+            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( loginPage).apply( foward ) ).build();
 
         } catch (  Exception e ) {
             // TODO Auto-generated catch block
@@ -76,7 +76,7 @@ public class RestLoginController extends WebContext {
     @javax.annotation.security.PermitAll
     @POST
     @Path( "/signin" )
-    public Response login( @FormParam( "email" ) String userName,
+    public Response login( @FormParam( "username" ) String userName,
             @FormParam( "password" ) String password,
             @Context HttpServletRequest httpRequest,
             @FormParam( "fowardTo" ) String foward) throws URISyntaxException {
