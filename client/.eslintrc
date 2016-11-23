@@ -1,0 +1,24 @@
+{
+  "extends": "react-app",
+  "plugins": [
+    "react"
+  ],
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "rules": {
+    "no-console": ["error"],
+    "no-cond-assign": ["error"],
+    "no-constant-condition": ["error", { "checkLoops": false }],
+    "no-unused-vars": ["error", { "vars": "local", "args": "all" }],
+    "no-var": ["error"],
+    "quotes": ["error", "backtick"],
+    "arrow-spacing": ["error"],
+    "arrow-body-style": ["error", "as-needed"],
+    "no-const-assign": ["error"],
+    "template-curly-spacing": ["error", "never"],
+    "eqeqeq": ["error"],
+    "semi": ["error", "never"]
+  }
+}

@@ -1,0 +1,16 @@
+/target/
+
+# eclipse settings
+.classpath
+.project
+.settings
+
+# hibernate db settings
+src/main/resources/hibernate.cfg.xml
+src/main/resources/options.properties
+
+# theme 
+client/metronic
+
+# generated
+client/build
