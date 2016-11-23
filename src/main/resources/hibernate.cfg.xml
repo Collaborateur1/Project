@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory >
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+  <property name="hbm2ddl.auto">update</property>
+   <!--<property name="hbm2ddl.auto">create</property> <property name="hbm2ddl.auto">update</property> -->
+  <property name="connection.pool_size">1</property>
+  <property name="hibernate.connection.provider_class">com.jolbox.bonecp.provider.BoneCPConnectionProvider</property>
+  <property name="bonecp.maxConnectionAgeInMinutes">5</property>
+  <property name="bonecp.maxConnectionsPerPartition">5</property>
+  <property name="bonecp.minConnectionsPerPartition">1</property>
+  <property name="bonecp.acquireIncrement">2</property>
+  <property name="bonecp.partitionCount">1</property>
+  
+  <property name="bonecp.idleConnectionTestPeriodInMinutes">10</property>
+  <property name="bonecp.jdbcUrl">jdbc:mysql://localhost:3306/puls</property>
+  <property name="bonecp.driverClass">com.mysql.jdbc.Driver</property>
+  <property name="bonecp.user">puls</property>
+  <property name="bonecp.password">antec972</property>
+  <!-- <property name="hibernate.enable_lazy_load_no_trans">true</property> -->
+  <property name="hibernate.enable_lazy_load_no_trans">false</property>
+  <mapping class="model.bean.DefaultUser"/>
+  <mapping class="model.custom.UserCustom"/>
+   <mapping class="model.bean.DefaultEnterprise"/>
+  <mapping class="model.custom.EnterpriseCustom"/>
+  <mapping class="model.bean.DefaultCustomer"/> 
+    <mapping class="model.custom.CustomerCustom"/>
+    <mapping class="model.bean.DefaultScheduleTask"/>
+     <mapping class="model.custom.ScheduleTaskCustom"/>
+     <mapping class="model.bean.DefaultBean"/> 
+       
+  <!-- Map your custom object -->
+  
+  
+  <!-- End Custom Map -->
+ </session-factory>
+</hibernate-configuration>
