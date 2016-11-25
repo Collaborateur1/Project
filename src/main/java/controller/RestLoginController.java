@@ -69,7 +69,7 @@ public class RestLoginController extends WebContext {
             URI targetURIForRedirection = new URI( DefaultProperties.getProperties( "login" ) );
             
             
-            return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN,"", 1,
+            return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN,"offine", 1,
                     targetURIForRedirection, true );
         } catch ( Exception ex ) {
             return Response.status( Response.Status.BAD_REQUEST )
