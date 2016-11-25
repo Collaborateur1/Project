@@ -63,9 +63,14 @@ public class RestLoginController extends WebContext {
     public Response logout( @Context HttpServletRequest httpRequest ) throws URISyntaxException {
 
         try {
+            if("true".equals( DefaultProperties.getOption( "actorCache" ).toLowerCase()))
             SpringFactory.getUsersProvider().revokeUser(getUser().getDusToken());
+            
             URI targetURIForRedirection = new URI( DefaultProperties.getProperties( "login" ) );
-            return Response.seeOther( targetURIForRedirection ).build();
+            
+            
+            return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN,"", 1,
+                    targetURIForRedirection, true );
         } catch ( Exception ex ) {
             return Response.status( Response.Status.BAD_REQUEST )
                     .entity( new Viewable( "/failure" ) ).build();
@@ -97,27 +102,33 @@ public class RestLoginController extends WebContext {
             UserCustom user = SpringFactory.getUserJob().getUser( userName, password );
 
         
-            if ( null != user ) {
+            
 
                 String sessionId = "", newSessionId = "";
 
-                long maxAge;
-                try {
-                    maxAge = Long.valueOf( DefaultProperties.getOption( "tokenMaxAge" ) );
-                } catch ( Exception ex ) {
-                    logger.error( "option TockenMaxAge must be a int value default=2000", ex );
-                    maxAge = 2000;
-                }
+                
 
                 sessionId = (String) httpRequest.getAttribute( "Token" );
-
+            if ( user == null ) {
+                user = new UserCustom();
+            }
                 try {
                     if ( valideToken )
                         valideToken = Utils.AuthTokenIsValide( user, sessionId );
                 } catch ( Exception ex ) {
                     valideToken = false;
                 }
-
+                
+                if ( null != user ) {
+                    
+                long maxAge;
+                try {
+                    maxAge = Long.valueOf( DefaultProperties.getOption( "tokenMaxAge" ) );
+                } catch ( Exception ex ) {
+                    logger.error( "option TockenMaxAge must be a int value default=2000", ex );
+                    maxAge = 2000;
+                } 
+                
                 if ( !valideToken ) {
 
                     try {

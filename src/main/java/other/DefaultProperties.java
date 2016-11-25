@@ -29,7 +29,7 @@ public class DefaultProperties implements ServletContextListener {
     public static String getProperties(String name)
     {
         
-        return prop.getProperty( name );
+        return prop.getProperty( name,"null" );
     }
     
     public static String geCacheProperties(String name)

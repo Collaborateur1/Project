@@ -75,8 +75,7 @@ public class Utils {
     }
 
     public static boolean AuthTokenIsValide(UserCustom user, String token){
-        if(user==null)
-            return false;
+       
                 return    TokenBuilder.tokenAuthIsValide( token, user ); 
     }
 

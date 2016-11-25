@@ -37,7 +37,7 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
             requestContext.abortWith( Response.status( Response.Status.OK ).build() );
             return;
         }
-        
+       
         
         String sessionId="";
         try{
@@ -48,8 +48,8 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
           
        
         
-        }catch(Exception e){
-            logger.debug( e );
+        }catch(Exception ex){
+            logger.error( ex.getStackTrace()[0].getMethodName(),ex);
            // throw new  WebApplicationException( Response.status( Response.Status.UNAUTHORIZED ).build());
             
             
@@ -58,22 +58,34 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
       
         UserCustom user = null;
         String uri=requestContext.getUriInfo().getPath( true ).toString();
-       
+        if("".equals( uri )){
+            URI targetURIForRedirection=null;
+            try {
+                
+                targetURIForRedirection = new URI(DefaultProperties.getProperties( "login" ));
+            } catch ( URISyntaxException ex ) {
+                // TODO Auto-generated catch block
+                logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+            }
+            throw new  WebApplicationException(Response.seeOther(targetURIForRedirection).build());
+        }
             // Load session object from repository
         if(sessionId==null)
             sessionId="";
         
         user = SpringFactory.getUsersProvider().getCacheUserSession(sessionId);
-            
+            if(user==null){
+                user=new UserCustom();
+            }
             boolean valideToken=false;
-            boolean sessionToken=true;
+           
             try{
             if(user!=null){
                 valideToken=Utils.AuthTokenIsValide(user,sessionId);
-                sessionToken=valideToken;
+                
             }
             }catch(Exception ex){
-                logger.debug( "a error occure with function 'AuthTokenIsValide'",ex );
+                logger.error( ex.getStackTrace()[0].getMethodName(),ex);
                 valideToken=false; 
             }
             
@@ -81,10 +93,15 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
              {
                  URI targetURIForRedirection=null;
                  try {
-                     targetURIForRedirection = new URI(DefaultProperties.getProperties( "login" )+"?fowardTo="+uri);
-                 } catch ( URISyntaxException e ) {
+                     if("".equals( uri )){
+                         uri="";
+                 }else{
+                     uri="?fowardTo="+uri;
+                 }
+                     targetURIForRedirection = new URI(DefaultProperties.getProperties( "login" )+uri);
+                 } catch ( URISyntaxException ex ) {
                      // TODO Auto-generated catch block
-                     e.printStackTrace();
+                     logger.error( ex.getStackTrace()[0].getMethodName(),ex);
                  }
          
                  throw new  WebApplicationException(Response.seeOther(targetURIForRedirection).build());
