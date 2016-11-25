@@ -18,6 +18,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.naming.OperationNotSupportedException;
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.log4j.Logger;
+
 import com.auth0.jwt.Algorithm;
 import com.auth0.jwt.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import com.auth0.jwt.internal.com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -29,11 +31,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import model.bean.DefaultUser.Role;
 import model.custom.UserCustom;
 import other.DefaultProperties;
 
 public class TokenBuilder {
-    
+    private static Logger   logger       = Logger.getLogger( TokenBuilder.class );
     private final byte[] secret=DefaultProperties.getOption( "secretKey" ).getBytes();
     public static  String createAuthToken(String id, String issuer, String subject, String mdp, long ttlMillis) {
 
@@ -95,21 +98,39 @@ public class TokenBuilder {
         return builder.compact();
         }
     
-    public static boolean tokenAuthIsValide(String token,UserCustom user)
-    {
-        
-        Claims claims = Jwts.parser()         
-                .setSigningKey(DatatypeConverter.parseBase64Binary(DefaultProperties.getOption( "secretKey" )))
-                .parseClaimsJws(token).getBody();
-        boolean valide;
-        
-        valide=claims.getIssuer().equals( user.getDusEmail() )
-        &&claims.getSubject().equals( HttpHeaderNames.AUTH_TOKEN )
-        &&claims.getId().trim().equals( user.getDusID().toString())
-        &&claims.get( "mdp").equals( user.getDusMdp() );
+    public static boolean tokenAuthIsValide( String token, UserCustom user ) {
+        boolean valide = false;
+        Claims claims = null;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey( DatatypeConverter.parseBase64Binary( DefaultProperties.getOption( "secretKey" ) ) )
+                    .parseClaimsJws( token ).getBody();
+            
+            String actorCacheOption=DefaultProperties.getOption( "actorCache" );
+            valide=true;
+            if("true".equals( actorCacheOption.toLowerCase())) {
+                if(user==null)
+                    throw new Exception("No valide user for this tocken");
+            valide = claims.getIssuer().equals( user.getDusEmail() )
+                    && claims.getSubject().equals( HttpHeaderNames.AUTH_TOKEN )
+                    && claims.getId().trim().equals( user.getDusID().toString() )
+                    && claims.get( "mdp" ).equals( user.getDusMdp() );
+
+            }else{
+                
+                user.setDusEmail( claims.getIssuer() );
+               user.setDusID( Long.parseLong(claims.getId().trim()));
+               user.setDusToken( token );
+               user.addRole( Role.Connected );
+            }
+        } catch ( Exception ex ) {
+            logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+            valide=false;
+        }
+
+       
         return valide;
-        
-        
+
     }
     
     public static boolean tokenServiceKeyIsValide(String token,String ip)
