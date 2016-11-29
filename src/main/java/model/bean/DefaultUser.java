@@ -1,8 +1,6 @@
 package model.bean;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
@@ -20,10 +18,14 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.dao.Executable;
 import model.menu.Globalmenu;
@@ -35,7 +37,7 @@ import other.SpringFactory;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class DefaultUser extends Globalmenu implements Serializable, Executable ,java.security.Principal {
    
-    
+    private static Logger logger = Logger.getLogger( DefaultUser.class );
     public enum Role {
         Editor, Visitor, Contributor,Connected
     };
@@ -268,7 +270,7 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
         
         private void loadDefaultMenu()
         {
-           
+           /*
             FileReader fr = null;
             BufferedReader br = null;
            
@@ -298,12 +300,12 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
                 
             } catch ( IOException e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( e.getStackTrace()[0].getMethodName(),e);
             }
             
-         }
+         }*/
             
-            
+            parseJsonMenu(); 
             
         }
         
@@ -316,6 +318,36 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
             this.setDefaultpage( object.getDefaultpage() );
             this.setCurrentpage(object.getDefaultpage());
             }
+        }
+        private void parseJsonMenu(){
+            
+            ObjectMapper mapper = new ObjectMapper();
+            Resource resource = new ClassPathResource("menu.json");
+            File f=null;
+            try {
+                f=resource.getFile();
+            } catch ( IOException e1 ) {
+                // TODO Auto-generated catch block
+                logger.error( e1.getStackTrace()[0].getMethodName(),e1);
+            }
+            //JSON from file to Object
+            try {
+                Globalmenu object = mapper.readValue(f, Globalmenu.class);
+                this.getMenu().addAll( object.getMenu());
+                this.setDefaultpage( object.getDefaultpage() );
+                this.setCurrentpage(object.getDefaultpage());
+            } catch ( JsonParseException e ) {
+                // TODO Auto-generated catch block
+                logger.error( e.getStackTrace()[0].getMethodName(),e);
+            } catch ( JsonMappingException e ) {
+                // TODO Auto-generated catch block
+                logger.error( e.getStackTrace()[0].getMethodName(),e);
+            } catch ( IOException e ) {
+                // TODO Auto-generated catch block
+                logger.error( e.getStackTrace()[0].getMethodName(),e);
+            }
+
+        
         }
         public void updateCurrentPage(String st)
         {
