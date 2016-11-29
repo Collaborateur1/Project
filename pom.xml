@@ -11,7 +11,7 @@
   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.0.0.RELEASE</spring.version>
-		  <jdk.version>1.7</jdk.version>
+		  <jdk.version>1.8</jdk.version>
 		   <jersey2.version>2.19</jersey2.version>
         <jaxrs.version>2.0.1</jaxrs.version>
 		  <quartz.version>2.2.1</quartz.version>
@@ -94,7 +94,7 @@
 		<dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-core</artifactId>
-	<version>4.2.12.Final</version>
+	<version>4.3.11.Final</version>
 </dependency>
 <dependency>
    <groupId>org.javassist</groupId>
@@ -113,8 +113,14 @@
     <artifactId>javaetmoi-hibernate5-hydrate</artifactId>
     <version>2.3</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+<dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+    <version>2.5.1</version>
+</dependency>
 
-    	<dependency>
+  <!--   	<dependency>
 	<groupId>com.jolbox</groupId>
 	<artifactId>bonecp</artifactId>
 	<version>0.8.0.RELEASE</version>
@@ -124,7 +130,7 @@
 	<artifactId>bonecp-provider</artifactId>
 	<version>0.8.0-alpha1</version>
 </dependency>
-
+-->
 <dependency>
 	<groupId>log4j</groupId>
 	<artifactId>log4j</artifactId>

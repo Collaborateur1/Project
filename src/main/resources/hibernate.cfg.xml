@@ -4,22 +4,21 @@
 <hibernate-configuration>
  <session-factory >
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+ <!--  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>--> 
   <property name="hbm2ddl.auto">update</property>
    <!--<property name="hbm2ddl.auto">create</property> <property name="hbm2ddl.auto">update</property> -->
-  <property name="connection.pool_size">1</property>
-  <property name="hibernate.connection.provider_class">com.jolbox.bonecp.provider.BoneCPConnectionProvider</property>
-  <property name="bonecp.maxConnectionAgeInMinutes">5</property>
-  <property name="bonecp.maxConnectionsPerPartition">5</property>
-  <property name="bonecp.minConnectionsPerPartition">1</property>
-  <property name="bonecp.acquireIncrement">2</property>
-  <property name="bonecp.partitionCount">1</property>
-  
+  <property name="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>
+  <property name="hibernate.hikari.minimumIdle">5</property>
+  <property name="hibernate.hikari.maximumPoolSize">10</property>
+  <property name="hibernate.hikari.idleTimeout">300000</property>
+  <property name="hibernate.hikari.dataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</property>
   <property name="bonecp.idleConnectionTestPeriodInMinutes">10</property>
-  <property name="bonecp.jdbcUrl">jdbc:mysql://localhost:3306/puls</property>
-  <property name="bonecp.driverClass">com.mysql.jdbc.Driver</property>
-  <property name="bonecp.user">puls</property>
-  <property name="bonecp.password">antec972</property>
+  <property name="hibernate.hikari.dataSource.url">jdbc:mysql://localhost:3306/puls</property>
+  <property name="hibernate.hikari.dataSource.user">puls</property>
+  <property name="hibernate.hikari.dataSource.password">antec972</property>
+  <property name="hibernate.hikari.dataSource.cachePrepStmts">true</property>
+<property name="hibernate.hikari.dataSource.prepStmtCacheSize">250</property>
+<property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit">2048</property>
   <!-- <property name="hibernate.enable_lazy_load_no_trans">true</property> -->
   <property name="hibernate.enable_lazy_load_no_trans">false</property>
   <mapping class="model.bean.DefaultUser"/>
