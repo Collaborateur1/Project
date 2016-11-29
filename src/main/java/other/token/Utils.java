@@ -73,19 +73,22 @@ public class Utils {
 
         throw new Exception( "Token no available " );
     }
-
+/*
+ * UserCustom : UserCustom to check if actorCache option is set to true else we populate UserCustom with token informations
+ * token : token to check
+ */
     public static boolean AuthTokenIsValide(UserCustom user, String token){
        
-                return    TokenBuilder.tokenAuthIsValide( token, user ); 
+                return    TokenBuilder.tokenAuthIsValide( token, user,true ); 
     }
 
     public static String getValideAuthTokenCookie( ContainerRequestContext request, String cookieName, UserCustom user )
             throws Exception {
         String token = getCookieValue( request, cookieName );
         if ( token == null || "".equals( token ) )
-            return token;
+            return null;
 
-        else if ( TokenBuilder.tokenAuthIsValide( token, user ) )
+        else if ( TokenBuilder.tokenAuthIsValide( token, user,false ) )
             return token;
 
         throw new Exception( "Token no available " );

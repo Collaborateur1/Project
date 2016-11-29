@@ -1,0 +1,42 @@
+{
+    "defaultpage": "Dashboard",
+    "menu": [
+      {
+        "classe": "icon-home",
+        "title": "Home",
+        "sousmenu": [
+          {
+            "template": "calendar",
+            "title": "Dashboard",
+            "underclasse": "icon-bar-chart"
+          },
+          {
+            "template": "Dashboard2",
+            "title": "Dashboard2",
+            "underclasse": "icon-bulb"
+          },
+          {
+            "template": "Dashboard3",
+            "title": "Dashboard3",
+            "underclasse": "icon-graph"
+          }
+        ]
+      },
+      {
+        "classe": "icon-bar-chart",
+        "title": "Setting",
+        "sousmenu": [
+          {
+            "template": "profile",
+            "title": "My account",
+            "underclasse": "icon-graph"
+          },
+          {
+            "template": "setting",
+            "title": "My Setting ",
+            "underclasse": "icon-graph"
+          }
+        ]
+      }
+    ]
+  }

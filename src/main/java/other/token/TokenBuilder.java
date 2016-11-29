@@ -98,7 +98,7 @@ public class TokenBuilder {
         return builder.compact();
         }
     
-    public static boolean tokenAuthIsValide( String token, UserCustom user ) {
+    public static boolean tokenAuthIsValide( String token, UserCustom user ,boolean populateUser) {
         boolean valide = false;
         Claims claims = null;
         try {
@@ -108,21 +108,23 @@ public class TokenBuilder {
             
             String actorCacheOption=DefaultProperties.getOption( "actorCache" );
             valide=true;
+            if(user==null)
+                throw new Exception("No valide user for this tocken");
+            
             if("true".equals( actorCacheOption.toLowerCase())) {
-                if(user==null)
-                    throw new Exception("No valide user for this tocken");
+               
             valide = claims.getIssuer().equals( user.getDusEmail() )
                     && claims.getSubject().equals( HttpHeaderNames.AUTH_TOKEN )
                     && claims.getId().trim().equals( user.getDusID().toString() )
                     && claims.get( "mdp" ).equals( user.getDusMdp() );
 
-            }else{
+            }else if(populateUser){
                 
                 user.setDusEmail( claims.getIssuer() );
                user.setDusID( Long.parseLong(claims.getId().trim()));
                user.setDusToken( token );
                user.addRole( Role.Connected );
-            }
+               user.getDusParameters();}
         } catch ( Exception ex ) {
             logger.error( ex.getStackTrace()[0].getMethodName(),ex);
             valide=false;

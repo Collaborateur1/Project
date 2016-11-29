@@ -39,7 +39,7 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
         }
        
         
-        String sessionId="";
+        String sessionId=null;
         try{
             
            // sessionId= requestContext.getHeaderString( HttpHeaderNames.SERVICE_KEY );
@@ -50,10 +50,7 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
         
         }catch(Exception ex){
             logger.error( ex.getStackTrace()[0].getMethodName(),ex);
-           // throw new  WebApplicationException( Response.status( Response.Status.UNAUTHORIZED ).build());
-            
-            
-            
+         
         }
       
         UserCustom user = null;
@@ -70,20 +67,19 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
             throw new  WebApplicationException(Response.seeOther(targetURIForRedirection).build());
         }
             // Load session object from repository
-        if(sessionId==null)
-            sessionId="";
+      
         
+        if("true".equals( DefaultProperties.getOption( "actorCache" ).toLowerCase())&&sessionId!=null)
         user = SpringFactory.getUsersProvider().getCacheUserSession(sessionId);
+        
             if(user==null){
                 user=new UserCustom();
             }
             boolean valideToken=false;
            
-            try{
-            if(user!=null){
+            try{         
                 valideToken=Utils.AuthTokenIsValide(user,sessionId);
-                
-            }
+  
             }catch(Exception ex){
                 logger.error( ex.getStackTrace()[0].getMethodName(),ex);
                 valideToken=false; 
@@ -107,19 +103,6 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
                  throw new  WebApplicationException(Response.seeOther(targetURIForRedirection).build());
              }
                  
-            // Load associated user from session, a changé***
-          /*  if (null != session) {
-                user = session.getUser();
-            }
-            */
-        
-       
-       
-             
-        // Set security context
-          //if user is null set a empty user for role access    
-             if(user==null)
-                 user=new UserCustom();
           requestContext.setSecurityContext(new AuthentificationRestEndPointSecure(user,valideToken));
           requestContext.setProperty( "valideToken", valideToken );
           requestContext.setProperty( "Token", sessionId );

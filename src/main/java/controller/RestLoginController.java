@@ -88,7 +88,8 @@ public class RestLoginController extends WebContext {
 
         // @CookieParam(HttpHeaderNames.AUTH_TOKEN) Cookie cookie
         boolean valideToken = (boolean) httpRequest.getAttribute( "valideToken" );
-
+        boolean actorCache="true".equals( DefaultProperties.getOption( "actorCache" ).toLowerCase());
+        
         String userIp = SecureTool.getClientIpAddress( httpRequest );
 
         logger.info( userIp + " " + DefaultProperties.getProperties( "ipconnect" ) );
@@ -109,17 +110,8 @@ public class RestLoginController extends WebContext {
                 
 
                 sessionId = (String) httpRequest.getAttribute( "Token" );
-            if ( user == null ) {
-                user = new UserCustom();
-            }
-                try {
-                    if ( valideToken )
-                        valideToken = Utils.AuthTokenIsValide( user, sessionId );
-                } catch ( Exception ex ) {
-                    valideToken = false;
-                }
-                
-                if ( null != user ) {
+                       
+                if ( user != null) {
                     
                 long maxAge;
                 try {
@@ -135,7 +127,9 @@ public class RestLoginController extends WebContext {
                         sessionId = TokenBuilder.createAuthToken( String.valueOf( user.getID() ), user.getDusEmail(),
                                 HttpHeaderNames.AUTH_TOKEN, user.getDusMdp(), maxAge * 1000 );
                     } catch ( Exception e ) {
-                        logger.info( "can't generate the tocken" + e );
+                        logger.error( e.getStackTrace()[0].getMethodName(),e);
+                        sessionId=null;
+                        Response.status( Response.Status.INTERNAL_SERVER_ERROR ).build();
                     }
 
                 }
@@ -147,8 +141,9 @@ public class RestLoginController extends WebContext {
                 URI targetURIForRedirection = new URI(
                         "".equals( foward ) || foward == null ? "menu/acceuil" : foward );
 
-                UserCustom userTemp;
+                UserCustom userTemp=null;
                 //now we look if user already connect
+               if(actorCache)
                 userTemp =  SpringFactory.getUsersProvider().userCacheIsAlreadyConnected( userName );
                
                 if ( userTemp != null ) {
@@ -177,18 +172,13 @@ public class RestLoginController extends WebContext {
                         user.setDusToken(userTemp.getDusToken());
                         
                     }
+                    SpringFactory.getGenericJob().updateObject( user );
+                    SpringFactory.getUsersProvider().setUserInCache( sessionId, user );
                     return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN, user.getDusToken(), maxAge,
                             targetURIForRedirection, true );
                 }
-
-                //
-
-                user.setDusToken( sessionId );               
-               
-                
-                SpringFactory.getUsersProvider().setUserInCache( sessionId, user );
-                SpringFactory.getGenericJob().updateObject( user );
-                return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN, user.getDusToken(), maxAge * 1000,
+            
+                return Utils.setCookie( HttpHeaderNames.AUTH_TOKEN, sessionId, maxAge * 1000,
                         targetURIForRedirection, true );
             } else {
 
@@ -196,7 +186,7 @@ public class RestLoginController extends WebContext {
             }
 
         } catch ( Exception ex ) {
-            logger.error( ex );
+            logger.error( ex.getStackTrace()[0].getMethodName(),ex);
             return Response.status( Response.Status.PRECONDITION_FAILED ).build();
         }
 
