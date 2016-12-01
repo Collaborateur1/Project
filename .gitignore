@@ -14,3 +14,4 @@ client/metronic
 
 # generated
 client/build
+*.bak
