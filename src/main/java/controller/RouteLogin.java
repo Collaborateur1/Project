@@ -29,14 +29,14 @@ import other.token.TokenBuilder;
 import other.token.Utils;
 
 @Path( "/login" )
-public class RestLoginController extends WebContext {
+public class RouteLogin extends WebContext {
 
-    public RestLoginController( @Context SecurityContext securityContext ) {
+    public RouteLogin( @Context SecurityContext securityContext ) {
         super( securityContext );
         // TODO Auto-generated constructor stub
     }
 
-    private static Logger logger         = Logger.getLogger( RestLoginController.class );
+    private static Logger logger         = Logger.getLogger( RouteLogin.class );
     
 
     @javax.annotation.security.PermitAll

@@ -33,7 +33,7 @@ import model.job.UserJob;
 
 @Controller
 @Path( "/file" )
-public class RestMediaController {
+public class RouteMedia {
     private static final int DEFAULT_BUFFER_SIZE = 102400; // 10 ko
     private static final int TAILLE_TAMPON_CACHE = 1024000;
     /*à automatiser car sa doit etre paramétrable depuis l'extérieur*/

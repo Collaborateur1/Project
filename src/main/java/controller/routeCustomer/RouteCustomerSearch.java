@@ -27,7 +27,7 @@ import other.SpringFactory;
 
 
 @Path( "/search" )
-public class CustomerSearch {
+public class RouteCustomerSearch {
     @javax.annotation.security.PermitAll
     @GET
     @Produces( MediaType.APPLICATION_JSON)

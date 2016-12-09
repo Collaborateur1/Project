@@ -23,10 +23,10 @@ import other.SpringFactory;
 import other.WebContext;
 
 @Path( "/user" )
-public class UserDataProvider extends WebContext {
-    private static Logger   logger       = Logger.getLogger( UserDataProvider.class );
+public class RouteUserDataProvider extends WebContext {
+    private static Logger   logger       = Logger.getLogger( RouteUserDataProvider.class );
     
-    public UserDataProvider(@Context SecurityContext securityContext ) {
+    public RouteUserDataProvider(@Context SecurityContext securityContext ) {
         super( securityContext );
         // TODO Auto-generated constructor stub
     }

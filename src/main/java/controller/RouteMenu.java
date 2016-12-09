@@ -26,13 +26,13 @@ import other.SpringFactory;
 import other.WebContext;
 
 @Path( "/menu" )
-public class RestMenuController extends WebContext {
+public class RouteMenu extends WebContext {
    
-    private static Logger   logger       = Logger.getLogger( RestMenuController.class );
+    private static Logger   logger       = Logger.getLogger( RouteMenu.class );
     @Autowired
     private Jaxb2Marshaller marshaller;
 
-    public RestMenuController( @Context SecurityContext sc ) {
+    public RouteMenu( @Context SecurityContext sc ) {
 
         super( sc );
     }

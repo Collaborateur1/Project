@@ -39,7 +39,7 @@ import other.SpringFactory;
 
 @Controller
 @Path( "/public" )
-public class PublicAccess {
+public class RoutePublicAccess {
 
 
 
@@ -117,7 +117,7 @@ public class PublicAccess {
         return Response.ok().entity( serialize(result.get( 0 ))).build();
     }
     
-    public PublicAccess() {
+    public RoutePublicAccess() {
         super();
         // TODO Auto-generated constructor stub
     }
