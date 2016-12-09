@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -19,6 +18,7 @@ import javax.persistence.Transient;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -43,8 +43,10 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
     };
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long dusID;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "dusID")
+    private String dusID;
    
     @Column(name="dusName")
     private String dusName;
@@ -102,13 +104,13 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
 
 
 
-    public Long getDusID() {
+    public String getDusID() {
         return dusID;
     }
 
 
 
-    public void setDusID( Long dusID ) {
+    public void setDusID( String dusID ) {
         this.dusID = dusID;
     }
 
@@ -379,10 +381,11 @@ public class DefaultUser extends Globalmenu implements Serializable, Executable 
 
 
         @Override
-        public long getID() throws Exception {
+        public String getID() throws Exception {
             // TODO Auto-generated method stub
-            return getDusID();
+            return dusID;
         }
+
 
 
         

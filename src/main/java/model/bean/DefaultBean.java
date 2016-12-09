@@ -23,8 +23,9 @@ public class DefaultBean implements Executable{
         return false;
     }
 
+   
     @Override
-    public long getID() throws Exception {
+    public String getID() throws Exception {
         // TODO Auto-generated method stub
         throw new Exception("ERROR you must implement getID() in your custom object");
     }

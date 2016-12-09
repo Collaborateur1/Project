@@ -1,12 +1,9 @@
 package filter.security;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
@@ -16,10 +13,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
 
-import model.custom.UserCustom;
 import other.DefaultProperties;
-import other.SpringFactory;
-import other.token.Utils;
 
 @Provider
 @PreMatching
@@ -38,7 +32,7 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
             return;
         }
        
-        
+     /*   
         String sessionId=null;
         try{
             
@@ -106,7 +100,7 @@ public class SecureRequestFilter implements ContainerRequestFilter  {
           requestContext.setSecurityContext(new AuthentificationRestEndPointSecure(user,valideToken));
           requestContext.setProperty( "valideToken", valideToken );
           requestContext.setProperty( "Token", sessionId );
-          
+          */
     }
     
     public ArrayList<String> initHashtable()

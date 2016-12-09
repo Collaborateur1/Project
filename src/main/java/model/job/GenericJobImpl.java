@@ -44,14 +44,14 @@ public class GenericJobImpl implements GenericJob{
     }
 
     @Override
-    public List<Object> getListObject( Class cls, String[][] restriction ) {
+    public List<Object> getListObjectV1( Class cls, String[][] restriction,String[][] alias ) {
         // TODO Auto-generated method stub
-        return daoCenter.list( cls, restriction, null );
+        return daoCenter.list( cls, restriction, null,alias );
         
     }
 
     @Override
-    public List<Object> getListObject( Class cls, String restriction ) {
+    public List<Object> getListObjectV2( Class cls, String restriction ) {
         // TODO Auto-generated method stub
         
         //throw error si st2%3 est different de 0
@@ -66,14 +66,14 @@ public class GenericJobImpl implements GenericJob{
             st[i][2]=st2[i+2].trim();
         }
         
-        return getListObject( cls, st );
+        return getListObjectV1( cls, st ,null);
     }
 
     @Override
     public List getList( Class cls, String[][] alias, String[][] restriction, String[][] order,
-            String[][] projection,int maxResult, int firstResult ) {
+            String[][] projection, int firstResult ,int maxResult) {
         // TODO Auto-generated method stub
-        return daoCenter.complexList( cls, alias, restriction, order, projection,maxResult,firstResult );
+        return daoCenter.complexList( cls, alias, restriction, order, projection,firstResult,maxResult );
     }
 
     @Override
@@ -95,9 +95,10 @@ public class GenericJobImpl implements GenericJob{
     }
 
     @Override
-    public List getList( String sql ) {
+    public List<String> getList(String request,String[][] params, int firstResult,int maxResult) {
         // TODO Auto-generated method stub
-        return daoCenter.complexList( sql );
+       return daoCenter.complexList( request,params ,firstResult,maxResult);
+        
     }
 
     @Override

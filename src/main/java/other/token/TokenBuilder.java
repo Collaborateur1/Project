@@ -121,7 +121,7 @@ public class TokenBuilder {
             }else if(populateUser){
                 
                 user.setDusEmail( claims.getIssuer() );
-               user.setDusID( Long.parseLong(claims.getId().trim()));
+               user.setDusID( claims.getId().trim());
                user.setDusToken( token );
                user.addRole( Role.Connected );
                user.getDusParameters();}

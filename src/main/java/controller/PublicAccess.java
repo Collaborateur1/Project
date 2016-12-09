@@ -19,13 +19,22 @@ import org.glassfish.jersey.server.mvc.Viewable;
 import org.springframework.stereotype.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import model.bean.Attachment;
+import model.bean.Buisness;
+import model.bean.BuisnessType;
 import model.bean.DefaultCustomer;
+import model.bean.Hairdresser;
+import model.bean.Schedule;
+import model.bean.Service;
+import model.bean.Tag;
 import model.custom.CustomerCustom;
 import model.custom.EnterpriseCustom;
 import model.custom.UserCustom;
 import model.job.GenericJob;
 import other.SpringFactory;
+
 
 
 @Controller
@@ -57,20 +66,38 @@ public class PublicAccess {
         }
     }
     
+    
     @javax.annotation.security.PermitAll
     @GET
     @Path("/test")
     @Produces( MediaType.APPLICATION_JSON )
-    public Response get() throws JsonProcessingException {
-              
-      /*
+    public Response getTest(@QueryParam( value = "mail" ) String mail) throws JsonProcessingException {
+        voidAdd100hairdresser();
+        
         GenericJob test= SpringFactory.getGenericJob();
+        //List<String> result= test.getList( UserCustom.class,null,new String[][]{{"nom","like","magkilapuls"}}, null, null);
+        
+       // List<String> result= test.getList( Hairdresser.class, null,null, null, new String[][]{{"PROPERTY","hairFirstName"}},10000,-1);
+      //  List<Hairdresser>result= test.getListObjectV1( Hairdresser.class, new String[][]{{"service.servManager","=","true"}},new String[][]{{"hairServices","service"}});
+       // List<Hairdresser>result= test.getListObjectV1( Hairdresser.class, null,null);
+        //List<String> result= test.getList( Hairdresser.class,  new String[][]{{"hairAttachmentHairdressers","attachment"}},null, null, new String[][]{{"PROPERTY","hairLastName"},{"PROPERTY","attachment.attaType"}},10000,-1);
+       
+       // List<Hairdresser>result= test.getListObjectV1( Hairdresser.class, 
+        //                                              new String[][]{{"service.servManager","=B","true"}},
+         //                                             new String[][]{{"hairServices","service"}});
+        List<Hairdresser>result= test.getListObjectV1( Hairdresser.class, 
+                                                           null,
+                                                             null);
+      
+        
+        /*
+       
         voidAdd100Person();
         voidAdd100Person();
         voidAdd200Dossier();
          
         voidAdd100Enterprise();
-        DossierCustom dossier=(DossierCustom) test.getObject( DossierCustom.class,"1",false);
+       
        
         //test.loadLazyCollection( user );
         /*
@@ -87,10 +114,117 @@ public class PublicAccess {
           
         */
         
-        return Response.ok().build();
+        return Response.ok().entity( serialize(result.get( 0 ))).build();
     }
     
-    
+    public PublicAccess() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+
+    public void voidAdd100hairdresser(){
+        
+        GenericJob test= SpringFactory.getGenericJob();
+        for (int i=0;i<10;i++){
+            Hairdresser hairdresser=new Hairdresser();
+            hairdresser.setHairBirthDate( new Date() );
+            hairdresser.setHairFirstName ("sfsfsdfdsfsdfsdf" );
+            hairdresser.setHairEmail( UUID.randomUUID().toString() );
+            hairdresser.setHairIsActif( true);
+            hairdresser.setHairLastName( "qsqdqsdqsdqs" );
+            
+            
+            List<Service> list= new ArrayList();
+            
+            Service serv= new Service();
+            Service serv2= new Service();
+            serv.setServDesciption(  UUID.randomUUID().toString() );
+            serv.setServName( "nameserv1" );
+            serv.setServManager( i==1 );
+            test.createObject(serv);
+            list.add( serv );
+           
+            serv2.setServDesciption(  UUID.randomUUID().toString() );
+            serv2.setServName(  "service"+i );
+            serv2.setServManager( i==2 );
+            list.add( serv2 );
+            test.createObject(serv2);
+            hairdresser.setHairServices( list );
+            
+            Attachment atta= new Attachment();
+            Attachment atta2= new Attachment();
+            atta.setAttaType( "png" );
+            atta.setAttaUrl( UUID.randomUUID().toString() );
+            
+            atta2.setAttaType( "usd" );
+            atta2.setAttaUrl(  UUID.randomUUID().toString() );
+            
+            List<Attachment> list2= new ArrayList();
+            list2.add( atta );
+            list2.add( atta2 );
+          
+            List<Schedule> list3= new ArrayList();
+            Schedule sche= new Schedule();
+            sche.setScheDate( new Date() );
+            sche.setScheName( "namehahaha" );
+            list3.add( sche );
+            sche.setScheHairdresser( hairdresser );
+          //  test.createObject( sche );
+            hairdresser.setHairSchedules( list3 );
+            
+            
+            hairdresser.setHairAttachmentHairdressers( list2 );
+            
+            
+            
+            test.createObject( hairdresser );
+            
+            
+            
+            
+            
+        }
+        
+        List<Hairdresser>result= test.getListObjectV1( Hairdresser.class, 
+                                                            new String[][]{{"service.servManager","=B","true"}},
+                                                            new String[][]{{"hairServices","service"}});
+        for(int i=0;i<2;i++){
+            
+            Buisness biz= new Buisness();
+            BuisnessType bizt= new BuisnessType();
+            
+            bizt.setBuisTypeName( "Salon" );
+            biz.setBuisName(  UUID.randomUUID().toString() );
+            biz.setBuisZipCode( "3100"+i);
+            biz.setBuisBuisType( bizt );
+            biz.setBuisConfirmation( false );
+            biz.setBuisDescription( UUID.randomUUID().toString()  );
+            
+result.get(i).setHairBuisness( biz );
+            biz.setBuisHairdressers( result );
+            Tag tg= new Tag();
+            tg.setTagName( "myCompany"+i );
+            List<Tag> list4= new ArrayList(); 
+            
+            test.createObject( bizt );
+            
+            list4.add( tg );
+            Attachment atta= new Attachment();
+            atta.setAttaType( "zip" );
+            atta.setAttaUrl( UUID.randomUUID().toString() );
+            
+            List<Attachment> list2= new ArrayList();
+            list2.add( atta );
+            
+            biz.setBuisAttachmentBuisness( list2 );
+        biz.setBuisTags( list4 );
+        test.updateObject( biz );
+  
+        }
+        
+        
+    }
     public void voidAdd100Person(){
        
         GenericJob test= SpringFactory.getGenericJob();
@@ -113,7 +247,7 @@ public class PublicAccess {
         
         
         GenericJob test= SpringFactory.getGenericJob();
-        List<HashMap> result= test.getList( UserCustom.class, null,null, null, new String[][]{{"PROPERTY","id"}},20,-1);
+        List<HashMap> result= test.getList( UserCustom.class, null,null, null, new String[][]{{"PROPERTY","id"}},-1,20);
         for (int i=0;i<result.size();i++){
             String id="";
              id=result.get( i ).get( "id" ).toString();
@@ -168,6 +302,11 @@ public class PublicAccess {
             
         }
         
-       
+   private static String serialize(Object object) throws JsonProcessingException {
+       String serialized = null;
+       ObjectMapper mapper = new ObjectMapper();
+       serialized = mapper.writeValueAsString(object);
+       return serialized;
+   }      
     
 }

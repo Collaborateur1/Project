@@ -1,5 +1,6 @@
 package model.dao;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +15,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -247,7 +249,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
     }
 
     @Override
-    public List<Object> list( Class<T> object, String[][] restriction, String[][] order ) {
+    public List<Object> list( Class<T> object, String[][] restriction, String[][] order,String[][] alias ) {
         boolean transaction = false;
         Session session = null;
 
@@ -260,13 +262,16 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
             if ( restriction != null )
                 addRestrinction( criter, restriction );
+            if(alias!=null)
+                addAlias( criter, alias ); 
 
-            List<Object> lst = criter.list();
+            List<Object> lst = criter.setResultTransformer( Criteria.DISTINCT_ROOT_ENTITY ).list();
 
             return lst;
 
         } catch ( Exception e ) {
-            logger.error( "fail to fetch  object List :" + e.getMessage() );
+            logger.error("fail to fetch  object List, "+ e.getStackTrace()[0].getMethodName(),e);
+         
 
         } finally {
             try {
@@ -281,7 +286,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
     @Override
     public List complexList( Class<?> object, String[][] alias, String[][] restriction, String[][] order,
-            String[][] projection, int maxResult, int firstResult) {
+            String[][] projection, int firstResult,int maxResult) {
         // TODO Auto-generated method stub
         boolean transaction = false;
         Session session = null;
@@ -305,16 +310,18 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             if ( projection != null )
                 addProjection( criter, projection );
 // List list=criter.setFirstResult( 10 ).list();
-            if(maxResult!=-1)
+            if(maxResult!=0)
                 criter.setMaxResults( maxResult);
-            if(firstResult!=-1)
+            if(firstResult!=0)
                 criter.setFirstResult(firstResult);
-            List list=criter.setResultTransformer( Criteria.ALIAS_TO_ENTITY_MAP ).list();
+            List list=criter.setResultTransformer( Criteria.DISTINCT_ROOT_ENTITY ).setResultTransformer( Criteria.ALIAS_TO_ENTITY_MAP ).list();
             return list;
            
 
         } catch ( Exception e ) {
-            logger.error( "fail to fetch  object List :" + e.getMessage() );
+           
+            logger.error("fail to fetch List, "+ e.getStackTrace()[0].getMethodName(),e);
+            
 
         } finally {
             try {
@@ -334,6 +341,16 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             case "=":
             case "EQ":
                 criter.add( Restrictions.eq( restriction[i][0], restriction[i][2] ) );
+                break;
+                
+            case "=B":
+            case "EQB":
+                criter.add( Restrictions.eq( restriction[i][0], "true".equals(restriction[i][2]) ) );
+                break;
+                
+            case "=I":
+            case "EQI":
+                criter.add( Restrictions.eq( restriction[i][0], Integer.parseInt(restriction[i][2]) ) );
                 break;
 
             case "<=":
@@ -389,7 +406,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
     public void addAlias( Criteria criter, String[][] alias ) {
         for ( int i = 0; i < alias.length; i++ ) {
-            criter.createAlias( alias[i][0], alias[i][1] );
+            criter.createAlias( alias[i][0], alias[i][1],JoinType.LEFT_OUTER_JOIN );
         }
     }
 
@@ -423,8 +440,12 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
             }
         }
-        if(projList.getLength()!=0)
-          criter.setProjection( projList );  
+        if(projList.getLength()!=0){
+            criter.setProjection( projList ); 
+            
+        }
+         
+       
     }
 
     @Override
@@ -465,12 +486,15 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
     @Override
     public Object read( T object ,boolean lazyLoad) {
-        long lg=-1;
-        try{
-           lg= object.getID();
-        }catch(Exception e){
-            return null;
+       
+           String lg="-1";
+        try {
+            lg = object.getID();
+        } catch ( Exception e ) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+      
       return read((Class<T>) object.getClass(),String.valueOf(lg),lazyLoad);
     }
 
@@ -685,7 +709,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
     }
 
     @Override
-    public List<String> complexList( String sql ) {
+    public List<String> complexList(String request,String[][] params, int firstResult,int maxResults ) {
         // TODO Auto-generated method stub
         boolean transaction = false;
         Session session = null;
@@ -695,8 +719,50 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
         try {
             // Ouverture Session
             session = GetSession();
-            org.hibernate.Query query = session.createQuery(sql);
-            List<String> result = query.list();
+            org.hibernate.Query query = session.createSQLQuery(request);
+          if(firstResult!=0)
+              query.setFirstResult( firstResult );
+          if(maxResults!=0)
+              query.setMaxResults( maxResults ); 
+            
+            if(params!=null){
+               
+               for(int i=0;i<params.length;i++)
+               {
+                  
+                           
+                           switch ( params[i][1].toLowerCase() ) {
+                           case "int":
+                               
+                               query.setInteger(params[i][0] , Integer.parseInt( params[i][1] ) );
+                               break;
+                           case "string":
+                               query.setParameter(params[i][0] ,  params[i][1]  );
+                               break;
+                               
+                           case "date":
+                               query.setDate(params[i][0] ,  new Date(Long.parseLong(params[i][1])) );
+                               break;
+                           case "float":
+                               query.setFloat(params[i][0] ,  Float.parseFloat(params[i][1]));
+                               break;
+                               
+                           case "double":
+                               query.setDouble(params[i][0] , Double.parseDouble( params[i][1] ) );
+                               break;
+                               
+                           case "boolean":
+                               query.setBoolean(params[i][0] , "true".equals(params[i][1]));
+                               break;
+                               
+                               default:
+                                   query.setParameter(params[i][0] ,  params[i][1]  );
+                           }
+               }
+               
+               
+           }
+            List<String> result = query.setResultTransformer( Transformers.ALIAS_TO_ENTITY_MAP ).list();
 
             return result;
 
@@ -724,13 +790,14 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
         try {
             // Ouverture Session
             session = GetSession();
-           Object tmp= session.get(object, Long.parseLong(id));
+           Object tmp= session.get(object, id);
            if(lazyLoad)
            loadLazyCollection((T) tmp);
           return tmp;
 
         } catch ( Exception e ) {
-            logger.error( "fail to fetch  object :"+object.getName() +", "+ e.getMessage() );
+           
+            logger.error( "fail to fetch  object :"+object.getName() +", "+e.getStackTrace()[0].getMethodName(),e );
 
         } finally {
             try {

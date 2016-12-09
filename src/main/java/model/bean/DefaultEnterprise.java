@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -17,14 +16,18 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import model.custom.CustomerCustom;
 import model.dao.Executable;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class DefaultEnterprise implements Executable {
- @Id
- @GeneratedValue(strategy=GenerationType.AUTO)
-private Long entID;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "entID")
+private String entID;
  
  @Column(name="entName") 
 private String entName;
@@ -48,10 +51,10 @@ private Date entBirth;
  private List<CustomerCustom> entCustomers;
 
 
-public Long getEntID() {
+public String getEntID() {
     return entID;
 }
-public void setEntID( Long entID ) {
+public void setEntID( String entID ) {
     this.entID = entID;
 }
 public String getEntName() {
@@ -101,10 +104,11 @@ public boolean postsave( ConcurrentHashMap<String, Object> item ) {
     return false;
 }
 @Override
-public long getID() throws Exception {
+public String getID() throws Exception {
     // TODO Auto-generated method stub
-    return getEntID();
+    return null;
 }
+
 
 
 

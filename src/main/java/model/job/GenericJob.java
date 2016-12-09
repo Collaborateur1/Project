@@ -13,15 +13,15 @@ public interface GenericJob<T extends Executable> {
     public Object getObject(Class<T> cls, String id, boolean lazyLoad);
     public Object getObject(T obj,boolean lazyLoad);
     public void loadLazyCollection(T obj);
-    public List<Object> getListObject(Class<T> cls, String[][] restriction);
-    public List<Object> getListObject(Class<T> cls, String restriction);
+    public List<Object> getListObjectV1(Class<T> cls, String[][] restriction,String[][] alias);
+    public List<Object> getListObjectV2(Class<T> cls, String restriction);
     public List getList(Class<T> cls,String[][] alias ,String[][] restriction,String[][] order,String[][] projection,int maxResult, int firstResult);
     public List getList(Class<T> cls,String alias ,String restriction,String order,String[] projection);
     
 
     public List<Object> getListObject(Class<T> cls, Jsonmap param);
     public List<Object> getList(Class<T> cls,Jsonmap param);
-    public List<String>getList(String sql);
+    public List<String>getList(String request,String[][] params, int firstResult,int maxResult);
     
     
     

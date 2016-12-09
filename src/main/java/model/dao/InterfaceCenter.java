@@ -16,13 +16,14 @@ public interface InterfaceCenter<T extends Executable> {
     public Object read(T object,boolean lazyLoad);
     public Object read(Class<T> object,String  id, boolean lazyLoad);
     public void loadLazyCollection(T object);
-    public List<Object> list(Class<T> object,String[][] restriction,String[][] order );
+    public List<Object> list(Class<T> object,String[][] restriction,String[][] order,String[][] alias );
     public boolean delete(Class<T> object ,String id,ConcurrentHashMap<String, Object> item );
     //nom de lobjet principale, autre objet ds la requete avec alias, close where, order, valeur a remonté et  groupe by
-    public List complexList(Class<?> object,String[][] alias,String[][] restriction,String[][] order,String[][] projection,int maxResult, int firstResult);
+    public List complexList(Class<?> object,String[][] alias,String[][] restriction,String[][] order,String[][] projection, int firstResult,int maxResult);
+  
     public SessionFactory getSessionFactory();
    
-    public List<String>complexList(String sql);
+    public List<String>complexList(String request,String[][] params, int firstResult,int maxResult);
     
     public Object read(Class<T> object,Jsonmap param);
     //nom de lobjet principale, autre objet ds la requete avec alias, close where, order, valeur a remonté et  groupe by

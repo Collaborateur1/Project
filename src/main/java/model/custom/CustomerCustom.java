@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 import model.bean.DefaultCustomer;
 @Entity
-@Table(name="Customer")
+@Table(name="Customer2")
 public class CustomerCustom extends DefaultCustomer{
     @Override
     public boolean presave( ConcurrentHashMap<String, Object> item ) {

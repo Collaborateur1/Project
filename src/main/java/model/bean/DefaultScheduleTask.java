@@ -5,19 +5,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import model.dao.Executable;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class DefaultScheduleTask implements Executable{
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long DstID;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "DstID")
+    private String DstID;
     
     @Column(name="DstCreatedDate")
     private Date DstCreatedDate;
@@ -43,10 +46,10 @@ public class DefaultScheduleTask implements Executable{
     @Column(name="Dstparam3")
     private String Dstparam3;
     
-    public long getDstID() {
+    public String getDstID() {
         return DstID;
     }
-    public void setDstID( long dstID ) {
+    public void setDstID( String dstID ) {
         DstID = dstID;
     }
     public Date getDstCreatedDate() {
@@ -108,8 +111,9 @@ public class DefaultScheduleTask implements Executable{
         return false;
     }
     @Override
-    public long getID() throws Exception {
+    public String getID() throws Exception {
         // TODO Auto-generated method stub
-        return 0;
+        return null;
     }
+
 }

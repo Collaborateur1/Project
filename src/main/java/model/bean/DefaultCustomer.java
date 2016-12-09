@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -15,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.GenericGenerator;
 
 import model.custom.EnterpriseCustom;
 import model.dao.Executable;
@@ -28,8 +28,10 @@ public class DefaultCustomer implements Executable{
     };
     
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
-    private long             cusID;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "cusID")
+    private String             cusID;
 
     @Column( name = "cusCivility" )
     private String           cusCivility;
@@ -67,11 +69,11 @@ public class DefaultCustomer implements Executable{
   
 
    
-    public long getCusID() {
+    public String getCusID() {
         return cusID;
     }
 
-    public void setCusID( long cusID ) {
+    public void setCusID( String cusID ) {
         this.cusID = cusID;
     }
 
@@ -186,10 +188,12 @@ public class DefaultCustomer implements Executable{
         return false;
     }
 
+  
+    
     @Override
-    public long getID() throws Exception {
+    public String getID() throws Exception {
         // TODO Auto-generated method stub
-        return getCusID();
+        return null;
     }
 
 }
