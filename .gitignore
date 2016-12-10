@@ -10,7 +10,7 @@ src/main/resources/hibernate.cfg.xml
 src/main/resources/options.properties
 
 # theme 
-client/metronic
+metronic
 
 # generated
 client/build

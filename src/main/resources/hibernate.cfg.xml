@@ -14,8 +14,8 @@
   <property name="hibernate.hikari.dataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</property>
   <property name="bonecp.idleConnectionTestPeriodInMinutes">10</property>
   <property name="hibernate.hikari.dataSource.url">jdbc:mysql://localhost:3306/puls2</property>
-  <property name="hibernate.hikari.dataSource.user">puls</property>
-  <property name="hibernate.hikari.dataSource.password">antec97221</property>
+  <property name="hibernate.hikari.dataSource.user">puls2</property>
+  <property name="hibernate.hikari.dataSource.password">antec972</property>
   <property name="hibernate.hikari.dataSource.cachePrepStmts">true</property>
 <property name="hibernate.hikari.dataSource.prepStmtCacheSize">250</property>
 <property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit">2048</property>

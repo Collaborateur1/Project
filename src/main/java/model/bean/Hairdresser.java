@@ -347,8 +347,8 @@ private static String searchRequest(){
                 + " hairdresser.hairlastname AS hairlastname, hairdresser.hairpict           AS hairpict, "
                 + "hairdresser.hairzipcode        AS hairzipcode, buisness.buisname    AS buisname,"
                 + "buisness.buisadress1 AS buisadress1, buisness.buisadress2 AS buisadress2, "
-                + "buisness.buiszipcode AS buiszipcode FROM hairdresser hairdresser"
-                + " LEFT OUTER JOIN buisness buisness ON  hairdresser.hairbuisid=buisness.buisid " );
+                + "buisness.buiszipcode AS buiszipcode FROM Hairdresser hairdresser"
+                + " LEFT OUTER JOIN Buisness buisness ON  hairdresser.hairbuisid=buisness.buisid " );
         
     
     return st.toString();
