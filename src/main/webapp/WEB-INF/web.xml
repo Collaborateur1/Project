@@ -44,10 +44,16 @@
 	
 	
 	<servlet>
-		<servlet-name>filter.ServletMaster</servlet-name>
+		<servlet-name>filter.ServletCli</servlet-name>
+	
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>filter.ServletPro</servlet-name>
+		
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 	
 <!-- Map all requests to the DispatcherServlet for handling +++spring+++-->
 	
@@ -62,8 +68,13 @@
   
 
 	<servlet-mapping>
-		<servlet-name>filter.ServletMaster</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<servlet-name>filter.ServletCli</servlet-name>
+		<url-pattern>/cli/*</url-pattern>
+	</servlet-mapping>
+	
+		<servlet-mapping>
+		<servlet-name>filter.ServletPro</servlet-name>
+		<url-pattern>/pro/*</url-pattern>
 	</servlet-mapping>
 
 <!-- *********************************************End Servlet MApping**************************************************** -->

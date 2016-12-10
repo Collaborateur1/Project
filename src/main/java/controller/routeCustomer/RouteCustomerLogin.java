@@ -1,4 +1,4 @@
-package controller;
+package controller.routeCustomer;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,14 +29,14 @@ import other.token.TokenBuilder;
 import other.token.Utils;
 
 @Path( "/login" )
-public class RouteLogin extends WebContext {
+public class RouteCustomerLogin extends WebContext {
 
-    public RouteLogin( @Context SecurityContext securityContext ) {
+    public RouteCustomerLogin( @Context SecurityContext securityContext ) {
         super( securityContext );
         // TODO Auto-generated constructor stub
     }
 
-    private static Logger logger         = Logger.getLogger( RouteLogin.class );
+    private static Logger logger         = Logger.getLogger( RouteCustomerLogin.class );
     
 
     @javax.annotation.security.PermitAll

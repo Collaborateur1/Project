@@ -32,20 +32,20 @@
      <mapping class="model.bean.DefaultBean"/> 
       -->  
      
-     <mapping class="model.Appointment"/>
-  <mapping class="model.Attachment"/>
-  <mapping class="model.Break"/> 
-    <mapping class="model.Buisness"/>
-    <mapping class="model.BuisnessType"/>
-     <mapping class="model.Custumer"/>
-     <mapping class="model.Hairdresser"/> 
+     <mapping class="model.bean.Appointment"/>
+  <mapping class="model.bean.Attachment"/>
+  <mapping class="model.bean.Break"/> 
+    <mapping class="model.bean.Buisness"/>
+    <mapping class="model.bean.BuisnessType"/>
+     <mapping class="model.bean.Custumer"/>
+     <mapping class="model.bean.Hairdresser"/> 
      
-      <mapping class="model.Notification"/>
-  <mapping class="model.Review"/> 
-    <mapping class="model.Schedule"/>
-    <mapping class="model.ScheduleDay"/>
-     <mapping class="model.Service"/> 
-     <mapping class="model.Tag"/> 
+      <mapping class="model.bean.Notification"/>
+  <mapping class="model.bean.Review"/> 
+    <mapping class="model.bean.Schedule"/>
+    <mapping class="model.bean.ScheduleDay"/>
+     <mapping class="model.bean.Service"/> 
+     <mapping class="model.bean.Tag"/> 
        
   <!-- Map your custom object -->
   

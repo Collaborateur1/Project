@@ -1,4 +1,4 @@
-package controller;
+package controller.route;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
