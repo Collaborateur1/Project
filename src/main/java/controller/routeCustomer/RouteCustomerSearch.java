@@ -54,7 +54,7 @@ public class RouteCustomerSearch {
         .add(Restrictions.eq("hairBuisness.buisName", salonOrStylist));
         
         if(location==null)
-            location="31";
+            location="";
         
         
         if(!"".equals(service)&&service!=null){
@@ -74,7 +74,7 @@ public class RouteCustomerSearch {
         
         
         if(!"".equals(salonOrStylist)&&salonOrStylist!=null){
-            request.append(" AND (buisness.buisname LIKE \""+salonOrStylist+"%\" OR hairdresser.hairlastname LIKE \""+salonOrStylist+"%\")");
+            request.append(" AND (buisness.buisname LIKE \"%"+salonOrStylist+"%\" OR hairdresser.hairlastname LIKE \"%"+salonOrStylist+"%\")");
         }
         
        
