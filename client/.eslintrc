@@ -15,7 +15,6 @@
     "no-var": ["error"],
     "quotes": ["error", "backtick"],
     "arrow-spacing": ["error"],
-    "arrow-body-style": ["error", "as-needed"],
     "no-const-assign": ["error"],
     "template-curly-spacing": ["error", "never"],
     "eqeqeq": ["error"],
