@@ -1,7 +1,6 @@
 package controller.routeCustomer;
 
 import java.net.URISyntaxException;
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -10,9 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.hibernate.criterion.Junction;
-import org.hibernate.criterion.Restrictions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,24 +30,16 @@ public class RouteCustomerSearch {
     public Response search( @QueryParam( value = "service" ) String service,
             @QueryParam( value = "salonOrStylist" ) String salonOrStylist,
             @QueryParam( value = "location" ) String location,
-            @QueryParam( value = "date" ) Date date) throws URISyntaxException, JsonProcessingException {
-                
+            @QueryParam( value = "longitude" ) String longitude,
+            @QueryParam( value = "latitude" ) String latitude) throws URISyntaxException, JsonProcessingException {
+       
       
         
         StringBuilder request=new StringBuilder();
         request.append( Hairdresser.getHairSearchRequest() );
-        
-        
-        
+
         GenericJob test= SpringFactory.getGenericJob();
-        String[][] chaine1;
-        String[][] chaine2;
-       
-        //Or where hairFirstName=value or hairLastName=value ..
-        Junction restric= Restrictions.disjunction()
-        .add(Restrictions.eq("hairFirstName", salonOrStylist))
-        .add(Restrictions.eq("hairLastName", salonOrStylist))
-        .add(Restrictions.eq("hairBuisness.buisName", salonOrStylist));
+      
         
         if(location==null)
             location="";

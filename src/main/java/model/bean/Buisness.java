@@ -37,6 +37,12 @@ public class Buisness  implements Executable{
     @Column(name = "buisDescription",length=800) 
     private String buisDescription;
     
+    @Column(name = "buisLongitude") 
+    private double buisLongitude;
+    
+    @Column(name = "buisLatitude") 
+    private double buisLatitude;
+    
     @Column(name="buisAdress1",length=60) 
     private String buisAdress1;
     
@@ -165,6 +171,22 @@ public class Buisness  implements Executable{
 
     public void setBuisTags( List<Tag> buisTags ) {
         this.buisTags = buisTags;
+    }
+
+    public double getBuisLongitude() {
+        return buisLongitude;
+    }
+
+    public void setBuisLongitude( double buisLongitude ) {
+        this.buisLongitude = buisLongitude;
+    }
+
+    public double getBuisLatitude() {
+        return buisLatitude;
+    }
+
+    public void setBuisLatitude( double buisLatitude ) {
+        this.buisLatitude = buisLatitude;
     }
 
     @Override

@@ -20,7 +20,7 @@ export default class ClientSearch extends React.Component {
 
   submitHandler (e) {
     e.preventDefault()
-    fetch(`/puls/cli/search?salonOrStylist=${this.state.salonOrStylist}&location=${this.state.location}&service=${this.state.service}`)
+    fetch(`/puls/search?salonOrStylist=${this.state.salonOrStylist}&location=${this.state.location}&service=${this.state.service}`)
     .then((response) => {
       if (response.ok) {
         response.json()

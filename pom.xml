@@ -173,6 +173,12 @@
     <artifactId>jersey-media-multipart</artifactId>
     <version>${jersey2.version}</version>
 </dependency>
+<!-- version stable de jackson pour jersey -->
+<dependency>
+    <groupId>org.glassfish.jersey.media</groupId>
+    <artifactId>jersey-media-json-jackson</artifactId>
+    <version>2.23.2</version>
+</dependency>
 <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.ext/jersey-mvc -->
 <dependency>
     <groupId>org.glassfish.jersey.ext</groupId>
