@@ -21,14 +21,11 @@ import org.springframework.stereotype.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import model.bean.Attachment;
 import model.bean.Buisness;
 import model.bean.BuisnessType;
 import model.bean.DefaultCustomer;
 import model.bean.Hairdresser;
-import model.bean.Schedule;
 import model.bean.Service;
-import model.bean.Tag;
 import model.custom.CustomerCustom;
 import model.custom.EnterpriseCustom;
 import model.custom.UserCustom;
@@ -72,7 +69,7 @@ public class RoutePublicAccess {
     @Path("/test")
     @Produces( MediaType.APPLICATION_JSON )
     public Response getTest(@QueryParam( value = "mail" ) String mail) throws JsonProcessingException {
-        voidAdd100hairdresser();
+        voidAdd20hairdresserAnd10busness();
         
         GenericJob test= SpringFactory.getGenericJob();
         //List<String> result= test.getList( UserCustom.class,null,new String[][]{{"nom","like","magkilapuls"}}, null, null);
@@ -123,16 +120,21 @@ public class RoutePublicAccess {
     }
 
 
-    public void voidAdd100hairdresser(){
+    public void voidAdd20hairdresserAnd10busness(){
         
         GenericJob test= SpringFactory.getGenericJob();
-        for (int i=0;i<10;i++){
+       
+           
+        
+        
+        //1
+        
             Hairdresser hairdresser=new Hairdresser();
             hairdresser.setHairBirthDate( new Date() );
-            hairdresser.setHairFirstName ("sfsfsdfdsfsdfsdf" );
+            hairdresser.setHairFirstName ("albert" );
             hairdresser.setHairEmail( UUID.randomUUID().toString() );
             hairdresser.setHairIsActif( true);
-            hairdresser.setHairLastName( "qsqdqsdqsdqs" );
+            hairdresser.setHairLastName( "jean Francois" );
             
             
             List<Service> list= new ArrayList();
@@ -140,89 +142,516 @@ public class RoutePublicAccess {
             Service serv= new Service();
             Service serv2= new Service();
             serv.setServDesciption(  UUID.randomUUID().toString() );
-            serv.setServName( "nameserv1" );
-            serv.setServManager( i==1 );
+            serv.setServName( "coiffure" );
+            serv.setServManager( true);
             test.createObject(serv);
             list.add( serv );
            
             serv2.setServDesciption(  UUID.randomUUID().toString() );
-            serv2.setServName(  "service"+i );
-            serv2.setServManager( i==2 );
+            serv2.setServName(  "autre" );
+            serv2.setServManager( false);
             list.add( serv2 );
             test.createObject(serv2);
             hairdresser.setHairServices( list );
-            
-            Attachment atta= new Attachment();
-            Attachment atta2= new Attachment();
-            atta.setAttaType( "png" );
-            atta.setAttaUrl( UUID.randomUUID().toString() );
-            
-            atta2.setAttaType( "usd" );
-            atta2.setAttaUrl(  UUID.randomUUID().toString() );
-            
-            List<Attachment> list2= new ArrayList();
-            list2.add( atta );
-            list2.add( atta2 );
-          
-            List<Schedule> list3= new ArrayList();
-            Schedule sche= new Schedule();
-            sche.setScheDate( new Date() );
-            sche.setScheName( "namehahaha" );
-            list3.add( sche );
-            sche.setScheHairdresser( hairdresser );
-          //  test.createObject( sche );
-            hairdresser.setHairSchedules( list3 );
-            
-            
-            hairdresser.setHairAttachmentHairdressers( list2 );
+            test.createObject( hairdresser );
             
             
             
+            Buisness biz= new Buisness();
+            BuisnessType bizt= new BuisnessType();
+            
+            bizt.setBuisTypeName( "Salon" );
+            biz.setBuisName( "Bernas coiffure");
+            biz.setBuisZipCode( "75018");
+            biz.setBuisBuisType( bizt );
+            biz.setBuisConfirmation( false );
+            biz.setBuisDescription( UUID.randomUUID().toString()  );
+            hairdresser.setHairBuisness( biz );
+            test.createObject( bizt );
+            test.updateObject( biz );
+            test.updateObject( hairdresser );
+            
+            
+            
+            
+            
+            
+            
+            
+            //2
+           hairdresser=new Hairdresser();
+            hairdresser.setHairBirthDate( new Date() );
+            hairdresser.setHairFirstName ("albert" );
+            hairdresser.setHairEmail( UUID.randomUUID().toString() );
+            hairdresser.setHairIsActif( true);
+            hairdresser.setHairLastName( "jean Francois" );
+            
+            
+            list= new ArrayList();
+            
+            serv= new Service();
+             serv2= new Service();
+            serv.setServDesciption(  UUID.randomUUID().toString() );
+            serv.setServName( "shampoing" );
+            serv.setServManager( true);
+            test.createObject(serv);
+            list.add( serv );
+           
+            serv2.setServDesciption(  UUID.randomUUID().toString() );
+            serv2.setServName(  "défrisage" );
+            serv2.setServManager( false);
+            list.add( serv2 );
+            test.createObject(serv2);
+            hairdresser.setHairServices( list );
+            hairdresser.setHairBuisness( biz );
             test.createObject( hairdresser );
             
             
             
             
             
-        }
-        
-        List<Hairdresser>result= test.getListObjectV1( Hairdresser.class, 
-                                                            new String[][]{{"service.servManager","=B","true"}},
-                                                            new String[][]{{"hairServices","service"}});
-        for(int i=0;i<2;i++){
             
-            Buisness biz= new Buisness();
-            BuisnessType bizt= new BuisnessType();
+            //3
+            hairdresser=new Hairdresser();
+             hairdresser.setHairBirthDate( new Date() );
+             hairdresser.setHairFirstName ("guillaume" );
+             hairdresser.setHairEmail( UUID.randomUUID().toString() );
+             hairdresser.setHairIsActif( true);
+             hairdresser.setHairLastName( "zilbertu" );
+             
+             
+             list= new ArrayList();
+             
+             serv= new Service();
+              serv2= new Service();
+             serv.setServDesciption(  UUID.randomUUID().toString() );
+             serv.setServName( "rasage" );
+             serv.setServManager( true);
+             test.createObject(serv);
+             list.add( serv );
             
-            bizt.setBuisTypeName( "Salon" );
-            biz.setBuisName(  UUID.randomUUID().toString() );
-            biz.setBuisZipCode( "3100"+i);
-            biz.setBuisBuisType( bizt );
-            biz.setBuisConfirmation( false );
-            biz.setBuisDescription( UUID.randomUUID().toString()  );
-            
-result.get(i).setHairBuisness( biz );
-            biz.setBuisHairdressers( result );
-            Tag tg= new Tag();
-            tg.setTagName( "myCompany"+i );
-            List<Tag> list4= new ArrayList(); 
-            
-            test.createObject( bizt );
-            
-            list4.add( tg );
-            Attachment atta= new Attachment();
-            atta.setAttaType( "zip" );
-            atta.setAttaUrl( UUID.randomUUID().toString() );
-            
-            List<Attachment> list2= new ArrayList();
-            list2.add( atta );
-            
-            biz.setBuisAttachmentBuisness( list2 );
-        biz.setBuisTags( list4 );
-        test.updateObject( biz );
-  
-        }
-        
+             serv2.setServDesciption(  UUID.randomUUID().toString() );
+             serv2.setServName(  "contour" );
+             serv2.setServManager( false);
+             list.add( serv2 );
+             test.createObject(serv2);
+             hairdresser.setHairServices( list );
+             test.createObject( hairdresser );
+             
+              biz= new Buisness();
+              bizt= new BuisnessType();
+             bizt.setBuisTypeName( "Salon2" );
+             biz.setBuisName( "Cabinet Lesne-Bernat  coiffure");
+             biz.setBuisZipCode( "75007");
+             biz.setBuisBuisType( bizt );
+             biz.setBuisConfirmation( false );
+             biz.setBuisDescription( UUID.randomUUID().toString()  );
+             hairdresser.setHairBuisness( biz );
+             test.createObject( bizt );
+             test.updateObject( biz );
+             test.updateObject( hairdresser );
+             
+             //4
+             hairdresser=new Hairdresser();
+              hairdresser.setHairBirthDate( new Date() );
+              hairdresser.setHairFirstName ("Nicolas" );
+              hairdresser.setHairEmail( UUID.randomUUID().toString() );
+              hairdresser.setHairIsActif( true);
+              hairdresser.setHairLastName( "Pierre charle" );
+              
+              
+              list= new ArrayList();
+              
+              serv= new Service();
+               serv2= new Service();
+              serv.setServDesciption(  UUID.randomUUID().toString() );
+              serv.setServName( "react coiffure" );
+              serv.setServManager( true);
+              test.createObject(serv);
+              list.add( serv );
+             
+              serv2.setServDesciption(  UUID.randomUUID().toString() );
+              serv2.setServName(  "javascript barber" );
+              serv2.setServManager( false);
+              list.add( serv2 );
+              test.createObject(serv2);
+              hairdresser.setHairServices( list );
+              test.createObject( hairdresser );
+              
+              
+              hairdresser.setHairBuisness( biz );
+              test.updateObject( hairdresser );
+              
+              
+              //5
+              hairdresser=new Hairdresser();
+               hairdresser.setHairBirthDate( new Date() );
+               hairdresser.setHairFirstName ("gigi" );
+               hairdresser.setHairEmail( UUID.randomUUID().toString() );
+               hairdresser.setHairIsActif( true);
+               hairdresser.setHairLastName( "jean Francois" );
+               
+               
+               list= new ArrayList();
+               
+               serv= new Service();
+                serv2= new Service();
+               serv.setServDesciption(  UUID.randomUUID().toString() );
+               serv.setServName( "coiffure" );
+               serv.setServManager( true);
+               test.createObject(serv);
+               list.add( serv );
+              
+               serv2.setServDesciption(  UUID.randomUUID().toString() );
+               serv2.setServName("autre");
+               serv2.setServManager( false);
+               list.add( serv2 );
+               test.createObject(serv2);
+               hairdresser.setHairServices( list );
+               test.createObject( hairdresser );
+               
+               
+               
+               biz= new Buisness();
+               bizt= new BuisnessType();
+              bizt.setBuisTypeName( "Salon2" );
+              biz.setBuisName( " Bernat Denis coiffure");
+              biz.setBuisZipCode( "92310");
+              biz.setBuisBuisType( bizt );
+              biz.setBuisConfirmation( false );
+              biz.setBuisDescription( UUID.randomUUID().toString()  );
+              hairdresser.setHairBuisness( biz );
+              test.createObject( bizt );
+              test.updateObject( biz );
+              test.updateObject( hairdresser );
+               
+               
+               //6
+               hairdresser=new Hairdresser();
+                hairdresser.setHairBirthDate( new Date() );
+                hairdresser.setHairFirstName ("dimitri" );
+                hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                hairdresser.setHairIsActif( true);
+                hairdresser.setHairLastName( "locadore" );
+                
+                
+                list= new ArrayList();
+                
+                serv= new Service();
+                 serv2= new Service();
+                serv.setServDesciption(  UUID.randomUUID().toString() );
+                serv.setServName( "boule a zero" );
+                serv.setServManager( true);
+                test.createObject(serv);
+                list.add( serv );
+               
+                serv2.setServDesciption(  UUID.randomUUID().toString() );
+                serv2.setServName(  "épilation" );
+                serv2.setServManager( false);
+                list.add( serv2 );
+                test.createObject(serv2);
+                hairdresser.setHairServices( list );
+                test.createObject( hairdresser );
+                
+                hairdresser.setHairBuisness( biz );
+                test.updateObject( hairdresser );
+                
+                
+                //7
+                hairdresser=new Hairdresser();
+                 hairdresser.setHairBirthDate( new Date() );
+                 hairdresser.setHairFirstName ("pulsi" );
+                 hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                 hairdresser.setHairIsActif( true);
+                 hairdresser.setHairLastName( "el bad boy" );
+                 
+                 
+                 list= new ArrayList();
+                 
+                 serv= new Service();
+                  serv2= new Service();
+                 serv.setServDesciption(  UUID.randomUUID().toString() );
+                 serv.setServName( "curle" );
+                 serv.setServManager( true);
+                 test.createObject(serv);
+                 list.add( serv );
+                
+                 serv2.setServDesciption(  UUID.randomUUID().toString() );
+                 serv2.setServName(  "défrisage" );
+                 serv2.setServManager( false);
+                 list.add( serv2 );
+                 test.createObject(serv2);
+                 hairdresser.setHairServices( list );
+                 test.createObject( hairdresser );
+                 
+                 hairdresser.setHairBuisness( biz );
+                 test.updateObject( hairdresser );
+                 
+                 
+                 //8
+                 hairdresser=new Hairdresser();
+                  hairdresser.setHairBirthDate( new Date() );
+                  hairdresser.setHairFirstName ("béatrice" );
+                  hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                  hairdresser.setHairIsActif( true);
+                  hairdresser.setHairLastName( "péroné" );
+                  
+                  
+                  list= new ArrayList();
+                  
+                  serv= new Service();
+                   serv2= new Service();
+                  serv.setServDesciption(  UUID.randomUUID().toString() );
+                  serv.setServName( "snapCoupe" );
+                  serv.setServManager( true);
+                  test.createObject(serv);
+                  list.add( serv );
+                 
+                  serv2.setServDesciption(  UUID.randomUUID().toString() );
+                  serv2.setServName(  "instabarbe" );
+                  serv2.setServManager( false);
+                  list.add( serv2 );
+                  test.createObject(serv2);
+                  hairdresser.setHairServices( list );
+                  test.createObject( hairdresser );
+                  
+                  hairdresser.setHairBuisness( biz );
+                  test.updateObject( hairdresser );
+                  
+                  
+                  //9
+                  hairdresser=new Hairdresser();
+                   hairdresser.setHairBirthDate( new Date() );
+                   hairdresser.setHairFirstName ("anais" );
+                   hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                   hairdresser.setHairIsActif( true);
+                   hairdresser.setHairLastName( "jean charle" );
+                   
+                   
+                   list= new ArrayList();
+                   
+                   serv= new Service();
+                    serv2= new Service();
+                   serv.setServDesciption(  UUID.randomUUID().toString() );
+                   serv.setServName( "improvisation" );
+                   serv.setServManager( true);
+                   test.createObject(serv);
+                   list.add( serv );
+                  
+                   serv2.setServDesciption(  UUID.randomUUID().toString() );
+                   serv2.setServName(  "coupe femme" );
+                   serv2.setServManager( false);
+                   list.add( serv2 );
+                   test.createObject(serv2);
+                   hairdresser.setHairServices( list );
+                   test.createObject( hairdresser );
+                   
+                   hairdresser.setHairBuisness( biz );
+                   test.updateObject( hairdresser );
+                   
+                   
+                   //10
+                   hairdresser=new Hairdresser();
+                    hairdresser.setHairBirthDate( new Date() );
+                    hairdresser.setHairFirstName ("lolita" );
+                    hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                    hairdresser.setHairIsActif( true);
+                    hairdresser.setHairLastName( "elPédro" );
+                    
+                    
+                    list= new ArrayList();
+                    
+                    serv= new Service();
+                     serv2= new Service();
+                    serv.setServDesciption(  UUID.randomUUID().toString() );
+                    serv.setServName( "lissage" );
+                    serv.setServManager( true);
+                    test.createObject(serv);
+                    list.add( serv );
+                   
+                    serv2.setServDesciption(  UUID.randomUUID().toString() );
+                    serv2.setServName(  "coloration" );
+                    serv2.setServManager( false);
+                    list.add( serv2 );
+                    test.createObject(serv2);
+                    hairdresser.setHairServices( list );
+                    test.createObject( hairdresser );
+                    
+                    
+                    
+                    
+                    //11
+                    hairdresser=new Hairdresser();
+                     hairdresser.setHairBirthDate( new Date() );
+                     hairdresser.setHairFirstName ("donavane" );
+                     hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                     hairdresser.setHairIsActif( true);
+                     hairdresser.setHairLastName( "dubois" );
+                     
+                     
+                     list= new ArrayList();
+                     
+                     serv= new Service();
+                      serv2= new Service();
+                     serv.setServDesciption(  UUID.randomUUID().toString() );
+                     serv.setServName( "curly" );
+                     serv.setServManager( true);
+                     test.createObject(serv);
+                     list.add( serv );
+                    
+                     serv2.setServDesciption(  UUID.randomUUID().toString() );
+                     serv2.setServName(  "autre" );
+                     serv2.setServManager( false);
+                     list.add( serv2 );
+                     test.createObject(serv2);
+                     hairdresser.setHairServices( list );
+                     test.createObject( hairdresser );
+                     
+                     biz= new Buisness();
+                     bizt= new BuisnessType();
+                    bizt.setBuisTypeName( "Salon2" );
+                    biz.setBuisName( "Philippe Bernard");
+                    biz.setBuisZipCode( "92500");
+                    biz.setBuisBuisType( bizt );
+                    biz.setBuisConfirmation( false );
+                    biz.setBuisDescription( UUID.randomUUID().toString()  );
+                    hairdresser.setHairBuisness( biz );
+                    test.createObject( bizt );
+                    test.updateObject( biz );
+                    test.updateObject( hairdresser );
+                     
+                     
+                     //12
+                     hairdresser=new Hairdresser();
+                      hairdresser.setHairBirthDate( new Date() );
+                      hairdresser.setHairFirstName ("JEE" );
+                      hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                      hairdresser.setHairIsActif( true);
+                      hairdresser.setHairLastName( "Java" );
+                      
+                      
+                      list= new ArrayList();
+                      
+                      serv= new Service();
+                       serv2= new Service();
+                      serv.setServDesciption(  UUID.randomUUID().toString() );
+                      serv.setServName( "reference" );
+                      serv.setServManager( true);
+                      test.createObject(serv);
+                      list.add( serv );
+                     
+                      serv2.setServDesciption(  UUID.randomUUID().toString() );
+                      serv2.setServName(  "objet" );
+                      serv2.setServManager( false);
+                      list.add( serv2 );
+                      test.createObject(serv2);
+                      hairdresser.setHairServices( list );
+                      test.createObject( hairdresser );
+                      
+                      biz= new Buisness();
+                      bizt= new BuisnessType();
+                     bizt.setBuisTypeName( "Salon2" );
+                     biz.setBuisName( " Artisan Bernard  coiffure");
+                     biz.setBuisZipCode( "92100");
+                     biz.setBuisBuisType( bizt );
+                     biz.setBuisConfirmation( false );
+                     biz.setBuisDescription( UUID.randomUUID().toString()  );
+                     hairdresser.setHairBuisness( biz );
+                     test.createObject( bizt );
+                     test.updateObject( biz );
+                     test.updateObject( hairdresser );
+                      
+                      
+                      //13
+                      hairdresser=new Hairdresser();
+                       hairdresser.setHairBirthDate( new Date() );
+                       hairdresser.setHairFirstName ("rudolpho" );
+                       hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                       hairdresser.setHairIsActif( true);
+                       hairdresser.setHairLastName( "marie louis" );
+                       
+                       
+                       list= new ArrayList();
+                       
+                       serv= new Service();
+                        serv2= new Service();
+                       serv.setServDesciption(  UUID.randomUUID().toString() );
+                       serv.setServName( "style" );
+                       serv.setServManager( true);
+                       test.createObject(serv);
+                       list.add( serv );
+                      
+                       serv2.setServDesciption(  UUID.randomUUID().toString() );
+                       serv2.setServName(  "autre" );
+                       serv2.setServManager( false);
+                       list.add( serv2 );
+                       test.createObject(serv2);
+                       hairdresser.setHairServices( list );
+                       test.createObject( hairdresser );
+                       
+                       hairdresser.setHairBuisness( biz );
+                       test.updateObject( hairdresser );
+                       
+                       //14
+                       hairdresser=new Hairdresser();
+                        hairdresser.setHairBirthDate( new Date() );
+                        hairdresser.setHairFirstName ("stephanie" );
+                        hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                        hairdresser.setHairIsActif( true);
+                        hairdresser.setHairLastName( "locidor" );
+                        
+                        
+                        list= new ArrayList();
+                        
+                        serv= new Service();
+                         serv2= new Service();
+                        serv.setServDesciption(  UUID.randomUUID().toString() );
+                        serv.setServName( "décoloration" );
+                        serv.setServManager( true);
+                        test.createObject(serv);
+                        list.add( serv );
+                       
+                        serv2.setServDesciption(  UUID.randomUUID().toString() );
+                        serv2.setServName(  "chignon" );
+                        serv2.setServManager( false);
+                        list.add( serv2 );
+                        test.createObject(serv2);
+                        hairdresser.setHairServices( list );
+                        test.createObject( hairdresser );
+                        
+                        hairdresser.setHairBuisness( biz );
+                        test.updateObject( hairdresser );
+                        
+                        //15
+                        hairdresser=new Hairdresser();
+                         hairdresser.setHairBirthDate( new Date() );
+                         hairdresser.setHairFirstName ("jerry" );
+                         hairdresser.setHairEmail( UUID.randomUUID().toString() );
+                         hairdresser.setHairIsActif( true);
+                         hairdresser.setHairLastName( "insore" );
+                         
+                         
+                         list= new ArrayList();
+                         
+                         serv= new Service();
+                          serv2= new Service();
+                         serv.setServDesciption(  UUID.randomUUID().toString() );
+                         serv.setServName( "barbe" );
+                         serv.setServManager( true);
+                         test.createObject(serv);
+                         list.add( serv );
+                        
+                         serv2.setServDesciption(  UUID.randomUUID().toString() );
+                         serv2.setServName(  "sourcil" );
+                         serv2.setServManager( false);
+                         list.add( serv2 );
+                         test.createObject(serv2);
+                         hairdresser.setHairServices( list );
+                         test.createObject( hairdresser );
+                         
+                         hairdresser.setHairBuisness( biz );
+                         test.updateObject( hairdresser );
+      
         
     }
     public void voidAdd100Person(){

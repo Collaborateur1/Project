@@ -67,15 +67,16 @@
 
   
 
-	<servlet-mapping>
-		<servlet-name>filter.ServletCli</servlet-name>
-		<url-pattern>/cli/*</url-pattern>
-	</servlet-mapping>
+
 	
 		<servlet-mapping>
 		<servlet-name>filter.ServletPro</servlet-name>
 		<url-pattern>/pro/*</url-pattern>
 	</servlet-mapping>
-
+	<servlet-mapping>
+	
+		<servlet-name>filter.ServletCli</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
 <!-- *********************************************End Servlet MApping**************************************************** -->
 </web-app>
