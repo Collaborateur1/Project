@@ -20,7 +20,7 @@ export default class ClientSearch extends React.Component {
 
   submitHandler (e) {
     e.preventDefault()
-    fetch(`/puls/search?salonOrStylist=${this.state.salonOrStylist}&location=${this.state.location}&service=${this.state.service}`)
+    fetch(`/puls/search?salonOrStylist=${this.state.salonOrStylist}&latitude=${this.state.lat}&longitude=${this.state.lng}&service=${this.state.service}`)
     .then((response) => {
       if (response.ok) {
         response.json()
@@ -42,7 +42,9 @@ export default class ClientSearch extends React.Component {
 
   placeSelectHandler (place) {
     this.setState({
-      location: place.formatted_address || place.name
+      location: place.formatted_address || place.name,
+      lat:place.geometry.location.lat(),
+      lng:place.geometry.location.lng()
     })
   }
 

@@ -1,5 +1,6 @@
 package controller.routeCustomer;
 
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -21,7 +22,6 @@ import model.bean.Hairdresser;
 import model.job.GenericJob;
 import other.SpringFactory;
 
-
 @Path( "/search" )
 public class RouteCustomerSearch {
     @javax.annotation.security.PermitAll
@@ -29,11 +29,21 @@ public class RouteCustomerSearch {
     @Produces( MediaType.APPLICATION_JSON)
     public Response search( @QueryParam( value = "service" ) String service,
             @QueryParam( value = "salonOrStylist" ) String salonOrStylist,
-            @QueryParam( value = "location" ) String location,
-            @QueryParam( value = "longitude" ) String longitude,
-            @QueryParam( value = "latitude" ) String latitude) throws URISyntaxException, JsonProcessingException {
+            @QueryParam( value = "longitude" ) BigDecimal longitude,
+            @QueryParam( value = "latitude" ) BigDecimal latitude) throws URISyntaxException, JsonProcessingException {
        
       
+       
+        
+        if(isNullOrEmpty(longitude)&&isNullOrEmpty(latitude)){
+            longitude =BigDecimal.valueOf( 2.346268 );
+            latitude=BigDecimal.valueOf(48.849355 );
+        }
+  
+        BigDecimal addLatitudee=latitude.add(BigDecimal.valueOf(  0.04506 ) );
+        BigDecimal addLongitudee=longitude.add(BigDecimal.valueOf( 0.065172 ) );
+        BigDecimal  rmLatitude=latitude.subtract(BigDecimal.valueOf(  0.04506 ) );
+        BigDecimal  rmLongitude=longitude.subtract(BigDecimal.valueOf( 0.065172 ) );
         
         StringBuilder request=new StringBuilder();
         request.append( Hairdresser.getHairSearchRequest() );
@@ -41,27 +51,23 @@ public class RouteCustomerSearch {
         GenericJob test= SpringFactory.getGenericJob();
       
         
-        if(location==null)
-            location="";
-        
-        
-        if(!"".equals(service)&&service!=null){
-            
             request.append(" LEFT OUTER JOIN Service_Hairdresser Service_Hairdresser ON hairdresser.hairId=Service_Hairdresser.hairId"
                     +" LEFT OUTER JOIN Service Service ON Service_Hairdresser.servId=Service.servId"
-                    + " WHERE buisness.buiszipcode LIKE \""+location+"%\""+
-                    "AND Service.servName LIKE\""+service+"%\"");
+                    + " WHERE buisness.buisLongitude BETWEEN "+rmLongitude+" AND "+ addLongitudee
+                    +" AND  buisness.buisLatitude BETWEEN "+rmLatitude+" AND "+addLatitudee ); 
             
-
-         
-        }else
-        {
-            request.append(" WHERE buisness.buiszipcode like \""+location+"%\"");
+    
+        
+        if(!isNullOrEmpty(service)){
+            
+            request.append(" AND Service.servName LIKE\""+service+"%\"");
+                   
            
         }
+           
+
         
-        
-        if(!"".equals(salonOrStylist)&&salonOrStylist!=null){
+        if(!isNullOrEmpty(salonOrStylist)){
             request.append(" AND (buisness.buisname LIKE \"%"+salonOrStylist+"%\" OR hairdresser.hairlastname LIKE \"%"+salonOrStylist+"%\")");
         }
         
@@ -112,5 +118,17 @@ public class RouteCustomerSearch {
         ObjectMapper mapper = new ObjectMapper();
         serialized = mapper.writeValueAsString(object);
         return serialized;
-    }      
+    }   
+    
+    private boolean  isNullOrEmpty(Object object) throws JsonProcessingException {
+       if(object==null)
+           return true;
+       if (object instanceof String)
+       {
+           String st=(String) object;
+           return st.equals( "" );
+       }
+           
+        return false;
+    }  
 }

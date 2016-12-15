@@ -166,15 +166,16 @@ public class RoutePublicAccess {
             biz.setBuisBuisType( bizt );
             biz.setBuisConfirmation( false );
             biz.setBuisDescription( UUID.randomUUID().toString()  );
+            biz.setBuisLatitude( 48.922499  );
+            biz.setBuisLongitude(2.557068);
             hairdresser.setHairBuisness( biz );
             test.createObject( bizt );
             test.updateObject( biz );
             test.updateObject( hairdresser );
             
             
-            
-            
-            
+           
+           
             
             
             
@@ -218,6 +219,7 @@ public class RoutePublicAccess {
              hairdresser.setHairEmail( UUID.randomUUID().toString() );
              hairdresser.setHairIsActif( true);
              hairdresser.setHairLastName( "zilbertu" );
+            
              
              
              list= new ArrayList();
@@ -320,6 +322,8 @@ public class RoutePublicAccess {
               biz.setBuisBuisType( bizt );
               biz.setBuisConfirmation( false );
               biz.setBuisDescription( UUID.randomUUID().toString()  );
+              biz.setBuisLatitude( 48.888198  );
+              biz.setBuisLongitude(2.355194);
               hairdresser.setHairBuisness( biz );
               test.createObject( bizt );
               test.updateObject( biz );
@@ -515,6 +519,8 @@ public class RoutePublicAccess {
                     biz.setBuisBuisType( bizt );
                     biz.setBuisConfirmation( false );
                     biz.setBuisDescription( UUID.randomUUID().toString()  );
+                    biz.setBuisLatitude( 48.796009  );
+                    biz.setBuisLongitude(2.300262);
                     hairdresser.setHairBuisness( biz );
                     test.createObject( bizt );
                     test.updateObject( biz );
@@ -556,6 +562,8 @@ public class RoutePublicAccess {
                      biz.setBuisBuisType( bizt );
                      biz.setBuisConfirmation( false );
                      biz.setBuisDescription( UUID.randomUUID().toString()  );
+                     biz.setBuisLatitude( 43.604262  );
+                     biz.setBuisLongitude(3.99353);
                      hairdresser.setHairBuisness( biz );
                      test.createObject( bizt );
                      test.updateObject( biz );
