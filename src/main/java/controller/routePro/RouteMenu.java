@@ -37,13 +37,17 @@ public class RouteMenu extends WebContext {
         super( sc );
     }
 
-    @javax.annotation.security.RolesAllowed( { "Connected" } )
+  //  @javax.annotation.security.RolesAllowed( { "Connected" } )
     @GET
     @Path( "/acceuil" )
     @Produces( MediaType.TEXT_HTML )
     public Response checkSignup( @Context SecurityContext sc ) {
 
         UserCustom user = getUser();
+        if(user==null){
+            user=new UserCustom();
+        user.getDusParameters();
+        }
         //provide a multi contexts environment to the handlebars template, add object to map and use context helper with the first option= key of the map
         ConcurrentHashMap<String, UserCustom> multiContext= new ConcurrentHashMap<String,UserCustom>();
         com.github.jknack.handlebars.Context context = com.github.jknack.handlebars.Context.newBuilder( user )
@@ -72,7 +76,7 @@ public class RouteMenu extends WebContext {
         return null;
     }
 
-    @javax.annotation.security.RolesAllowed( { "Connected" } )
+    //@javax.annotation.security.RolesAllowed( { "Connected" } )
     @GET
     @Path( "{url}" )
     @Produces( MediaType.TEXT_HTML )
@@ -80,7 +84,10 @@ public class RouteMenu extends WebContext {
             @QueryParam( value = "argu" ) String argu, @QueryParam( value = "currentPage" ) String currentPage)
                     throws IOException {
         UserCustom user = getUser();
-        
+        if(user==null){
+            user=new UserCustom();
+            user.getDusParameters();
+        }
       //provide a multi context environment to the handlebar template, add object to map and use context helper with the first option= key of the map
         ConcurrentHashMap<String, UserCustom> multiContext= new ConcurrentHashMap<String,UserCustom>();
         

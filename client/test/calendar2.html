@@ -1,0 +1,228 @@
+<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+<style>
+
+.calendar-container table {
+	    border-collapse: separate;
+	border-spacing: 3px 0;
+	width: 100%;
+	 table-layout: fixed;
+	 
+	
+}
+.calendar-container thead td{
+overflow:hidden;
+background: #435f71;
+ /*border-top-left-radius: 0.5em;
+	 border-top-right-radius: 0.5em;*/
+}
+.calendar-container td {
+	padding: 0;
+	 
+	 white-space:nowrap;
+	
+ border-width:1px;
+ border-style:solid; 
+ border-color:#435f71;
+ width:50%;
+ 
+}
+
+.calendar-container tbody td {
+	overflow:hidden;
+   /*border-bottom-left-radius: 0.5em;
+	 border-bottom-right-radius: 0.5em;*/
+}
+
+
+
+.calendar-container {
+
+	width: auto;
+	 max-width: 690px;
+	   
+	
+}
+
+.calendar-container header {
+	border-radius: 1em 1em 0 0;
+	background: #e66b6b;
+	color: #fff;
+	padding: 3em 2em;
+}
+
+.calendar-container .day {
+	font-size: 8em;
+	font-weight: 900;
+	line-height: 1em;
+}
+
+.calendar-container .month {
+	font-size: 4em;
+	line-height: 1em;
+	text-transform: lowercase;
+}
+
+.calendar-container .calendar {
+	background: #fff;
+	border-radius: 1em 1em 1em 1em;
+	color: #555;
+	padding: 0.2em;
+	
+	 
+}
+
+.calendar-container .calendar thead {
+	color: white;
+	font-weight: 700;
+	text-transform: lowercase;
+	
+}
+
+.calendar-container .calendar td {
+	padding: .2em;
+	text-align: center;
+}
+
+.calendar-container .calendar tbody td:hover {
+	
+}
+.calendar-container .slot:hover {
+	background: #cacaca;
+	color: #fff;
+}
+
+
+	
+	
+.calendar-container .current-day {
+	color: #e66b6b;
+}
+
+.calendar-container .prev-month,
+.next-month {
+	color: #cacaca;
+}
+
+
+
+</style>
+
+
+		<div class="calendar-container">
+			<table class="calendar">
+				
+				<thead>
+
+					<tr>
+
+						<td>Lundi</td>
+						<td>Mardi</td>
+						<td>Mercredi</td>
+						<td>Jeudi</td>
+						<td>Vendredi</td>
+						<td>Samedi</td>
+						<td>Dimanche</td>
+
+					</tr>
+
+				</thead>
+
+				<tbody>
+
+					<tr>
+						<td class="prev-month">
+						<div class="slots">
+   <div class="slot"><a data-slot-datetime="2016-10-24 11:45:00 +0200" href="#">11:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 12:00:00 +0200" href="#">12:00</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 15:45:00 +0200" href="#">15:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:30:00 +0200" href="#">16:30</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:45:00 +0200" href="#">16:45</a></div>
+   <span class="more-slots">Voir plus</span>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:15:00 +0200" href="#">17:15</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:30:00 +0200" href="#">17:30</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:45:00 +0200" href="#">17:45</a></div>
+</div>
+</td>
+
+<td><div class="slots">
+   <div class="slot"><a data-slot-datetime="2016-10-24 11:45:00 +0200" href="#">11:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 12:00:00 +0200" href="#">12:00</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 15:45:00 +0200" href="#">15:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:30:00 +0200" href="#">16:30</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:45:00 +0200" href="#">16:45</a></div>
+   <span class="more-slots">Voir plus</span>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:15:00 +0200" href="#">17:15</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:30:00 +0200" href="#">17:30</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:45:00 +0200" href="#">17:45</a></div>
+</div></td>
+
+<td><div class="slots">
+   <div class="slot"><a data-slot-datetime="2016-10-24 11:45:00 +0200" href="#">11:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 12:00:00 +0200" href="#">12:00</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 15:45:00 +0200" href="#">15:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:30:00 +0200" href="#">16:30</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:45:00 +0200" href="#">16:45</a></div>
+   <span class="more-slots">Voir plus</span>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:15:00 +0200" href="#">17:15</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:30:00 +0200" href="#">17:30</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:45:00 +0200" href="#">17:45</a></div>
+</div></td>
+
+<td><div class="slots">
+   <div class="slot"><a data-slot-datetime="2016-10-24 11:45:00 +0200" href="#">11:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 12:00:00 +0200" href="#">12:00</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 15:45:00 +0200" href="#">15:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:30:00 +0200" href="#">16:30</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:45:00 +0200" href="#">16:45</a></div>
+   <span class="more-slots">Voir plus</span>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:15:00 +0200" href="#">17:15</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:30:00 +0200" href="#">17:30</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:45:00 +0200" href="#">17:45</a></div>
+</div></td>
+<td><div class="slots">
+   <div class="slot"><a data-slot-datetime="2016-10-24 11:45:00 +0200" href="#">11:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 12:00:00 +0200" href="#">12:00</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 15:45:00 +0200" href="#">15:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:30:00 +0200" href="#">16:30</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:45:00 +0200" href="#">16:45</a></div>
+   <span class="more-slots">Voir plus</span>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:15:00 +0200" href="#">17:15</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:30:00 +0200" href="#">17:30</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:45:00 +0200" href="#">17:45</a></div>
+</div></td>
+<td><div class="slots">
+   <div class="slot"><a data-slot-datetime="2016-10-24 11:45:00 +0200" href="#">11:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 12:00:00 +0200" href="#">12:00</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 15:45:00 +0200" href="#">15:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:30:00 +0200" href="#">16:30</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:45:00 +0200" href="#">16:45</a></div>
+   <span class="more-slots">Voir plus</span>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:15:00 +0200" href="#">17:15</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:30:00 +0200" href="#">17:30</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:45:00 +0200" href="#">17:45</a></div>
+</div></td>
+<td><div class="slots">
+   <div class="slot"><a data-slot-datetime="2016-10-24 11:45:00 +0200" href="#">11:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 12:00:00 +0200" href="#">12:00</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 15:45:00 +0200" href="#">15:45</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:30:00 +0200" href="#">16:30</a></div>
+   <div class="slot"><a data-slot-datetime="2016-10-24 16:45:00 +0200" href="#">16:45</a></div>
+   <span class="more-slots">Voir plus</span>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:15:00 +0200" href="#">17:15</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:30:00 +0200" href="#">17:30</a></div>
+   <div class="slot hidden"><a data-slot-datetime="2016-10-24 17:45:00 +0200" href="#">17:45</a></div>
+</div></td>
+						
+					</tr>
+
+					
+
+				</tbody>
+
+			</table>
+
+			<div class="ring-left"></div>
+			<div class="ring-right"></div>
+
+		</div> <!-- end calendar-container -->
+ <!-- end container -->

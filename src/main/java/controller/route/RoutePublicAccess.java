@@ -291,7 +291,7 @@ public class RoutePublicAccess {
                hairdresser.setHairFirstName ("gigi" );
                hairdresser.setHairEmail( UUID.randomUUID().toString() );
                hairdresser.setHairIsActif( true);
-               hairdresser.setHairLastName( "jean Francois" );
+               hairdresser.setHairLastName( "stessie" );
                
                
                list= new ArrayList();
