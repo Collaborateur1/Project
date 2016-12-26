@@ -17,6 +17,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
+import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.javaetmoi.core.persistence.hibernate.LazyLoadingUtil;
@@ -358,6 +359,12 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
                
                 criter.add( Restrictions.le( restriction[i][0], Long.parseLong(restriction[i][2]) ) );
                 break;
+                
+            case "<=D":
+            case "LED":
+               
+                criter.add( Restrictions.le( restriction[i][0], DateTime.parse(restriction[i][2]).toDate())  );
+                break;
 
             case "<":
             case "LT":
@@ -368,6 +375,11 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             case ">=":
             case "GE":
                 criter.add( Restrictions.ge( restriction[i][0], Long.parseLong(restriction[i][2]) ) );
+                break;
+                
+            case ">=D":
+            case "GED":
+                criter.add( Restrictions.ge( restriction[i][0],DateTime.parse(restriction[i][2]).toDate() ) );
                 break;
 
             case ">":

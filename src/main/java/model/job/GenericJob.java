@@ -13,7 +13,7 @@ public interface GenericJob<T extends Executable> {
     public Object getObject(Class<T> cls, String id, boolean lazyLoad);
     public Object getObject(T obj,boolean lazyLoad);
     public void loadLazyCollection(T obj);
-    public List<Object> getListObjectV1(Class<T> cls, String[][] restriction,String[][] alias);
+    public List<Object> getListObjectV1(Class<?> cls, String[][] restriction,String[][] order,String[][] alias);
     public List<Object> getListObjectV2(Class<T> cls, String restriction);
     public List getList(Class<T> cls,String[][] alias ,String[][] restriction,String[][] order,String[][] projection,int maxResult, int firstResult);
     public List getList(Class<T> cls,String alias ,String restriction,String order,String[] projection);

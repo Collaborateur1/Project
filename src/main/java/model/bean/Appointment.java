@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -28,7 +30,7 @@ public class Appointment  implements Executable {
     private String appoId;
     
     @Column(name="appostartDate") 
-    private Date appoStartDate;
+    private DateTime appoStartDate;
     
     @Column(name="appoEndDate") 
     private Date appoEndDate;
@@ -48,15 +50,15 @@ public class Appointment  implements Executable {
     @Column(name="appoType", length=16) 
     private String appoType;
     
-    @ManyToOne(cascade = CascadeType.MERGE,optional = false)
+    @ManyToOne(cascade = CascadeType.MERGE,optional = false,fetch = FetchType.LAZY)
     @JsonBackReference
     private Hairdresser   appoHairdresser;
     
-    @ManyToOne(optional = true)//no mandatory
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)//no mandatory
     @JoinColumn(name="servId")
     private Service appoService;
     
-    @ManyToOne(cascade = CascadeType.MERGE,optional = true)
+    @ManyToOne(cascade = CascadeType.MERGE,optional = true,fetch = FetchType.LAZY)
     @JsonBackReference
     private Custumer appoCustumer;
 
@@ -68,11 +70,11 @@ public class Appointment  implements Executable {
         this.appoId = appoId;
     }
 
-    public Date getAppoStartDate() {
+    public DateTime getAppoStartDate() {
         return appoStartDate;
     }
 
-    public void setAppoStartDate( Date appoStartDate ) {
+    public void setAppoStartDate( DateTime appoStartDate ) {
         this.appoStartDate = appoStartDate;
     }
 

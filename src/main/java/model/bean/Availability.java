@@ -19,65 +19,65 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import model.dao.Executable;
 
 @Entity
-@Table(name="Break")
-public class Break  implements Executable{
+@Table(name="Availability")
+public class Availability  implements Executable{
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "breaId")
-    private String breaId;
+    @Column(name = "avaiId")
+    private String avaiId;
     
-    @Column(name="breaStartDate") 
-    private Date breaStartDate;
+    @Column(name="avaiStartDate") 
+    private Date avaiStartDate;
     
-    @Column(name="breaEndDate") 
-    private Date breaEndDate;
+    @Column(name="avaiEndDate") 
+    private Date avaiEndDate;
     
-    @Column(name="breaNote",length=60) 
-    private String breaNote;
+    @Column(name="avaiNote",length=60) 
+    private String avaiNote;
     
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JsonBackReference
-    private ScheduleDay   breaScheduleDay;
+    private ScheduleDay   avaiScheduleDay;
 
-    public String getBreaId() {
-        return breaId;
+    public String getavaiId() {
+        return avaiId;
     }
 
-    public void setBreaId( String breaId ) {
-        this.breaId = breaId;
+    public void setavaiId( String avaiId ) {
+        this.avaiId = avaiId;
     }
 
-    public Date getBreaStartDate() {
-        return breaStartDate;
+    public Date getavaiStartDate() {
+        return avaiStartDate;
     }
 
-    public void setBreaStartDate( Date breaStartDate ) {
-        this.breaStartDate = breaStartDate;
+    public void setavaiStartDate( Date avaiStartDate ) {
+        this.avaiStartDate = avaiStartDate;
     }
 
-    public Date getBreaEndDate() {
-        return breaEndDate;
+    public Date getavaiEndDate() {
+        return avaiEndDate;
     }
 
-    public void setBreaEndDate( Date breaEndDate ) {
-        this.breaEndDate = breaEndDate;
+    public void setavaiEndDate( Date avaiEndDate ) {
+        this.avaiEndDate = avaiEndDate;
     }
 
-    public String getBreaNote() {
-        return breaNote;
+    public String getavaiNote() {
+        return avaiNote;
     }
 
-    public void setBreaNote( String breaNote ) {
-        this.breaNote = breaNote;
+    public void setavaiNote( String avaiNote ) {
+        this.avaiNote = avaiNote;
     }
 
-    public ScheduleDay getBreaScheduleDay() {
-        return breaScheduleDay;
+    public ScheduleDay getavaiScheduleDay() {
+        return avaiScheduleDay;
     }
 
-    public void setBreaScheduleDay( ScheduleDay breaScheduleDay ) {
-        this.breaScheduleDay = breaScheduleDay;
+    public void setavaiScheduleDay( ScheduleDay avaiScheduleDay ) {
+        this.avaiScheduleDay = avaiScheduleDay;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class Break  implements Executable{
     @Override
     public String getID() throws Exception {
         // TODO Auto-generated method stub
-        return breaId;
+        return avaiId;
     }
     
 }

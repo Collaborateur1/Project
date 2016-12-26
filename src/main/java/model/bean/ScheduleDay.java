@@ -39,13 +39,13 @@ public class ScheduleDay  implements Executable{
     
     
     
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JsonBackReference
     private Schedule   scheDaySchedule;
     
     
-    @OneToMany(fetch = FetchType.LAZY,mappedBy="breaScheduleDay")
-    private List<Break> scheDayBreak;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy="avaiScheduleDay")
+    private List<Availability> scheDayAvailability;
 
 
     public String getScheDayId() {
@@ -98,13 +98,13 @@ public class ScheduleDay  implements Executable{
     }
 
 
-    public List<Break> getScheDayBreak() {
-        return scheDayBreak;
+    public List<Availability> getScheDayAvailability() {
+        return scheDayAvailability;
     }
 
 
-    public void setScheDayBreak( List<Break> scheDayBreak ) {
-        this.scheDayBreak = scheDayBreak;
+    public void setScheDayAvailability( List<Availability> scheDayAvailability ) {
+        this.scheDayAvailability = scheDayAvailability;
     }
 
 

@@ -26,12 +26,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 import model.custom.UserCustom;
 import model.job.UserJob;
 
-@Controller
+
 @Path( "/file" )
 public class RouteMedia {
     private static final int DEFAULT_BUFFER_SIZE = 102400; // 10 ko

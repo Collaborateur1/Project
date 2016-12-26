@@ -41,7 +41,7 @@ public class Schedule implements Executable {
     @Column(name = "scheEndDate")
     private Date scheEndDate;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JsonBackReference
     private Hairdresser   scheHairdresser;   
     

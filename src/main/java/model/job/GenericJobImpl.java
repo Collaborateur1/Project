@@ -44,9 +44,9 @@ public class GenericJobImpl implements GenericJob{
     }
 
     @Override
-    public List<Object> getListObjectV1( Class cls, String[][] restriction,String[][] alias ) {
+    public List<Object> getListObjectV1( Class cls, String[][] restriction,String[][] order,String[][] alias ) {
         // TODO Auto-generated method stub
-        return daoCenter.list( cls, restriction, null,alias );
+        return daoCenter.list( cls, restriction, order,alias );
         
     }
 
@@ -66,7 +66,7 @@ public class GenericJobImpl implements GenericJob{
             st[i][2]=st2[i+2].trim();
         }
         
-        return getListObjectV1( cls, st ,null);
+        return getListObjectV1( cls, st ,null,null);
     }
 
     @Override

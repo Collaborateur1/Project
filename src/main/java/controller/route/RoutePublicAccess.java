@@ -16,15 +16,19 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import model.bean.Availability;
 import model.bean.Buisness;
 import model.bean.BuisnessType;
 import model.bean.DefaultCustomer;
 import model.bean.Hairdresser;
+import model.bean.Schedule;
+import model.bean.ScheduleDay;
 import model.bean.Service;
 import model.custom.CustomerCustom;
 import model.custom.EnterpriseCustom;
@@ -83,7 +87,7 @@ public class RoutePublicAccess {
         //                                              new String[][]{{"service.servManager","=B","true"}},
          //                                             new String[][]{{"hairServices","service"}});
         List<Hairdresser>result= test.getListObjectV1( Hairdresser.class, 
-                                                           null,
+                                                           null,null,
                                                              null);
       
         
@@ -136,7 +140,31 @@ public class RoutePublicAccess {
             hairdresser.setHairIsActif( true);
             hairdresser.setHairLastName( "jean Francois" );
             
-            
+            List<Schedule> list3= new ArrayList();
+                       Schedule sche= new Schedule();
+                       sche.setScheDate( new Date() );
+                        sche.setScheName( "test" );
+                       list3.add( sche );
+                        sche.setScheHairdresser( hairdresser );
+                       //test.createObject( sche );
+                    hairdresser.setHairSchedules( list3 );
+                    
+                    List<ScheduleDay> listSche= new ArrayList();
+                    ScheduleDay sched= new ScheduleDay();
+                    sched.setScheDay(1);
+                    sched.setScheDaySchedule( sche );
+                   
+                    List<Availability> listAva= new ArrayList();
+                    Availability availability= new Availability();
+                    availability.setavaiStartDate( DateTime.now().toDate() );
+                    availability.setavaiEndDate( DateTime.now().plusMinutes( 50 ).toDate() );
+                    test.createObject( availability );
+                    listAva.add(availability );
+                    sched.setScheDayAvailability( listAva );
+                    
+                    listSche.add( sched );
+                    sche.setScheScheDays( listSche );
+                    
             List<Service> list= new ArrayList();
             
             Service serv= new Service();
@@ -153,10 +181,11 @@ public class RoutePublicAccess {
             list.add( serv2 );
             test.createObject(serv2);
             hairdresser.setHairServices( list );
-            test.createObject( hairdresser );
+            test.updateObject( hairdresser );
             
-            
-            
+            test.updateObject( sched );
+            availability.setavaiScheduleDay( sched );
+            test.updateObject( availability );
             Buisness biz= new Buisness();
             BuisnessType bizt= new BuisnessType();
             
