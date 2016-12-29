@@ -45,7 +45,7 @@ public class Schedule implements Executable {
     @JsonBackReference
     private Hairdresser   scheHairdresser;   
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="scheDaySchedule")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="scheDaySchedule",cascade = CascadeType.MERGE)
     private List<ScheduleDay> scheScheDays;
 
 

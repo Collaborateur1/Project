@@ -365,6 +365,12 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
                
                 criter.add( Restrictions.le( restriction[i][0], DateTime.parse(restriction[i][2]).toDate())  );
                 break;
+                
+            case "<=DT":
+            case "LEDT":
+               
+                criter.add( Restrictions.le( restriction[i][0], DateTime.parse(restriction[i][2]))  );
+                break;
 
             case "<":
             case "LT":
@@ -380,6 +386,11 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             case ">=D":
             case "GED":
                 criter.add( Restrictions.ge( restriction[i][0],DateTime.parse(restriction[i][2]).toDate() ) );
+                break;
+                
+            case ">=DT":
+            case "GEDT":
+                criter.add( Restrictions.ge( restriction[i][0],DateTime.parse(restriction[i][2]) ) );
                 break;
 
             case ">":
@@ -803,7 +814,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             // Ouverture Session
             session = GetSession();
            Object tmp= session.get(object, id);
-           if(lazyLoad)
+           if(!lazyLoad)
            loadLazyCollection((T) tmp);
           return tmp;
 

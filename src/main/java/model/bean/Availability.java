@@ -1,6 +1,5 @@
 package model.bean;
 
-import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.CascadeType;
@@ -13,8 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import model.dao.Executable;
 
@@ -26,12 +28,14 @@ public class Availability  implements Executable{
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "avaiId")
     private String avaiId;
-    
-    @Column(name="avaiStartDate") 
-    private Date avaiStartDate;
-    
+    @JsonIgnore
+    @Column(name="avaiStartDate")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime avaiStartDate;
+    @JsonIgnore
     @Column(name="avaiEndDate") 
-    private Date avaiEndDate;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime avaiEndDate;
     
     @Column(name="avaiNote",length=60) 
     private String avaiNote;
@@ -47,20 +51,26 @@ public class Availability  implements Executable{
     public void setavaiId( String avaiId ) {
         this.avaiId = avaiId;
     }
+public String getFormatedAvaiStartDate(){
+    return avaiStartDate.toString();
+}
 
-    public Date getavaiStartDate() {
+public String getFormatedAvaiEndtDate(){
+    return avaiEndDate.toString();
+}
+    public DateTime getavaiStartDate() {
         return avaiStartDate;
     }
 
-    public void setavaiStartDate( Date avaiStartDate ) {
+    public void setavaiStartDate( DateTime avaiStartDate ) {
         this.avaiStartDate = avaiStartDate;
     }
 
-    public Date getavaiEndDate() {
+    public DateTime getavaiEndDate() {
         return avaiEndDate;
     }
 
-    public void setavaiEndDate( Date avaiEndDate ) {
+    public void setavaiEndDate( DateTime avaiEndDate ) {
         this.avaiEndDate = avaiEndDate;
     }
 

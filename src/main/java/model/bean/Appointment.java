@@ -1,6 +1,5 @@
 package model.bean;
 
-import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.CascadeType;
@@ -14,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -29,20 +29,25 @@ public class Appointment  implements Executable {
     @Column(name = "appoId")
     private String appoId;
     
-    @Column(name="appostartDate") 
+    @Column(name="appostartDate")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime appoStartDate;
     
-    @Column(name="appoEndDate") 
-    private Date appoEndDate;
+    @Column(name="appoEndDate")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime appoEndDate;
     
-    @Column(name="appoCreationDate") 
-    private Date appoCreationDate;
+    @Column(name="appoCreationDate")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime appoCreationDate;
     
-    @Column(name="appoConfirmationDate") 
-    private Date appoConfirmationDate;
+    @Column(name="appoConfirmationDate")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime appoConfirmationDate;
     
-    @Column(name="appoCancelDate") 
-    private Date appoCancelDate;
+    @Column(name="appoCancelDate")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime appoCancelDate;
     
     @Column(name="appoNote", length=80) 
     private String appoNote;
@@ -54,7 +59,7 @@ public class Appointment  implements Executable {
     @JsonBackReference
     private Hairdresser   appoHairdresser;
     
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)//no mandatory
+    @ManyToOne(optional = true,fetch = FetchType.LAZY,cascade = CascadeType.MERGE)//no mandatory
     @JoinColumn(name="servId")
     private Service appoService;
     
@@ -78,35 +83,35 @@ public class Appointment  implements Executable {
         this.appoStartDate = appoStartDate;
     }
 
-    public Date getAppoEndDate() {
+    public DateTime getAppoEndDate() {
         return appoEndDate;
     }
 
-    public void setAppoEndDate( Date appoEndDate ) {
+    public void setAppoEndDate( DateTime appoEndDate ) {
         this.appoEndDate = appoEndDate;
     }
 
-    public Date getAppoCreationDate() {
+    public DateTime getAppoCreationDate() {
         return appoCreationDate;
     }
 
-    public void setAppoCreationDate( Date appoCreationDate ) {
+    public void setAppoCreationDate( DateTime appoCreationDate ) {
         this.appoCreationDate = appoCreationDate;
     }
 
-    public Date getAppoConfirmationDate() {
+    public DateTime getAppoConfirmationDate() {
         return appoConfirmationDate;
     }
 
-    public void setAppoConfirmationDate( Date appoConfirmationDate ) {
+    public void setAppoConfirmationDate( DateTime appoConfirmationDate ) {
         this.appoConfirmationDate = appoConfirmationDate;
     }
 
-    public Date getAppoCancelDate() {
+    public DateTime getAppoCancelDate() {
         return appoCancelDate;
     }
 
-    public void setAppoCancelDate( Date appoCancelDate ) {
+    public void setAppoCancelDate( DateTime appoCancelDate ) {
         this.appoCancelDate = appoCancelDate;
     }
 

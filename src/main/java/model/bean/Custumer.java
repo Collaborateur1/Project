@@ -3,6 +3,7 @@ package model.bean;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -60,7 +61,7 @@ public class Custumer  implements Executable{
     private String custIp;
     
     @BatchSize(size=10)
-    @OneToMany(fetch = FetchType.LAZY,mappedBy="appoCustumer")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy="appoCustumer",cascade = CascadeType.MERGE)
     private List<Appointment> custAppointments;
 
     public String getCustId() {

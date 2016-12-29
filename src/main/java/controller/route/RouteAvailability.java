@@ -1,7 +1,6 @@
 package controller.route;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -16,6 +15,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Instant;
 import org.joda.time.Interval;
 import org.joda.time.MutableDateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -27,14 +27,14 @@ import model.bean.ScheduleDay;
 import model.job.GenericJob;
 import other.SpringFactory;
 
-@Path( "/Availability" )
+@Path( "/availability" )
 public class RouteAvailability {
     @javax.annotation.security.PermitAll
     @GET
     @Path( "{id}" )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response get( @PathParam( "id" ) String id, @QueryParam( value = "startdate" ) Date startdate,
-            @QueryParam( value = "enddate" ) Date enddate) throws JsonProcessingException {
+    public Response get( @PathParam( "id" ) String id, @QueryParam( value = "startdate" ) String startdate,
+            @QueryParam( value = "enddate" ) String enddate) throws JsonProcessingException {
 
         if ( id == null || "".equals( id ) )
             return Response.status( Response.Status.OK ).build();
@@ -50,8 +50,8 @@ public class RouteAvailability {
                 new String[][] { { "scheHairdresser", "hairdresser" } } );
         
         // we need to update startdDt so we use a MutableDateTime
-        MutableDateTime startdDt = new MutableDateTime( startdate.getTime() );
-        DateTime endDt = new DateTime( enddate.getTime() );
+        MutableDateTime startdDt = new MutableDateTime( DateTimeFormat.forPattern( "dd/MM/yyyy HH:mm:ss" ).parseDateTime( startdate.trim() ));
+        DateTime endDt = new DateTime(  DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss" ).parseDateTime( enddate.trim() ) );
         Instant beg =  startdDt.toInstant();
         Instant end =  endDt.toInstant();
         Interval interval = new Interval(beg, end);
@@ -97,8 +97,8 @@ public class RouteAvailability {
                 if ( firstload ) {
                     appointments = geniricService.getListObjectV1( Appointment.class,
                             new String[][] { { "hairdresser.hairId", "=", id },
-                                    { "appoStartDate", ">=D", startdDt.toString() },
-                                    { "appoEndDate", "<=D", endDt.toString() } },
+                                    { "appoStartDate", ">=DT", startdDt.toString() },
+                                    { "appoEndDate", "<=DT", endDt.toString() } },
                             new String[][] { { "ACS", "appoStartDate" } },
                             new String[][] { { "appoHairdresser", "hairdresser" } } );
                     firstload = false;
@@ -117,24 +117,30 @@ public class RouteAvailability {
                             && appointments.get( j ).getAppoStartDate().getDayOfYear() == startdDt.getDayOfYear() ) {
                         appointment = appointments.get( j );
                         //for all availability
-                        while ( availabilitys.size() < i ) {
+                        while ( i<availabilitys.size() ) {
 
+                          
+                            if(availabilitys.get( i ).getavaiEndDate().getMinuteOfDay()>startdDt.getMinuteOfDay()){  
+                            if(availabilitys.get( i ).getavaiStartDate().isBefore( startdDt )){
+                                availabilitys.get( i ).setavaiStartDate( startdDt.toDateTimeISO() );
+                            }
+                                
                             // if the appointment is not in the availability schedule the availability is free
-                            if ( appointment.getAppoStartDate().isAfter( availabilitys.get( i ).getavaiEndDate().getTime() ) ) {
+                            if ( appointment.getAppoStartDate().isAfter( availabilitys.get( i ).getavaiEndDate() ) ) {
                                 avbs.addAvailabilitys( availabilitys.get( i ) );
 
                             } else {
                                 
                                 availability = availabilitys.get( i );
-                                //check if the appointment start time is at the beginning of the availability, if no we go in
-                                if ( availability.getavaiStartDate().before( appointment.getAppoStartDate().toDate() ) ) {
+                                //check if the appointment start time is not at the beginning of the availability
+                                if ( availability.getavaiStartDate().isBefore( appointment.getAppoStartDate() ) ) {
                                     Availability newAvailb = new Availability();
                                     newAvailb.setavaiStartDate( availability.getavaiStartDate() );
-                                    newAvailb.setavaiEndDate( appointment.getAppoStartDate().toDate() );
+                                    newAvailb.setavaiEndDate( appointment.getAppoStartDate() );
                                     avbs.addAvailabilitys( newAvailb );
                                   
-                                    //check if the appointment end time is at the end of the availability
-                                    if ( appointment.getAppoEndDate().before( availability.getavaiEndDate() ) ) {
+                                    //check if the appointment end time is not at the end of the availability
+                                    if ( appointment.getAppoEndDate().isBefore( availability.getavaiEndDate() ) ) {
                                         //we update the availability for the next appointment
                                         availability.setavaiStartDate( appointment.getAppoEndDate() );
                                     } else {
@@ -147,6 +153,7 @@ public class RouteAvailability {
                                    // the appointment end time is at the end of the availability
                                    // so there is no free time left we pass to the next availability
                                     i++;
+                                    
 
                                 } else {
                                    // the appointment start time is at the beginning of the availability
@@ -160,11 +167,16 @@ public class RouteAvailability {
                                 //we go out of the while 
                                 break;
                             }
+                            }
                             i++;
 
                         }
                         j++;
 
+                    }
+                   //add all free availability 
+                    for(int z=i;z<availabilitys.size();z++){
+                        avbs.addAvailabilitys( availabilitys.get( z ) );
                     }
 
                 }

@@ -22,9 +22,11 @@ import org.springframework.stereotype.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import model.bean.Appointment;
 import model.bean.Availability;
 import model.bean.Buisness;
 import model.bean.BuisnessType;
+import model.bean.Custumer;
 import model.bean.DefaultCustomer;
 import model.bean.Hairdresser;
 import model.bean.Schedule;
@@ -140,30 +142,7 @@ public class RoutePublicAccess {
             hairdresser.setHairIsActif( true);
             hairdresser.setHairLastName( "jean Francois" );
             
-            List<Schedule> list3= new ArrayList();
-                       Schedule sche= new Schedule();
-                       sche.setScheDate( new Date() );
-                        sche.setScheName( "test" );
-                       list3.add( sche );
-                        sche.setScheHairdresser( hairdresser );
-                       //test.createObject( sche );
-                    hairdresser.setHairSchedules( list3 );
-                    
-                    List<ScheduleDay> listSche= new ArrayList();
-                    ScheduleDay sched= new ScheduleDay();
-                    sched.setScheDay(1);
-                    sched.setScheDaySchedule( sche );
-                   
-                    List<Availability> listAva= new ArrayList();
-                    Availability availability= new Availability();
-                    availability.setavaiStartDate( DateTime.now().toDate() );
-                    availability.setavaiEndDate( DateTime.now().plusMinutes( 50 ).toDate() );
-                    test.createObject( availability );
-                    listAva.add(availability );
-                    sched.setScheDayAvailability( listAva );
-                    
-                    listSche.add( sched );
-                    sche.setScheScheDays( listSche );
+            
                     
             List<Service> list= new ArrayList();
             
@@ -182,16 +161,15 @@ public class RoutePublicAccess {
             test.createObject(serv2);
             hairdresser.setHairServices( list );
             test.updateObject( hairdresser );
-            
-            test.updateObject( sched );
-            availability.setavaiScheduleDay( sched );
-            test.updateObject( availability );
+            voidAddschedule(hairdresser);
+         
             Buisness biz= new Buisness();
             BuisnessType bizt= new BuisnessType();
             
             bizt.setBuisTypeName( "Salon" );
             biz.setBuisName( "Bernas coiffure");
-            biz.setBuisZipCode( "75018");
+            biz.setBuisAdress1("Livry-Gargan");
+            biz.setBuisZipCode( "93190");
             biz.setBuisBuisType( bizt );
             biz.setBuisConfirmation( false );
             biz.setBuisDescription( UUID.randomUUID().toString()  );
@@ -347,7 +325,8 @@ public class RoutePublicAccess {
                bizt= new BuisnessType();
               bizt.setBuisTypeName( "Salon2" );
               biz.setBuisName( " Bernat Denis coiffure");
-              biz.setBuisZipCode( "92310");
+              biz.setBuisAdress1( "12 Rue de Laghouat" );
+              biz.setBuisZipCode( "75018");
               biz.setBuisBuisType( bizt );
               biz.setBuisConfirmation( false );
               biz.setBuisDescription( UUID.randomUUID().toString()  );
@@ -544,7 +523,8 @@ public class RoutePublicAccess {
                      bizt= new BuisnessType();
                     bizt.setBuisTypeName( "Salon2" );
                     biz.setBuisName( "Philippe Bernard");
-                    biz.setBuisZipCode( "92500");
+                    biz.setBuisZipCode( "92220");
+                    biz.setBuisAdress1( "22 Rue Salvador Allende Bagneux" );
                     biz.setBuisBuisType( bizt );
                     biz.setBuisConfirmation( false );
                     biz.setBuisDescription( UUID.randomUUID().toString()  );
@@ -587,7 +567,9 @@ public class RoutePublicAccess {
                       bizt= new BuisnessType();
                      bizt.setBuisTypeName( "Salon2" );
                      biz.setBuisName( " Artisan Bernard  coiffure");
-                     biz.setBuisZipCode( "92100");
+                     biz.setBuisAdress1( "1 Chemin de Mezouls À Bosc-Viel" );
+                     biz.setBuisAdress2( "Mauguio" );
+                     biz.setBuisZipCode( "34130");
                      biz.setBuisBuisType( bizt );
                      biz.setBuisConfirmation( false );
                      biz.setBuisDescription( UUID.randomUUID().toString()  );
@@ -691,6 +673,92 @@ public class RoutePublicAccess {
       
         
     }
+    
+    public void voidAddschedule( Hairdresser hairdresser){
+       
+        
+        
+        GenericJob service= SpringFactory.getGenericJob();
+        if(hairdresser==null)
+           
+        if(hairdresser.getHairId()==null)
+            return;
+        
+        
+        List<Schedule> schedules= new ArrayList();
+        Schedule schedule= new Schedule();
+        schedule.setScheName( "sche"+hairdresser.getHairId().substring(10) );
+        schedules.add( schedule );
+        schedule.setScheHairdresser( hairdresser );
+        hairdresser.setHairSchedules( schedules );
+        
+        service.updateObject( hairdresser );
+        
+        List<ScheduleDay> listScheDay= new ArrayList();
+        List<Availability> listAva= null;
+        ScheduleDay scheduleDay;
+        
+        for(int i=0;i<7;i++){
+            listAva=new ArrayList();
+            scheduleDay= new ScheduleDay();
+            scheduleDay.setScheDay(i+1);
+            scheduleDay.setScheDaySchedule( schedule );  
+            service.updateObject( scheduleDay );
+            
+            
+            Availability availability= new Availability();
+            availability.setavaiStartDate( DateTime.now().plusMinutes( i+1 ) );
+            availability.setavaiEndDate( DateTime.now().plusMinutes( 10*(i+1) ) );
+            availability.setavaiScheduleDay( scheduleDay );
+            service.createObject( availability );
+            listAva.add(availability );
+            
+            
+            
+            
+            availability= new Availability();
+            availability.setavaiStartDate( DateTime.now().plusMinutes(11*(i+1) ) );
+            availability.setavaiEndDate( DateTime.now().plusMinutes( 12*(i+1) ) );
+            availability.setavaiScheduleDay( scheduleDay );
+            service.createObject( availability );
+            
+            listAva.add(availability );
+            
+            //delete to see
+           // scheduleDay.setScheDayAvailability( listAva );
+            
+            listScheDay.add( scheduleDay );
+            
+            
+        }
+        schedule.setScheScheDays( listScheDay );
+        service.updateObject( schedule );
+        voidAddAppointment( hairdresser);
+    }
+    
+    public void voidAddAppointment( Hairdresser hairdresser){
+        GenericJob service= SpringFactory.getGenericJob();
+        if(hairdresser==null)
+            
+            if(hairdresser.getHairId()==null)
+                return;
+        
+        
+        Service serviceSnap=(Service) service.getListObjectV1( Service.class, null, null, null ).get( 0 );
+        Custumer custumer= new Custumer(); 
+        custumer.setCustFirstName( UUID.randomUUID().toString().substring( 15 ) );
+        custumer.setCustLastName( UUID.randomUUID().toString().substring( 15 ));
+        custumer.setCustEmail("test@test.com");
+        service.createObject( custumer );
+        Appointment appointment = new Appointment();
+        appointment.setAppoService( serviceSnap );
+        appointment.setAppoHairdresser( hairdresser );
+        appointment.setAppoCustumer( custumer );
+        service.createObject( appointment );
+        
+        
+    }
+    
     public void voidAdd100Person(){
        
         GenericJob test= SpringFactory.getGenericJob();
