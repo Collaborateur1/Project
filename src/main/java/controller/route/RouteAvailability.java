@@ -127,6 +127,7 @@ public class RouteAvailability {
                                 
                             // if the appointment is not in the availability schedule the availability is free
                             if ( appointment.getAppoStartDate().isAfter( availabilitys.get( i ).getavaiEndDate() ) ) {
+                                if(availabilitys.get( i ).getavaiStartDate().isBefore( startdDt ))
                                 avbs.addAvailabilitys( availabilitys.get( i ) );
 
                             } else {
