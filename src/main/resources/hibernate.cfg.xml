@@ -5,7 +5,7 @@
  <session-factory >
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
  <!--  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>--> 
-  <property name="hbm2ddl.auto">update</property>
+  <property name="hbm2ddl.auto">create</property>
    <!--<property name="hbm2ddl.auto">create</property> <property name="hbm2ddl.auto">update</property> -->
   <property name="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>
   <property name="hibernate.hikari.minimumIdle">5</property>
@@ -34,7 +34,7 @@
      
      <mapping class="model.bean.Appointment"/>
   <mapping class="model.bean.Attachment"/>
-  <mapping class="model.bean.Break"/> 
+  <mapping class="model.bean.Availability"/> 
     <mapping class="model.bean.Buisness"/>
     <mapping class="model.bean.BuisnessType"/>
      <mapping class="model.bean.Custumer"/>
