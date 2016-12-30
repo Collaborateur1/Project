@@ -117,11 +117,12 @@ public class RouteAvailability {
                         || appointments.get( 0 ).getAppoStartDate().getDayOfYear() != startdDt.getDayOfYear() ) {
                    
                     for(int p=0;p<availabilitys.size();p++){
-                        if(availabilitys.get( p ).getavaiEndDate().isAfter( startdDt )){
+                        if(availabilitys.get( p ).getavaiEndDate().getMinuteOfDay()>= startdDt.getMinuteOfDay() ){
                             
-                            if(availabilitys.get( p ).getavaiStartDate().isBefore( startdDt ))
+                            if(availabilitys.get( p ).getavaiStartDate().getMinuteOfDay()<startdDt.getMinuteOfDay() )
                                 availabilitys.get( p ).setavaiStartDate( startdDt.toDateTime() );
                            
+                            availabilitys.get( p ).setDay(startdDt);
                             avbs.addAvailabilitys(availabilitys.get( p ));
                         }
                     }
@@ -138,29 +139,30 @@ public class RouteAvailability {
                         //for all availability
                         while ( i<availabilitys.size() ) {
 
-                          
+                          //redondance..
                             if(availabilitys.get( i ).getavaiEndDate().getMinuteOfDay()>startdDt.getMinuteOfDay()){  
-                            if(availabilitys.get( i ).getavaiStartDate().isBefore( startdDt )){
+                            if(availabilitys.get( i ).getavaiStartDate().getMinuteOfDay()<( startdDt.getMinuteOfDay() )){
                                 availabilitys.get( i ).setavaiStartDate( startdDt.toDateTimeISO() );
                             }
                                 
                             // if the appointment is not in the availability schedule the availability is free
-                            if ( appointment.getAppoStartDate().isAfter( availabilitys.get( i ).getavaiEndDate() ) ) {
-                                if(availabilitys.get( i ).getavaiStartDate().isBefore( startdDt ))
+                            if ( appointment.getAppoStartDate().getMinuteOfDay()> availabilitys.get( i ).getavaiEndDate().getMinuteOfDay()  ) {
+                                if(availabilitys.get( i ).getavaiStartDate().getMinuteOfDay()< startdDt.getMinuteOfDay() )
                                 avbs.addAvailabilitys( availabilitys.get( i ) );
 
                             } else {
                                 
                                 availability = availabilitys.get( i );
                                 //check if the appointment start time is not at the beginning of the availability
-                                if ( availability.getavaiStartDate().isBefore( appointment.getAppoStartDate() ) ) {
+                                if ( availability.getavaiStartDate().getMinuteOfDay()< appointment.getAppoStartDate().getMinuteOfDay() ) {
                                     Availability newAvailb = new Availability();
                                     newAvailb.setavaiStartDate( availability.getavaiStartDate() );
                                     newAvailb.setavaiEndDate( appointment.getAppoStartDate() );
+                                    newAvailb.setDay(startdDt);
                                     avbs.addAvailabilitys( newAvailb );
                                   
                                     //check if the appointment end time is not at the end of the availability
-                                    if ( appointment.getAppoEndDate().isBefore( availability.getavaiEndDate() ) ) {
+                                    if ( appointment.getAppoEndDate().getMinuteOfDay()< availability.getavaiEndDate().getMinuteOfDay() ) {
                                         //we update the availability for the next appointment
                                         availability.setavaiStartDate( appointment.getAppoEndDate() );
                                     } else {
@@ -168,7 +170,7 @@ public class RouteAvailability {
                                         i++;
                                     }
 
-                                } else if ( appointment.getAppoEndDate().compareTo( availability.getavaiEndDate() ) == 0 ) {
+                                } else if ( appointment.getAppoEndDate().getMinuteOfDay()==availability.getavaiEndDate().getMinuteOfDay() ) {
                                    // the appointment start time is at the beginning of the availability and
                                    // the appointment end time is at the end of the availability
                                    // so there is no free time left we pass to the next availability
@@ -196,6 +198,7 @@ public class RouteAvailability {
                     }
                    //add all free availability 
                     for(int z=i;z<availabilitys.size();z++){
+                        availabilitys.get( z ).setDay(startdDt);
                         avbs.addAvailabilitys( availabilitys.get( z ) );
                     }
 
