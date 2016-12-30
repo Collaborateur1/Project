@@ -56,8 +56,17 @@ public class RouteAvailability {
         Instant end =  endDt.toInstant();
         Interval interval = new Interval(beg, end);
         
+        if(interval.toDuration().toStandardDays().getDays()>7)
+        {   
+            MutableDateTime temp=new MutableDateTime (startdDt);
+            temp.setHourOfDay( 23 );
+            endDt=temp.toDateTime();
+        endDt.plusDays( 6);
+       
+        }
+        
         Schedule sche = null;
-        if ( (result != null || !result.isEmpty()) &&interval.toDuration().toStandardDays().getDays()<=7)
+        if ( (result != null && !result.isEmpty()) )
             sche = result.get( 0 );
         else
             return Response.status( Response.Status.OK ).build();
@@ -106,7 +115,17 @@ public class RouteAvailability {
                 //no appointments for the current day, we load the entire availabilitys
                 if ( appointments == null || appointments.isEmpty()
                         || appointments.get( 0 ).getAppoStartDate().getDayOfYear() != startdDt.getDayOfYear() ) {
-                    avbs.setAvailabilitys( availabilitys );
+                   
+                    for(int p=0;p<availabilitys.size();p++){
+                        if(availabilitys.get( p ).getavaiEndDate().isAfter( startdDt )){
+                            
+                            if(availabilitys.get( p ).getavaiStartDate().isBefore( startdDt ))
+                                availabilitys.get( p ).setavaiStartDate( startdDt.toDateTime() );
+                           
+                            avbs.addAvailabilitys(availabilitys.get( p ));
+                        }
+                    }
+                   
                 } else {
 
                     int i = 0;
