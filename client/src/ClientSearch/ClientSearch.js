@@ -25,8 +25,13 @@ export default class ClientSearch extends React.Component {
       if (response.ok) {
         response.json()
         .then(result => {
+        	 if(result.length>0)
+        		 var isactive=true;
+        	 else
+        		 var isactive=false;
           this.setState({
-            searchActive: true,
+        	 
+            searchActive: isactive,
             result: result
           })
         })
