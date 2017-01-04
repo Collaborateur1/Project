@@ -11,6 +11,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -24,6 +26,7 @@ import other.SpringFactory;
 
 @Path( "/search" )
 public class RouteCustomerSearch {
+    private static Logger logger = Logger.getLogger( RouteCustomerSearch.class);
     @javax.annotation.security.PermitAll
     @GET
     @Produces( MediaType.APPLICATION_JSON)
@@ -33,7 +36,7 @@ public class RouteCustomerSearch {
             @QueryParam( value = "latitude" ) BigDecimal latitude) throws URISyntaxException, JsonProcessingException {
        
       
-       
+       try{
         
         if(isNullOrEmpty(longitude)&&isNullOrEmpty(latitude)){
             longitude =BigDecimal.valueOf( 2.346268 );
@@ -72,24 +75,14 @@ public class RouteCustomerSearch {
         }
         
        
-        
-     /*   chaine1= new String[][]{{"hairBuisness","hairBuisness"}};
-        chaine2= new String[][]{{"hairBuisness.buisZipCode","=",location.trim()}};
-        
-        chaine1= new String[][]{{"hairBuisness","hairBuisness"},{"hairServices","hairServices"}}; 
-        chaine2= new String[][]{{"hairBuisness.buisZipCode","=",location.trim()},{"hairServices.servName","like",service}}; 
-        List<String> result= test.getList( Hairdresser.class, 
-                chaine1, //alias (left join)
-                chaine2,// where
-                null,
-                new String[][]{{"PROPERTY","hairId"},{"PROPERTY","hairFirstName"},{"PROPERTY","hairLastName"}, //select
-            {"PROPERTY","hairPict"},{"PROPERTY","hairZipCode"},{"PROPERTY","hairBuisness.buisName"}
-            ,{"PROPERTY","hairBuisness.buisAdress1"},{"PROPERTY","hairBuisness.buisAdress2"}
-            ,{"PROPERTY","hairBuisness.buisZipCode"}}
-            ,-1
-            ,5);*/
+    
         List<String> result=test.getList( request.toString(), null, 0, 10 );
         return Response.ok().entity( serialize(result)).build();
+       }catch(Exception ex){
+           
+           logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+           return Response.serverError().entity(ex.toString()).build();
+       }
 
     }
     

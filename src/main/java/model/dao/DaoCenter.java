@@ -31,8 +31,8 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
     private static Logger  logger = Logger.getLogger( DaoCenter.class );
     private SessionFactory sessionFactory;
 
-    public boolean exist( T object ) {
-        boolean transaction = false;
+    public boolean exist( T object ) throws Exception{
+       
         Session session = null;
         try {
             session = GetSession();
@@ -41,14 +41,15 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             Object obj = session.get( object.getClass(), object.getID() );
             tx.commit();
             if ( obj != null ) {
-                logger.info( "object from class: " + object.getClass() + " and id: " + object.getID() + " exist" );
+                logger.debug( "object from class: " + object.getClass() + " and id: " + object.getID() + " exist" );
                 return true;
             }
 
-            logger.info( "object from class: " + object.getClass() + " and id: " + object.getID() + " don't exist" );
+            logger.debug( "object from class: " + object.getClass() + " and id: " + object.getID() + " don't exist" );
 
         } catch ( Exception e ) {
-            logger.error( "fail to check if  object exist " + e.getMessage() );
+            logger.error( "fail to check if  object exist " +  e.getStackTrace()[0].getMethodName(),e);
+            throw new Exception(e);
 
         } finally {
             try {
@@ -63,7 +64,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
     }
 
-    public boolean create( T object, ConcurrentHashMap<String, Object> item ) {
+    public boolean create( T object, ConcurrentHashMap<String, Object> item ) throws Exception{
         boolean transaction = false;
         Session session = null;
         // try catch a prévoir
@@ -75,30 +76,28 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             session.persist( object );
             tx.commit();
             transaction = tx.wasCommitted();
-            logger.info( "New " + object.getClass() + " is create and the transaction is commited ? :" + transaction );
+            logger.debug( "New " + object.getClass() + " is create and the transaction is commited ? :" + transaction );
 
         } catch ( Exception e ) {
-            logger.error( "fail to create new " + object.getClass() + " " + e.getMessage() );
-
+            logger.error( "fail to create new " + object.getClass() + " " +  e.getStackTrace()[0].getMethodName(),e);
+            throw new Exception(e);
         } finally {
             try {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from create function " + e.getStackTrace()[0].getMethodName(),e);
+                
             }
         }
 
-        if ( item == null )
-            item = new ConcurrentHashMap<String, Object>();
-        item.put( "Transaction", transaction );
-        // try catch a prévoir
+     
         object.postsave( item );
         return transaction;
 
     }
 
-    public boolean update( T object, ConcurrentHashMap<String, Object> item ) {
+    public boolean update( T object, ConcurrentHashMap<String, Object> item )throws Exception {
 
         boolean transaction = false;
 
@@ -123,25 +122,22 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             logger.info( object.getClass() + " is updated and the transaction is commited ? :" + transaction );
 
         } catch ( Exception e ) {
-            logger.error( "fail to  update " + object.getClass() + " " + e.getMessage() );
-
+            logger.error( "fail to  update " + object.getClass() + " " +  e.getStackTrace()[0].getMethodName(),e);
+            throw new Exception(e);
         } finally {
             try {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from update function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
-        if ( item == null )
-            item = new ConcurrentHashMap<String, Object>();
-        item.put( "Transaction", transaction );
-        // try catch a prévoir
+      
         object.postsave( item );
         return transaction;
     }
 
-    public boolean delete( T object, ConcurrentHashMap<String, Object> item ) {
+    public boolean delete( T object, ConcurrentHashMap<String, Object> item )throws Exception {
 
         object.presave( item );
 
@@ -161,21 +157,19 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             logger.info( "object from class: " + object.getClass() + " and id: " + object.getID() + " is now delete" );
 
         } catch ( Exception e ) {
-            logger.error( "fail to delete  object :" + e.getMessage() );
+            logger.error( "fail to delete  object :" + e.getStackTrace()[0].getMethodName(),e);
+            throw new Exception(e);
 
         } finally {
             try {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from delete function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
 
-        if ( item == null )
-            item = new ConcurrentHashMap<String, Object>();
-        item.put( "Transaction", transaction );
-        // try catch a prévoir
+       
         object.postsave( item );
         return transaction;
     }
@@ -218,7 +212,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
     }
 
     @Override
-    public Object read( Class<T> object, String[][] restriction ) {
+    public Object read( Class<T> object, String[][] restriction ) throws Exception{
         // TODO Auto-generated method stub
         boolean transaction = false;
         Session session = null;
@@ -236,26 +230,25 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             return criter.uniqueResult();
 
         } catch ( Exception e ) {
-            logger.error( "fail to fetch  object :" + e.getMessage() );
-
+            logger.error( "fail to fetch  object :" + e.getStackTrace()[0].getMethodName(),e);
+            throw new Exception(e);
         } finally {
             try {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from read function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
-        return null;
+       
     }
 
     @Override
-    public List<Object> list( Class<T> object, String[][] restriction, String[][] order,String[][] alias ) {
-        boolean transaction = false;
+    public List<Object> list( Class<T> object, String[][] restriction, String[][] order,String[][] alias ) throws Exception{
+       
         Session session = null;
 
-        // ici on doit vérifier si les restriction et autre truck que tu
-        // ajoutera plus tard, si il sont tous null retourné directement null
+        
         try {
             // Ouverture Session
             session = GetSession();
@@ -272,22 +265,22 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
         } catch ( Exception e ) {
             logger.error("fail to fetch  object List, "+ e.getStackTrace()[0].getMethodName(),e);
-         
+            throw new Exception(e);
 
         } finally {
             try {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from list function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
-        return null;
+      
     }
 
     @Override
     public List complexList( Class<?> object, String[][] alias, String[][] restriction, String[][] order,
-            String[][] projection, int firstResult,int maxResult) {
+            String[][] projection, int firstResult,int maxResult) throws Exception{
         // TODO Auto-generated method stub
         boolean transaction = false;
         Session session = null;
@@ -310,7 +303,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
             if ( projection != null )
                 addProjection( criter, projection );
-// List list=criter.setFirstResult( 10 ).list();
+
             if(maxResult!=0)
                 criter.setMaxResults( maxResult);
             if(firstResult!=0)
@@ -329,7 +322,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from complexList function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
         return null;
@@ -472,7 +465,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
     }
 
     @Override
-    public boolean delete( Class<T> object, String id, ConcurrentHashMap<String, Object> item ) {
+    public boolean delete( Class<T> object, String id, ConcurrentHashMap<String, Object> item ) throws Exception{
         // TODO Auto-generated method stub
         Session session = null;
         boolean transaction = false;
@@ -490,14 +483,14 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
 
         } catch ( Exception e ) {
             logger.error( "fail to delete  object with id :" + id + "from class: " + object.getName() + " "
-                    + e.getMessage() );
+                    +e.getStackTrace()[0].getMethodName(),e );
 
         } finally {
             try {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from delete function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
 
@@ -508,17 +501,10 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
     }
 
     @Override
-    public Object read( T object ,boolean lazyLoad) {
-       
-           String lg="-1";
-        try {
-            lg = object.getID();
-        } catch ( Exception e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public Object read( T object ,boolean lazyLoad) throws Exception {
+     
       
-      return read((Class<T>) object.getClass(),String.valueOf(lg),lazyLoad);
+      return read((Class<T>) object.getClass(),object.getID(),lazyLoad);
     }
 
     @Override
@@ -790,14 +776,14 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
             return result;
 
         } catch ( Exception e ) {
-            logger.error( "fail to fetch  object List :" + e.getMessage() );
+            logger.error( "fail to fetch  object List :"+e.getStackTrace()[0].getMethodName(),e );
 
         } finally {
             try {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from complexList (request) function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
         return null;
@@ -827,7 +813,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from read function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
         return null;
@@ -856,7 +842,7 @@ public class DaoCenter<T extends Executable> implements InterfaceCenter<T> {
                 CloseConnexion( session );
             } catch ( Exception e ) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error( "Can't close the connexion from loadLazyCollection function " + e.getStackTrace()[0].getMethodName(),e);
             }
         }
        

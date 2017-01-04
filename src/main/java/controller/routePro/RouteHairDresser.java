@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,7 +21,7 @@ import other.SpringFactory;
 
 @Path( "/hairdresser" )
 public class RouteHairDresser {
-
+    private static Logger logger = Logger.getLogger( RouteHairDresser.class);
     
     
     @javax.annotation.security.PermitAll
@@ -30,10 +32,18 @@ public class RouteHairDresser {
         
         if(id==null||"".equals( id ))
             return null;
+        try{
+            
+            Hairdresser hr= (Hairdresser) SpringFactory.getGenericJob().getObject(Hairdresser.class,id, false );
+            
+            return Response.status(Response.Status.OK).entity(hr).build();
+            
+           }catch(Exception ex){
+               
+               logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+               return Response.serverError().entity(ex.toString()).build();
+           }
         
-       Hairdresser hr= (Hairdresser) SpringFactory.getGenericJob().getObject(Hairdresser.class,id, false );
-       
-       return Response.status(Response.Status.OK).entity(hr).build();  
     }
     
     @javax.annotation.security.PermitAll
@@ -53,6 +63,7 @@ public class RouteHairDresser {
             save=true;
         }
         
+        try{
         if(buisId!=null&&!"".equals( buisId )){
             
           Buisness bs=  (Buisness) SpringFactory.getGenericJob().getObject(Buisness.class,buisId, false );
@@ -64,9 +75,13 @@ public class RouteHairDresser {
            
         if(save)
          SpringFactory.getGenericJob().updateObject( hr );
-      
+        return Response.status(Response.Status.OK).build();  
+    }catch(Exception ex){
+        
+        logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+        return Response.serverError().entity(ex.toString()).build();
+    }
        
-       return Response.status(Response.Status.OK).build();  
     }
     private static String serialize(Object object) throws JsonProcessingException {
         String serialized = null;

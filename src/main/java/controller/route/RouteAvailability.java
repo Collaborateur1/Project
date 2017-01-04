@@ -11,12 +11,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Instant;
 import org.joda.time.Interval;
 import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -30,36 +30,42 @@ import other.SpringFactory;
 
 @Path( "/availability" )
 public class RouteAvailability {
+    private static Logger logger = Logger.getLogger( RouteAvailability.class);
     @javax.annotation.security.PermitAll
     @GET
-    @Path( "{id}" )
+    @Path( "{id}/{day}/{month}/{year}" )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response get( @PathParam( "id" ) String id, @QueryParam( value = "startdate" ) String startdate,
-            @QueryParam( value = "enddate" ) String enddate) throws JsonProcessingException {
-
+    public Response get( @PathParam( "id" ) String id, @PathParam( "day" ) Integer day, @PathParam( "month" ) Integer month,
+            @PathParam( "year" ) Integer year,
+            @QueryParam( value = "limit" ) Integer limit) throws JsonProcessingException {
+        
+        String startdate=day+"/"+month+"/"+year; 
+        
         if ( id == null || "".equals( id ) || startdate == null )
             return Response.status( Response.Status.OK ).build();
-
+  
         // get the generic service object to fetch object from the database
         GenericJob geniricService = SpringFactory.getGenericJob();
         // startdate = DateTime.now().minusDays( 10 ).toDate();
         // enddate = DateTime.now().plusDays( 2 ).toDate();
-
+        try {
         // retrieve hairdresser schedule (planing)
         List<Schedule> result = geniricService.getListObjectV1( Schedule.class,
                 new String[][] { { "hairdresser.hairId", "=", id } }, null,
                 new String[][] { { "scheHairdresser", "hairdresser" } } );
 
-        try {
+       
             // we need to update startdDt so we use a MutableDateTime
             MutableDateTime startdDt = new MutableDateTime(
-                    DateTimeFormat.forPattern( "dd/MM/yyyy HH:mm:ss" ).parseDateTime( startdate.trim() ) );
-          
-            if(enddate==null)
-                enddate=addSevenDay(startdate);
+                    DateTimeFormat.forPattern( "dd/MM/yyyy" ).parseDateTime( startdate.trim() ) );
+         
+            if(limit==null||limit>6||limit==0)
+                limit=6;
             
-            DateTime endDt = new DateTime(
-                    DateTimeFormat.forPattern( "dd/MM/yyyy HH:mm:ss" ).parseDateTime( enddate.trim() ) );
+            
+               
+            
+            DateTime endDt = addDay(startdate,limit);
             Instant beg = startdDt.toInstant();
             Instant end = endDt.toInstant();
             Interval interval = new Interval( beg, end );
@@ -112,6 +118,7 @@ public class RouteAvailability {
                 if ( !availabilitys.isEmpty() ) {
                     // load appointments at need
                     if ( firstload ) {
+                       
                         appointments = geniricService.getListObjectV1( Appointment.class,
                                 new String[][] { { "hairdresser.hairId", "=", id },
                                         { "appoStartDate", ">=DT", startdDt.toString() },
@@ -133,7 +140,7 @@ public class RouteAvailability {
                                         .getMinuteOfDay() )
                                     availabilitys.get( p ).setavaiStartDate( startdDt.toDateTime() );
 
-                                availabilitys.get( p ).setDay( startdDt );
+                                availabilitys.get( p ).setDay( new MutableDateTime(startdDt) );
                                 avbs.addAvailabilitys( availabilitys.get( p ) );
                             }
                         }
@@ -179,7 +186,7 @@ public class RouteAvailability {
                                             Availability newAvailb = new Availability();
                                             newAvailb.setavaiStartDate( availability.getavaiStartDate() );
                                             newAvailb.setavaiEndDate( appointment.getAppoStartDate() );
-                                            newAvailb.setDay( startdDt );
+                                            newAvailb.setDay( new MutableDateTime(startdDt) );
                                             avbs.addAvailabilitys( newAvailb );
 
                                             // check if the appointment end time
@@ -235,7 +242,7 @@ public class RouteAvailability {
                         }
                         // add all free availability
                         for ( int z = i; z < availabilitys.size(); z++ ) {
-                            availabilitys.get( z ).setDay( startdDt );
+                            availabilitys.get( z ).setDay( new MutableDateTime(startdDt) );
                             avbs.addAvailabilitys( availabilitys.get( z ) );
                         }
 
@@ -248,18 +255,21 @@ public class RouteAvailability {
             }
 
             return Response.status( Response.Status.OK ).entity( avbs ).build();
-        } catch ( Exception ex ) {
-            return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).entity( ex.toString() ).build();
+        }catch(Exception ex){
+            
+            logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+            return Response.serverError().entity(ex.toString()).build();
         }
     }
     
-    public String addSevenDay(String date){
-        MutableDateTime startdDt = new MutableDateTime(
-                DateTimeFormat.forPattern( "dd/MM/yyyy HH:mm:ss" ).parseDateTime( date.trim() ) );
+    public DateTime addDay(String date,int nbDay){
         
-        startdDt.addDays( 6 );
+        MutableDateTime startdDt = new MutableDateTime(
+                DateTimeFormat.forPattern( "dd/MM/yyyy" ).parseDateTime( date.trim() ) );
+        
+        startdDt.addDays( nbDay );
         startdDt.setHourOfDay( 0 );
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
-        return startdDt.toString(fmt);
+   
+        return startdDt.toDateTime();
     }
 }

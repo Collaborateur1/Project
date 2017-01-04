@@ -115,7 +115,7 @@ public class UserJobImpl implements UserJob{
   
         
     }
-    public boolean UpdatePicture(File file, UserCustom user){
+    public boolean UpdatePicture(File file, UserCustom user)throws Exception{
         
         if(file!=null)
         {
@@ -167,7 +167,7 @@ public class UserJobImpl implements UserJob{
         return null;
     }
     
-   public boolean  updatUser(UserCustom user)
+   public boolean  updatUser(UserCustom user)throws Exception
    {
        return userDao.update(user,null);  
    }
