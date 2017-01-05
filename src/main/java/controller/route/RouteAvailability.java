@@ -129,8 +129,8 @@ public class RouteAvailability {
                     }
                     // no appointments for the current day, we load the entire
                     // availabilitys
-                    if ( appointments == null || appointments.isEmpty()
-                            || appointments.get( 0 ).getAppoStartDate().getDayOfYear() != startdDt.getDayOfYear() ) {
+                    if ( appointments == null || appointments.isEmpty()||j >= appointments.size()
+                            || appointments.get( j ).getAppoStartDate().getDayOfYear() != startdDt.getDayOfYear() ) {
 
                         for ( int p = 0; p < availabilitys.size(); p++ ) {
                             if ( availabilitys.get( p ).getavaiEndDate().getMinuteOfDay() >= startdDt
@@ -158,7 +158,7 @@ public class RouteAvailability {
                             // for all availability
                             while ( i < availabilitys.size() ) {
 
-                                // redondance..
+                                // redondance..le if à supprimer
                                 if ( availabilitys.get( i ).getavaiEndDate().getMinuteOfDay() > startdDt
                                         .getMinuteOfDay() ) {
                                     if ( availabilitys.get( i ).getavaiStartDate()
@@ -168,11 +168,12 @@ public class RouteAvailability {
 
                                     // if the appointment is not in the
                                     // availability schedule the availability is
-                                    // free
+                                    // free (left to the availabilitys time)
                                     if ( appointment.getAppoStartDate().getMinuteOfDay() > availabilitys.get( i )
-                                            .getavaiEndDate().getMinuteOfDay() ) {
-                                        if ( availabilitys.get( i ).getavaiStartDate().getMinuteOfDay() < startdDt
-                                                .getMinuteOfDay() )
+                                            .getavaiEndDate().getMinuteOfDay()||  appointment.getAppoEndDate().getMinuteOfDay()<
+                                            availabilitys.get( i ).getavaiStartDate().getMinuteOfDay()) {
+                                        
+                                        
                                             avbs.addAvailabilitys( availabilitys.get( i ) );
 
                                     } else {
