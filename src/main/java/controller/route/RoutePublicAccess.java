@@ -74,7 +74,7 @@ public class RoutePublicAccess {
     @GET
     @Path("/test")
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getTest(@QueryParam( value = "mail" ) String mail) throws JsonProcessingException {
+    public Response getTest(@QueryParam( value = "mail" ) String mail) throws JsonProcessingException,Exception {
         voidAdd20hairdresserAnd10busness();
         
         GenericJob test= SpringFactory.getGenericJob();
@@ -126,7 +126,7 @@ public class RoutePublicAccess {
     }
 
 
-    public void voidAdd20hairdresserAnd10busness(){
+    public void voidAdd20hairdresserAnd10busness() throws Exception{
         
         GenericJob test= SpringFactory.getGenericJob();
        
@@ -674,8 +674,7 @@ public class RoutePublicAccess {
         
     }
     
-    public void voidAddschedule( Hairdresser hairdresser){
-       
+    public void voidAddschedule( Hairdresser hairdresser)throws Exception{
         
         
         GenericJob service= SpringFactory.getGenericJob();
@@ -736,7 +735,7 @@ public class RoutePublicAccess {
         voidAddAppointment( hairdresser);
     }
     
-    public void voidAddAppointment( Hairdresser hairdresser){
+    public void voidAddAppointment( Hairdresser hairdresser)throws Exception{
         GenericJob service= SpringFactory.getGenericJob();
         if(hairdresser==null)
             
@@ -759,7 +758,7 @@ public class RoutePublicAccess {
         
     }
     
-    public void voidAdd100Person(){
+    public void voidAdd100Person()throws Exception{
        
         GenericJob test= SpringFactory.getGenericJob();
         for (int i=0;i<10;i++){
@@ -777,7 +776,7 @@ public class RoutePublicAccess {
         
     }
     
-    public void voidAdd200Dossier(){
+    public void voidAdd200Dossier()throws Exception{
         
         
         GenericJob test= SpringFactory.getGenericJob();
@@ -804,7 +803,7 @@ public class RoutePublicAccess {
         
     }
     
-   public void voidAdd100Enterprise(){
+   public void voidAdd100Enterprise()throws Exception{
         
         
        GenericJob test= SpringFactory.getGenericJob();

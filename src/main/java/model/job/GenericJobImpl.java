@@ -13,45 +13,45 @@ public class GenericJobImpl implements GenericJob{
     @Autowired(required=true)
     private InterfaceCenter daoCenter;
     @Override
-    public boolean createObject( Executable obj ) {
+    public boolean createObject( Executable obj ) throws Exception{
         // TODO Auto-generated method stub
         return daoCenter.create( obj, null );
     }
 
     @Override
-    public boolean deleteObject( Executable obj ) {
+    public boolean deleteObject( Executable obj )throws Exception {
         // TODO Auto-generated method stub
         return daoCenter.delete( obj,null );
     }
 
     @Override
-    public boolean deleteObject( Class cls, String id ) {
+    public boolean deleteObject( Class cls, String id )throws Exception {
         // TODO Auto-generated method stub
         return daoCenter.delete( cls, id, null );
     }
 
     @Override
-    public Object getObject( Class cls, String id,boolean lazyLoad ) {
+    public Object getObject( Class cls, String id,boolean lazyLoad )throws Exception {
         // TODO Auto-generated method stub
        
         return daoCenter.read( cls, id ,lazyLoad);
     }
 
     @Override
-    public Object getObject( Executable obj,boolean lazyLoad ) {
+    public Object getObject( Executable obj,boolean lazyLoad ) throws Exception{
         // TODO Auto-generated method stub
         return daoCenter.read( obj,lazyLoad);
     }
 
     @Override
-    public List<Object> getListObjectV1( Class cls, String[][] restriction,String[][] order,String[][] alias ) {
+    public List<Object> getListObjectV1( Class cls, String[][] restriction,String[][] order,String[][] alias ) throws Exception{
         // TODO Auto-generated method stub
         return daoCenter.list( cls, restriction, order,alias );
         
     }
 
     @Override
-    public List<Object> getListObjectV2( Class cls, String restriction ) {
+    public List<Object> getListObjectV2( Class cls, String restriction )throws Exception {
         // TODO Auto-generated method stub
         
         //throw error si st2%3 est different de 0
@@ -71,7 +71,7 @@ public class GenericJobImpl implements GenericJob{
 
     @Override
     public List getList( Class cls, String[][] alias, String[][] restriction, String[][] order,
-            String[][] projection, int firstResult ,int maxResult) {
+            String[][] projection, int firstResult ,int maxResult) throws Exception{
         // TODO Auto-generated method stub
         return daoCenter.complexList( cls, alias, restriction, order, projection,firstResult,maxResult );
     }
@@ -95,20 +95,20 @@ public class GenericJobImpl implements GenericJob{
     }
 
     @Override
-    public List<String> getList(String request,String[][] params, int firstResult,int maxResult) {
+    public List<String> getList(String request,String[][] params, int firstResult,int maxResult)throws Exception {
         // TODO Auto-generated method stub
        return daoCenter.complexList( request,params ,firstResult,maxResult);
         
     }
 
     @Override
-    public boolean updateObject( Executable obj ) {
+    public boolean updateObject( Executable obj ) throws Exception{
         // TODO Auto-generated method stub
         return daoCenter.update( obj, null );
     }
 
     @Override
-    public void loadLazyCollection(Executable obj) {
+    public void loadLazyCollection(Executable obj) throws Exception{
         daoCenter.loadLazyCollection( obj );
         
     }

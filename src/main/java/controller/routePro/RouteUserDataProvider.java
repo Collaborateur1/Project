@@ -37,18 +37,10 @@ public class RouteUserDataProvider extends WebContext {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserData(@PathParam("id") String id){
      
-        long userId;
-        try{
-            userId=Long.parseLong( id );
-        
-        }catch( Exception ex){
-            
-            logger.info( "Bad format for user ID",ex );
-            return Response.status( Response.Status.PRECONDITION_FAILED ).entity( "{\"message\":\"" + "Bad format for user ID" + "\"}").build();
-        }
-        
+       
+       try{ 
         UserCustom user=null;
-        if(getUser().getDusID().equals( userId ))
+        if(getUser().getDusID().equals( id ))
         user=getUser();
         else
         user=(UserCustom) SpringFactory.getGenericJob().getObject(UserCustom.class,id, false );
@@ -68,10 +60,16 @@ public class RouteUserDataProvider extends WebContext {
                     exclude("section").exclude("dusMdp").exclude( "dusToken" ).exclude( "dusRoles" ).exclude( "dusParameters" )));
         } catch ( JsonProcessingException e ) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error( e.getStackTrace()[0].getMethodName(),e);
         }
          
           return Response.status(Response.Status.OK).entity(jsonUser).build();
+          
+ }catch(Exception ex){
+        
+        logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+        return Response.serverError().entity(ex.toString()).build();
+    }
         
     }
     
@@ -82,20 +80,17 @@ public class RouteUserDataProvider extends WebContext {
     public Response getAllUserData(@PathParam("id") String id){
      
         
-        try{
-        Long.parseLong( id );
-        
-        }catch( Exception ex){
-            
-            logger.info( "Bad format for user ID",ex );
-            return Response.status( Response.Status.PRECONDITION_FAILED ).entity( "{\"message\":\"" + "Bad format for user ID" + "\"}").build();
-        }
+   try{
         UserCustom user=(UserCustom) SpringFactory.getGenericJob().getObject(UserCustom.class,id, true );
          if(user==null)
          return Response.noContent().build();
         
      
           return Response.status(Response.Status.OK).entity(user).build();
+ }catch(Exception ex){
         
+        logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+        return Response.serverError().entity(ex.toString()).build();
+    }
     }
 }

@@ -7,12 +7,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import model.bean.Buisness;
 import other.SpringFactory;
 @Path( "/business" )
 public class RouteBuisness {
+    private static Logger logger = Logger.getLogger( RouteBuisness.class);
     @javax.annotation.security.PermitAll
     @POST
     @Path("create")
@@ -41,11 +44,16 @@ public class RouteBuisness {
             bs.setBuisName( buisName );
             save=true;
         }
-       
+       try{
            
         if(save)
          SpringFactory.getGenericJob().createObject( bs );
         
         return Response.status(Response.Status.OK).build();  
-    }
+       }catch(Exception ex){
+           
+           logger.error( ex.getStackTrace()[0].getMethodName(),ex);
+           return Response.serverError().entity(ex.toString()).build();
+       }
+   }
 }

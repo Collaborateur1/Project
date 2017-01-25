@@ -10,10 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.MutableDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +41,10 @@ public class Availability  implements Executable{
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime avaiEndDate;
     
+   
+    @Transient
+    private  MutableDateTime day;
+    
     @Column(name="avaiNote",length=60) 
     private String avaiNote;
     
@@ -51,13 +59,29 @@ public class Availability  implements Executable{
     public void setavaiId( String avaiId ) {
         this.avaiId = avaiId;
     }
-public String getFormatedAvaiStartDate(){
-    return avaiStartDate.toString();
+public String getStarthour(){
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm");
+    return avaiStartDate.toString(fmt);
 }
 
-public String getFormatedAvaiEndtDate(){
-    return avaiEndDate.toString();
+public String getEndhour(){
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm");
+    return avaiEndDate.toString(fmt);
 }
+public String getDay(){
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy");
+    if(day!=null)
+     return day.toString(fmt);
+    
+    return null;
+ }
+
+public void setDay( MutableDateTime day ){
+    
+   this.day=day;
+    
+    
+ }
     public DateTime getavaiStartDate() {
         return avaiStartDate;
     }

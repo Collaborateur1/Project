@@ -17,7 +17,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
     
 
     
-    public boolean UpdateUser(UserCustom user)
+    public boolean UpdateUser(UserCustom user)throws Exception
     { 
         return super.update( user, null);
       
@@ -31,13 +31,13 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
  
 
     @Override
-    public UserCustom getUserById( int id ) {
+    public UserCustom getUserById( int id )throws Exception {
         //to update!
         return (UserCustom) super.read( UserCustom.class, String.valueOf(id), false );
     }
 
     @Override
-    public UserCustom getUserByLogin( String login ) {
+    public UserCustom getUserByLogin( String login )throws Exception {
         // TODO Auto-generated method stub
         Session s=null;
         try{
@@ -109,7 +109,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
     }
 
     @Override
-    public boolean create( UserCustom user ) {
+    public boolean create( UserCustom user )throws Exception {
         return super.create( user, null );
        /* boolean transaction =false;
         Session s = null;
@@ -185,7 +185,7 @@ public class UserDao extends DaoCenter implements InterfaceUserDao{
 
 
     @Override
-    public boolean AuthorizerUser( String email, String mdp ) {
+    public boolean AuthorizerUser( String email, String mdp )throws Exception {
         // TODO Auto-generated method stub
         Session s=null;
         try{
