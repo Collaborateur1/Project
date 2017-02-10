@@ -1,0 +1,123 @@
+/***************************
+Add your custom styles below
+****************************/
+/*
+@media (min-width: 767px) .search2 {
+	border-radius: 0 px;
+	margin-left: 1 px;
+}
+
+@media (max-width: 767px).form--merge input[name="search2"]{
+    border-radius: 50px;
+	
+}
+*/
+ @media all and (min-width: 767px){
+	 
+	.form--merge input[name="search2"], input[name="location"]{
+    border-radius: 0px;
+	margin-left: 1px;
+} 
+	 #Mainsubmit{
+		 width:24%;
+	 }
+ } 	
+ 
+ .calendar-container table {
+	   
+	width: 100%;
+	 table-layout: fixed;
+	 
+	
+}
+.calendar-container thead td{
+overflow:hidden;
+background: #435f71;
+ /*border-top-left-radius: 0.5em;
+	 border-top-right-radius: 0.5em;*/
+}
+.calendar-container td {
+	padding: 0;
+	 
+	 white-space:nowrap;
+	
+ border-width:1px;
+ border-style:solid; 
+ border-color:#435f71;
+ width:50%;
+ 
+}
+
+.calendar-container tbody td {
+	overflow:hidden;
+   /*border-bottom-left-radius: 0.5em;
+	 border-bottom-right-radius: 0.5em;*/
+}
+
+
+
+.calendar-container {
+
+	width: auto;
+	 max-width: 690px;
+	   
+	
+}
+
+.calendar-container header {
+	
+	color: #fff;
+	padding: 3em 2em;
+}
+
+.calendar-container .day {
+	font-size: 8em;
+	font-weight: 900;
+	line-height: 1em;
+}
+
+.calendar-container .month {
+	font-size: 4em;
+	line-height: 1em;
+	text-transform: lowercase;
+}
+
+.calendar-container .calendar {
+	
+	color: #555;
+	padding: 0.2em;
+	
+	 
+}
+
+.calendar-container .calendar thead {
+	color: white;
+	font-weight: 700;
+	text-transform: lowercase;
+	
+}
+
+.calendar-container .calendar td {
+	padding: .2em;
+	text-align: center;
+}
+
+.calendar-container .calendar tbody td:hover {
+	
+}
+.calendar-container .slot:hover {
+	background: #cacaca;
+	color: #fff;
+}
+
+
+	
+	
+.calendar-container .current-day {
+	color: #e66b6b;
+}
+
+.calendar-container .prev-month,
+.next-month {
+	color: #cacaca;
+}

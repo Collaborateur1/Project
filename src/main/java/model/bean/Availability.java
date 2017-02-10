@@ -125,7 +125,7 @@ public void setDay( MutableDateTime day ){
         // TODO Auto-generated method stub
         return false;
     }
-
+@JsonIgnore
     @Override
     public String getID() throws Exception {
         // TODO Auto-generated method stub

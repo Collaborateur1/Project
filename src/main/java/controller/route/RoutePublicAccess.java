@@ -1,9 +1,7 @@
 package controller.route;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,10 +10,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.server.mvc.Viewable;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 
@@ -27,14 +23,10 @@ import model.bean.Availability;
 import model.bean.Buisness;
 import model.bean.BuisnessType;
 import model.bean.Custumer;
-import model.bean.DefaultCustomer;
 import model.bean.Hairdresser;
 import model.bean.Schedule;
 import model.bean.ScheduleDay;
 import model.bean.Service;
-import model.custom.CustomerCustom;
-import model.custom.EnterpriseCustom;
-import model.custom.UserCustom;
 import model.job.GenericJob;
 import other.SpringFactory;
 
@@ -43,31 +35,6 @@ import other.SpringFactory;
 @Controller
 @Path( "/public" )
 public class RoutePublicAccess {
-
-
-
-    @javax.annotation.security.PermitAll
-    @GET
-    @Path("/login")
-    public Response get(@QueryParam(value = "fowardTo") String foward) {
-      
-        
-      
-        
-        try {
-            
-            UUID uuid = UUID.randomUUID();
-            String randomUUIDString = uuid.toString();
-            return Response.ok( SpringFactory.getHandlebarsManager().getTemplate( "login" ).apply(foward)).cookie( new NewCookie( "cookie",randomUUIDString  ) ).header("test", "wopapa" ).build();
-           
-        } catch (IOException e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            UUID uuid = UUID.randomUUID();
-            String randomUUIDString = uuid.toString();
-            return Response.ok(new Viewable("/WEB-INF/htmlFile/login.html")).cookie( new NewCookie( "cookie",randomUUIDString ) ).build();
-        }
-    }
     
     
     @javax.annotation.security.PermitAll
@@ -758,82 +725,9 @@ public class RoutePublicAccess {
         
     }
     
-    public void voidAdd100Person()throws Exception{
-       
-        GenericJob test= SpringFactory.getGenericJob();
-        for (int i=0;i<10;i++){
-            UserCustom user=new UserCustom();
-            user.setDusName( UUID.randomUUID().toString() );
-            user.setDusSurname( UUID.randomUUID().toString() );
-            user.setDusAddress( UUID.randomUUID().toString() );
-            user.setDusEmail(UUID.randomUUID().toString()+"@msn.com");
-            user.setDusMdp( "123456789".getBytes().toString() );
-            user.setDusNumber( UUID.randomUUID().toString());
-            user.setDusToken( UUID.randomUUID().toString() );
-            test.createObject( user );
-            
-        }
-        
-    }
+ 
     
-    public void voidAdd200Dossier()throws Exception{
-        
-        
-        GenericJob test= SpringFactory.getGenericJob();
-        List<HashMap> result= test.getList( UserCustom.class, null,null, null, new String[][]{{"PROPERTY","id"}},-1,20);
-        for (int i=0;i<result.size();i++){
-            String id="";
-             id=result.get( i ).get( "id" ).toString();
-             
-            /*
-            DossierCustom dossier=new DossierCustom();
-            dossier.setDosCreation( new Date() );
-            UserCustom testt=(UserCustom)test.getObject( UserCustom.class, id ,false);
-           
-            dossier.setDosCreator( testt);
-            dossier.setDosHistory( UUID.randomUUID().toString() );
-            test.createObject( dossier );
-            ArrayList arr= new ArrayList();
-            arr.add( dossier );
-            testt.setDusDossier( arr );
-            test.updateObject(testt);
-            */
-            
-        }
-        
-    }
-    
-   public void voidAdd100Enterprise()throws Exception{
-        
-        
-       GenericJob test= SpringFactory.getGenericJob();
-       for (int i=0;i<100;i++){
-           EnterpriseCustom ent=new EnterpriseCustom();
-           ent.setEntBirth( new Date() );
-           ent.setEntName( UUID.randomUUID().toString() );
-           ent.setEntUpdate(new Date() );
-      
-           
-           CustomerCustom cust=new CustomerCustom();
-           cust.setCusBith( new Date() );
-           cust.setCusCivility( DefaultCustomer.civility.Mr.toString());
-           cust.setCusFirstName( UUID.randomUUID().toString() );
-           cust.setCusMail( UUID.randomUUID().toString() );
-           cust.setCusNumber( UUID.randomUUID().toString() );
-           ArrayList arr= new ArrayList();
-           arr.add( cust );
-        
-           ent.setEntCustomers( arr );
-           test.createObject(cust ); 
-           test.createObject(ent );
-           
-     
-           
-       }
-       
-      
-            
-        }
+
         
    private static String serialize(Object object) throws JsonProcessingException {
        String serialized = null;
